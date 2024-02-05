@@ -1,10 +1,10 @@
 default:
-  image: node:16.16.0
+  image: node:18.17.0
 
 test:
   stage: test
   script:
-    - npm install --global vercel
+    - yarn install --global vercel
     - npm run test 
 
 build:
@@ -12,7 +12,7 @@ build:
   except:
     - main
   script:
-    - npm install --global vercel
+    - yarn install --global vercel
     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
     - vercel build --token=$VERCEL_TOKEN
 
@@ -21,7 +21,7 @@ deploy_preview:
   except:
     - main
   script:
-    - npm install --global vercel
+    - yarn install --global vercel
     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
     - vercel build --token=$VERCEL_TOKEN
     - vercel deploy --prebuilt  --token=$VERCEL_TOKEN
