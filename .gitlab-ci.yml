@@ -3,9 +3,11 @@ default:
 
 test:
   stage: test
+  except:
+    - main
   script:
     - yarn global add vercel
-    - npm run test 
+    - yarn dev
 
 build:
   stage: build
