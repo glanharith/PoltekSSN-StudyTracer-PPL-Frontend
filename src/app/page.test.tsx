@@ -14,7 +14,7 @@ describe('Page', () => {
   //   const jsx = await Page();
   //   render(jsx);
   //   expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-  //     'Hello Bob!',
+  //     'Hello User 1!',
   //   );
   // });
 });
