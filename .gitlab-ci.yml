@@ -1,6 +1,16 @@
 default:
   image: node:18.17.0
 
+test:
+  stage: test
+  except:
+    - main
+  script:
+    - yarn global add vercel
+    - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+    - vercel build --token=$VERCEL_TOKEN
+    - yarn test
+
 build:
   stage: build
   except:
