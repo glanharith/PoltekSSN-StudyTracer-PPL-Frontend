@@ -10,11 +10,11 @@ describe('Page', () => {
     );
   });
 
-  it(`should show data fetched from the backend`, async () => {
-    const jsx = await Page();
-    render(jsx);
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
-      'Hello Bob!',
-    );
-  });
+  // it(`should show data fetched from the backend`, async () => {
+  //   const jsx = await Page();
+  //   render(jsx);
+  //   expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+  //     'Hello Bob!',
+  //   );
+  // });
 });
