@@ -6,11 +6,11 @@ test:
   except:
     - main
   script:
-    - yarn global add vercel
-    - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
-    - vercel build --token=$VERCEL_TOKEN
     - yarn test
     - yarn jest --coverage
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+  dependencies:
+    - build
 
 build:
   stage: build
@@ -23,8 +23,8 @@ build:
 
 deploy_preview:
   stage: deploy
-  except:
-    - main
+  only:
+    - staging
   script:
     - yarn global add vercel
     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
