@@ -1,5 +1,10 @@
 default:
   image: node:18.17.0
+  
+stages:
+  - build
+  - test
+  - deploy
 
 test:
   stage: test
