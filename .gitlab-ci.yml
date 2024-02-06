@@ -1,7 +1,7 @@
 default:
   image: node:18.17.0
 
-build:
+test:
   stage: test
   except:
     - main
