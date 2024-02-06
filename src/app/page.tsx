@@ -7,7 +7,7 @@ async function getData() {
     return 'Response from back end: ' + (await res.text());
   } catch (error) {
     console.error('Fetch error:', error);
-    return 'An error occurred while fetching data.';
+    return 'An error occurred while fetching data!';
   }
 }
 
