@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Home, { getStaticProps } from './index';
+import Home from '../index';
 
 describe('Home', () => {
   const mockData = 'Response from back end: Hello User1!';
