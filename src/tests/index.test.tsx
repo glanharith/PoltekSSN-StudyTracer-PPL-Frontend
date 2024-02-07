@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Home from '../index';
+import Home from '../pages/index';
 
 describe('Home', () => {
   const mockData = 'Response from back end: Hello User1!';
