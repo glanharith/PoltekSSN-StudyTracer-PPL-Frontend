@@ -2,7 +2,6 @@
 
 
 [![pipeline status](https://gitlab.cs.ui.ac.id/tracer-study-poltekssn/tracer-study-fe/badges/staging/pipeline.svg)](https://gitlab.cs.ui.ac.id/tracer-study-poltekssn/tracer-study-fe/-/commits/staging) 
-[![coverage report](https://gitlab.cs.ui.ac.id/tracer-study-poltekssn/tracer-study-fe/badges/staging/coverage.svg)](https://gitlab.cs.ui.ac.id/tracer-study-poltekssn/tracer-study-fe/-/commits/staging)
 
 
 ## Description
