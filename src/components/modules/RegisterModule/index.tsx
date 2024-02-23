@@ -26,7 +26,7 @@ export const RegisterModule = () => {
     data.enrollmentYear = Number(data.enrollmentYear);
     data.graduateYear = data.graduateYear ? Number(data.graduateYear) : -1;
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
+      await axios.post(`/auth/register`, {
         ...data,
         role: 'ALUMNI',
       });
@@ -138,6 +138,7 @@ export const RegisterModule = () => {
             name="enrollmentYear"
             label="Tahun Masuk"
             placeholder="Tahun Masuk"
+            type="number"
             error={errors.enrollmentYear?.message}
             icon={PiGraduationCap}
             register={{
@@ -151,6 +152,7 @@ export const RegisterModule = () => {
             name="graduateYear"
             label="Tahun Lulus"
             placeholder="Tahun Lulus"
+            type="number"
             error={errors.graduateYear?.message}
             icon={PiCertificate}
             register={{
@@ -175,6 +177,7 @@ export const RegisterModule = () => {
             name="phoneNo"
             label="No. Telepon"
             placeholder="No. Telepon"
+            type="number"
             error={errors.phoneNo?.message}
             leftAddon="+62"
             register={{
