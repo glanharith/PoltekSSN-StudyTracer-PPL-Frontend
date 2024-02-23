@@ -20,6 +20,7 @@ import { MdPassword } from 'react-icons/md';
 import { PiGraduationCap, PiCertificate } from 'react-icons/pi';
 import { BsBook, BsGenderAmbiguous, BsHouseDoor } from 'react-icons/bs';
 import axios from 'axios';
+import { CustomAuthInput } from '@/components';
 
 export const RegisterModule = () => {
   const {
@@ -81,205 +82,159 @@ export const RegisterModule = () => {
           spacingX={{ md: 12, lg: 20 }}
           spacingY={6}
         >
-          <FormControl isInvalid={!!errors.email}>
-            <FormLabel htmlFor="name">Email</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={FiMail} />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                placeholder="Email"
-                {...register('email', {
-                  required: 'Masukkan email Anda',
-                  pattern: {
-                    value: /^\S+@\S+\.\S+$/,
-                    message: 'Email tidak valid',
-                  },
-                })}
-              />
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.email && errors.email.message}
-            </FormErrorMessage>
-          </FormControl>
+          <CustomAuthInput
+            name="email"
+            label="Email"
+            placeholder="Email"
+            error={errors.email?.message}
+            icon={FiMail}
+            register={{
+              ...register('email', {
+                required: 'Masukkan email Anda',
+                pattern: {
+                  value: /^\S+@\S+\.\S+$/,
+                  message: 'Email tidak valid',
+                },
+              }),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.name}>
-            <FormLabel htmlFor="name">Nama Lengkap</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={FiUser} />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                placeholder="Nama Lengkap"
-                {...register('name', {
-                  required: 'Masukkan nama lengkap Anda',
-                })}
-              />
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.name && errors.name.message}
-            </FormErrorMessage>
-          </FormControl>
+          <CustomAuthInput
+            name="name"
+            label="Nama Lengkap"
+            placeholder="Nama Lengkap"
+            error={errors.name?.message}
+            icon={FiUser}
+            register={{
+              ...register('name', {
+                required: 'Masukkan nama lengkap Anda',
+              }),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.password}>
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={MdPassword} />
-              </InputLeftAddon>
-              <Input
-                type="password"
-                placeholder="Password"
-                {...register('password', {
-                  required: 'Masukkan password Anda',
-                })}
-              />
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.password && errors.password.message}
-            </FormErrorMessage>
-          </FormControl>
+          <CustomAuthInput
+            name="password"
+            label="Password"
+            placeholder="Password"
+            type="password"
+            error={errors.password?.message}
+            icon={MdPassword}
+            register={{
+              ...register('password', {
+                required: 'Masukkan password Anda',
+              }),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.confirmPassword}>
-            <FormLabel htmlFor="confirmPassword">Konfirmasi Password</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={MdPassword} />
-              </InputLeftAddon>
-              <Input
-                type="password"
-                placeholder="Konfirmasi Password"
-                {...register('confirmPassword', {
-                  required: 'Masukkan ulang password Anda',
-                  validate: (value) =>
-                    value === password || 'Masukkan password yang sama',
-                })}
-              />
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.confirmPassword && errors.confirmPassword.message}
-            </FormErrorMessage>
-          </FormControl>
+          <CustomAuthInput
+            name="confirmPassword"
+            label="Konfirmasi Password"
+            placeholder="Konfirmasi Password"
+            type="password"
+            error={errors.confirmPassword?.message}
+            icon={MdPassword}
+            register={{
+              ...register('confirmPassword', {
+                required: 'Masukkan ulang password Anda',
+                validate: (value) =>
+                  value === password || 'Masukkan password yang sama',
+              }),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.enrollmentYear}>
-            <FormLabel htmlFor="enrollmentYear">Tahun Masuk</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={PiGraduationCap} />
-              </InputLeftAddon>
-              <Input
-                type="number"
-                placeholder="Tahun Masuk"
-                {...register('enrollmentYear', {
-                  required: 'Masukkan tahun masuk Anda',
-                })}
-              />
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.enrollmentYear && errors.enrollmentYear.message}
-            </FormErrorMessage>
-          </FormControl>
+          <CustomAuthInput
+            name="enrollmentYear"
+            label="Tahun Masuk"
+            placeholder="Tahun Masuk"
+            error={errors.enrollmentYear?.message}
+            icon={PiGraduationCap}
+            register={{
+              ...register('enrollmentYear', {
+                required: 'Masukkan tahun masuk Anda',
+              }),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.graduateYear}>
-            <FormLabel htmlFor="graduateYear">Tahun Lulus</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={PiCertificate} />
-              </InputLeftAddon>
-              <Input
-                type="number"
-                placeholder="Tahun Lulus"
-                {...register('graduateYear')}
-              />
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.graduateYear && errors.graduateYear.message}
-            </FormErrorMessage>
-          </FormControl>
+          <CustomAuthInput
+            name="graduateYear"
+            label="Tahun Lulus"
+            placeholder="Tahun Lulus"
+            error={errors.graduateYear?.message}
+            icon={PiCertificate}
+            register={{
+              ...register('graduateYear'),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.address}>
-            <FormLabel htmlFor="address">Alamat</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={BsHouseDoor} />
-              </InputLeftAddon>
-              <Input
-                type="text"
-                placeholder="Alamat"
-                {...register('address', {
-                  required: 'Masukkan alamat Anda',
-                })}
-              />
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.address && errors.address.message}
-            </FormErrorMessage>
-          </FormControl>
+          <CustomAuthInput
+            name="address"
+            label="Alamat"
+            placeholder="Alamat"
+            error={errors.address?.message}
+            icon={BsHouseDoor}
+            register={{
+              ...register('address', {
+                required: 'Masukkan alamat Anda',
+              }),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.phoneNo}>
-            <FormLabel htmlFor="phoneNo">No. Telepon</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>+62</InputLeftAddon>
-              <Input
-                type="text"
-                placeholder="No. Telepon"
-                {...register('phoneNo', {
-                  required: 'Masukkan no. telepon Anda',
-                })}
-              />
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.phoneNo && errors.phoneNo.message}
-            </FormErrorMessage>
-          </FormControl>
+          <CustomAuthInput
+            name="phoneNo"
+            label="No. Telepon"
+            placeholder="No. Telepon"
+            error={errors.phoneNo?.message}
+            leftAddon="+62"
+            register={{
+              ...register('phoneNo', {
+                required: 'Masukkan no. telepon Anda',
+              }),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.gender}>
-            <FormLabel htmlFor="gender">Jenis Kelamin</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={BsGenderAmbiguous} />
-              </InputLeftAddon>
-              <Select
-                placeholder="Jenis Kelamin"
-                {...register('gender', {
-                  required: 'Pilih jenis kelamin Anda',
-                })}
-              >
+          <CustomAuthInput
+            name="gender"
+            label="Jenis Kelamin"
+            placeholder="Jenis Kelamin"
+            type="select"
+            selectOptions={
+              <>
                 <option value="MALE">Laki-laki</option>
                 <option value="FEMALE">Perempuan</option>
-              </Select>
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.gender && errors.gender.message}
-            </FormErrorMessage>
-          </FormControl>
+              </>
+            }
+            error={errors.gender?.message}
+            icon={BsGenderAmbiguous}
+            register={{
+              ...register('gender', {
+                required: 'Pilih jenis kelamin Anda',
+              }),
+            }}
+          />
 
-          <FormControl isInvalid={!!errors.studyProgramId}>
-            <FormLabel htmlFor="studyProgram">Jurusan</FormLabel>
-            <InputGroup>
-              <InputLeftAddon>
-                <Icon as={BsBook} />
-              </InputLeftAddon>
-              <Select
-                placeholder="Jurusan"
-                {...register('studyProgramId', {
-                  required: 'Pilih jurusan Anda',
-                })}
-              >
+          <CustomAuthInput
+            name="studyProgramId"
+            label="Jurusan"
+            placeholder="Jurusan"
+            type="select"
+            selectOptions={
+              <>
                 <option value="48e941a9-3319-4f4c-8a2e-5d6a3287bf89">
                   Ilmu Sandi
                 </option>
                 <option value="68393bf0-0d80-43a7-889b-c46186a18777">
                   Ilmu Siber
                 </option>
-              </Select>
-            </InputGroup>
-            <FormErrorMessage>
-              {errors.studyProgramId && errors.studyProgramId.message}
-            </FormErrorMessage>
-          </FormControl>
+              </>
+            }
+            error={errors.studyProgramId?.message}
+            icon={BsBook}
+            register={{
+              ...register('studyProgramId', {
+                required: 'Pilih jurusan Anda',
+              }),
+            }}
+          />
         </SimpleGrid>
 
         <Flex direction="column" align="center" pt={6}>
