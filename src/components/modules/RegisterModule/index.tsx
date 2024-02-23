@@ -7,7 +7,7 @@ import { PiGraduationCap, PiCertificate } from 'react-icons/pi';
 import { BsBook, BsGenderAmbiguous, BsHouseDoor } from 'react-icons/bs';
 import { CustomAuthInput } from '@/components';
 import { useRouter } from 'next/router';
-import axios from '@/utils/axios';
+import { axios } from '@/utils';
 
 export const RegisterModule = () => {
   const {
@@ -33,7 +33,6 @@ export const RegisterModule = () => {
       toast({
         title: 'Berhasil mendaftar!',
         status: 'success',
-        duration: 1500,
       });
       toLogin();
     } catch (e: any) {
@@ -46,7 +45,6 @@ export const RegisterModule = () => {
         title: 'Pendaftaran gagal',
         description: errorDescription,
         status: 'error',
-        duration: 1500,
       });
     }
   };
