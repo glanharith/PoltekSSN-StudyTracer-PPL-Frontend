@@ -1,27 +1,13 @@
-import {
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Select,
-  SimpleGrid,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
+import { Button, Flex, SimpleGrid, Text, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { RegisterInput } from './interface';
 import { FiMail, FiUser } from 'react-icons/fi';
 import { MdPassword } from 'react-icons/md';
 import { PiGraduationCap, PiCertificate } from 'react-icons/pi';
 import { BsBook, BsGenderAmbiguous, BsHouseDoor } from 'react-icons/bs';
-import axios from 'axios';
 import { CustomAuthInput } from '@/components';
 import { useRouter } from 'next/router';
+import axios from '@/utils/axios';
 
 export const RegisterModule = () => {
   const {
