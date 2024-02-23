@@ -21,6 +21,7 @@ import { PiGraduationCap, PiCertificate } from 'react-icons/pi';
 import { BsBook, BsGenderAmbiguous, BsHouseDoor } from 'react-icons/bs';
 import axios from 'axios';
 import { CustomAuthInput } from '@/components';
+import { useRouter } from 'next/router';
 
 export const RegisterModule = () => {
   const {
@@ -30,6 +31,10 @@ export const RegisterModule = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterInput>();
   const toast = useToast();
+  const router = useRouter();
+  const toLogin = () => {
+    router.push('/login');
+  };
 
   const handleFormSubmit = async (data: RegisterInput) => {
     data.enrollmentYear = Number(data.enrollmentYear);
@@ -44,6 +49,7 @@ export const RegisterModule = () => {
         status: 'success',
         duration: 1500,
       });
+      toLogin();
     } catch (e: any) {
       let errorDescription = '';
       if (e.response.data.message === 'User with given email already exists') {
@@ -237,7 +243,7 @@ export const RegisterModule = () => {
           />
         </SimpleGrid>
 
-        <Flex direction="column" align="center" pt={6}>
+        <Flex direction="column" align="center" pt={8} gap={2}>
           <Button
             type="submit"
             isLoading={isSubmitting}
@@ -250,6 +256,15 @@ export const RegisterModule = () => {
           >
             Daftar
           </Button>
+          <Text fontWeight="semibold">
+            Sudah memiliki akun?{' '}
+            <span
+              className="hover:cursor-pointer text-[#3182CE]"
+              onClick={toLogin}
+            >
+              Masuk
+            </span>
+          </Text>
         </Flex>
       </form>
     </Flex>
