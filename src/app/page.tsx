@@ -3,7 +3,7 @@ import React from 'react';
 
 async function getData() {
   try {
-    const res = await fetch(`${env.API_URL}/hello/bob`);
+    const res = await fetch(`${env.API_URL}/hello/yudi`);
     return 'Response from back end: ' + (await res.text());
   } catch (error) {
     console.error('Fetch error:', error);
