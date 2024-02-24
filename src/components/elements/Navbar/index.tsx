@@ -9,29 +9,49 @@ import {
   useColorModeValue,
   Stack,
   Image,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  Avatar,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import navStyles from "./navbar.module.css";
 import { parseUser } from "@/utils";
-import { ParsedUser } from "@/utils/parseUser/interface";
 import { useRouter } from "next/navigation";
 
 const defaultUserMenu = [
   {
-    name: "Home",
-    path: "/",
+    name: "Survey Kurikulum",
+    path: "/survey-kurikulum",
     role: "ALUMNI",
   },
   {
-    name: "My Todos",
-    path: "/todos",
+    name: "Survey Karir",
+    path: "/survey-karir",
     role: "ALUMNI",
   },
   {
-    name: "My Admin",
-    path: "/admin",
+    name: "Survey Management",
+    path: "/survey",
     role: "ADMIN",
+  },
+  {
+    name: "Prodi Management",
+    path: "/program-studi",
+    role: "ADMIN",
+  },
+  {
+    name: "Kaprodi Management",
+    path: "/kepala-program-studi",
+    role: "ADMIN",
+  },
+  {
+    name: "Survey Management",
+    path: "/prodi-survey",
+    role: "HEAD_STUDY_PROGRAM",
   },
 ];
 
@@ -54,6 +74,7 @@ export const Navbar: React.FC = () => {
   const router = useRouter();
   const [userRole, setUserRole] = useState("guest");
   const [userMenu, setUserMenu] = useState(defaultUserMenu); // State to store user menu
+  
   useEffect(() => {
     const fetchUser = async () => {
       const user = await parseUser();
@@ -63,7 +84,7 @@ export const Navbar: React.FC = () => {
       } else {
         setUserRole(user.role);
         // Filter user menu based on user role
-        setUserMenu(defaultUserMenu.filter((item) => item.role === user.role));
+        setUserMenu(defaultUserMenu.filter((item) => item.role == user.role));
       }
     };
 
@@ -87,7 +108,6 @@ export const Navbar: React.FC = () => {
             </Box>
             <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
               {userMenu.map(({ name, path }) => (
-                // Use filtered user menu
                 <NavLink key={path} path={path}>
                   {name}
                 </NavLink>
@@ -95,32 +115,59 @@ export const Navbar: React.FC = () => {
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            <Button
-              variant={"solid"}
-              colorScheme={""}
-              border="2px"
-              borderColor={"blue.900"}
-              size={"sm"}
-              mr={4}
-              textColor={"blue.900"}
-              onClick={() => {
-                router.replace("/register");
-              }}
-            >
-              Register
-            </Button>
-            <Button
-              variant={"solid"}
-              bg="#1A365D"
-              textColor={"white"}
-              size={"sm"}
-              mr={4}
-              onClick={() => {
-                router.replace("/login");
-              }}
-            >
-              Login
-            </Button>
+            {userRole == "guest" ? 
+            <>
+              <Button
+                variant={"solid"}
+                colorScheme={""}
+                border="2px"
+                borderColor={"blue.900"}
+                size={"sm"}
+                mr={4}
+                textColor={"blue.900"}
+                onClick={() => {
+                  router.replace("/register");
+                }}
+              >
+                Register
+              </Button>
+              <Button
+                variant={"solid"}
+                bg="#1A365D"
+                textColor={"white"}
+                size={"sm"}
+                mr={4}
+                onClick={() => {
+                  router.replace("/login");
+                }}
+              >
+                Login
+              </Button>
+            </> : <>
+            <Flex alignItems={"center"}>
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}
+              >
+                <Avatar
+                  size={"sm"}
+                  src={
+                    "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                  }
+                />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Edit Profile</MenuItem>
+                <MenuDivider />
+                <MenuItem>Logout</MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
+              </>}
+            
           </Flex>
         </Flex>
 
