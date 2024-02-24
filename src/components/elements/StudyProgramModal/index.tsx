@@ -28,18 +28,27 @@ export default function CreateStudyProgramModal({
     register,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<StudyProgramInput>({});
+  } = useForm<StudyProgramInput>({
+    defaultValues: {
+      name: method === 'EDIT' ? studyProgramName : '',
+    },
+  });
   const toast = useToast();
 
   const handleFormSubmit = async (data: StudyProgramInput) => {
     try {
       let successMessage: string;
-
-      await axios.post('/prodi', {
-        name: data.name,
-      });
-      successMessage = 'Berhasil membuat program studi!';
-
+      if (method === 'CREATE') {
+        await axios.post('/prodi', {
+          name: data.name,
+        });
+        successMessage = 'Berhasil membuat program studi!';
+      } else {
+        await axios.patch(`/prodi/${studyProgramId}`, {
+          name: data.name,
+        });
+        successMessage = 'Berhasil mengubah program studi!';
+      }
       toast({
         title: successMessage,
         status: 'success',
@@ -51,7 +60,11 @@ export default function CreateStudyProgramModal({
       if (status === 409) {
         errorMessage = 'Nama program studi sudah digunakan!';
       } else {
-        errorMessage = 'Gagal membuat program studi!';
+        if (method === 'CREATE') {
+          errorMessage = 'Gagal membuat program studi!';
+        } else {
+          errorMessage = 'Gagal mengubah program studi!';
+        }
       }
       setError('name', { message: errorMessage });
     }
@@ -66,7 +79,7 @@ export default function CreateStudyProgramModal({
           textColor={'blue.900'}
           fontSize={'3xl'}
         >
-          Tambah Program Studi
+          {method === 'CREATE' ? 'Tambah' : 'Ubah'} Program Studi
         </ModalHeader>
         <ModalCloseButton p={6} borderRadius={32} />
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -96,7 +109,7 @@ export default function CreateStudyProgramModal({
               isLoading={isSubmitting}
               type="submit"
             >
-              Buat
+              {method === 'CREATE' ? 'Buat' : 'Ubah'}
             </Button>
           </ModalFooter>
         </form>
