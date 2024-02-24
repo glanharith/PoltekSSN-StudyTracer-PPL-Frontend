@@ -113,4 +113,103 @@ describe('StudyProgramModal', () => {
       });
     });
   });
+
+  describe('Update Study Program', () => {
+    const studyProgram = {
+      id: 'abc123',
+      name: 'Computer Science',
+    };
+    it('renders correctly', () => {
+      render(
+        <StudyProgramModal isOpen={true} onClose={mockOnClose} method="EDIT" />,
+      );
+      expect(screen.getByText('Ubah Program Studi')).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText('Nama Program Studi'),
+      ).toBeInTheDocument();
+      expect(screen.getByText('Ubah')).toBeInTheDocument();
+    });
+
+    it('validates empty name and shows error message', async () => {
+      render(
+        <StudyProgramModal isOpen={true} onClose={mockOnClose} method="EDIT" />,
+      );
+      fireEvent.click(screen.getByText('Ubah'));
+      await waitFor(() => {
+        expect(
+          screen.getByText('Nama program studi tidak boleh kosong!'),
+        ).toBeInTheDocument();
+      });
+    });
+
+    it('submits the form and calls API', async () => {
+      mockAxios.onPatch(`/prodi/${studyProgram.id}`).reply(200);
+
+      render(
+        <StudyProgramModal
+          isOpen={true}
+          onClose={mockOnClose}
+          method="EDIT"
+          studyProgramId={studyProgram.id}
+        />,
+      );
+      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
+        target: { value: 'Informatika' },
+      });
+      fireEvent.click(screen.getByText('Ubah'));
+
+      await waitFor(() => {
+        expect(mockAxios.history.patch.length).toBe(1);
+        expect(mockAxios.history.patch[0].data).toEqual(
+          JSON.stringify({ name: 'Informatika' }),
+        );
+      });
+    });
+
+    it('verifies if study program name is taken and displays error message', async () => {
+      mockAxios.onPatch(`/prodi/${studyProgram.id}`).reply(409);
+
+      render(
+        <StudyProgramModal
+          isOpen={true}
+          onClose={mockOnClose}
+          method="EDIT"
+          studyProgramId={studyProgram.id}
+        />,
+      );
+      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
+        target: { value: 'Informatika' },
+      });
+      fireEvent.click(screen.getByText('Ubah'));
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('Nama program studi sudah digunakan!'),
+        ).toBeInTheDocument();
+      });
+    });
+
+    it('handles API error and displays error message', async () => {
+      mockAxios.onPatch(`/prodi/${studyProgram.id}`).networkError();
+
+      render(
+        <StudyProgramModal
+          isOpen={true}
+          onClose={mockOnClose}
+          method="EDIT"
+          studyProgramId={studyProgram.id}
+        />,
+      );
+      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
+        target: { value: 'Informatika' },
+      });
+      fireEvent.click(screen.getByText('Ubah'));
+
+      await waitFor(() => {
+        expect(
+          screen.getByText('Gagal mengubah program studi!'),
+        ).toBeInTheDocument();
+      });
+    });
+  });
 });
