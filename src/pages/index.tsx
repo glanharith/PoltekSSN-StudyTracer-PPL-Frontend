@@ -11,7 +11,7 @@ export default function Home({ data }: { data: string }) {
 
 export async function getStaticProps() {
   try {
-    const res = await fetch(`${process.env.API_URL}/hello/yudi`);
+    const res = await fetch(`${process.env.API_URL}/hello/yudisabri`);
     const data = 'Response from back end: ' + (await res.text());
     return {
       props: {

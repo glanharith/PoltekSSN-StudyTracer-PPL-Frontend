@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import {
   Box,
   Flex,
@@ -13,15 +13,25 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import navStyles from "./navbar.module.css";
+import { parseUser } from "@/utils";
+import { ParsedUser } from "@/utils/parseUser/interface";
+import { useRouter } from "next/navigation";
 
-const Links = [
+const defaultUserMenu = [
   {
     name: "Home",
     path: "/",
+    role: "ALUMNI",
   },
   {
     name: "My Todos",
     path: "/todos",
+    role: "ALUMNI",
+  },
+  {
+    name: "My Admin",
+    path: "/admin",
+    role: "ADMIN",
   },
 ];
 
@@ -41,6 +51,24 @@ const NavLink = ({ children, path }: { children: ReactNode; path: string }) => (
 
 export const Navbar: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
+  const [userRole, setUserRole] = useState("guest");
+  const [userMenu, setUserMenu] = useState(defaultUserMenu); // State to store user menu
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await parseUser();
+      if (!user) {
+        setUserRole("guest");
+        setUserMenu([]);
+      } else {
+        setUserRole(user.role);
+        // Filter user menu based on user role
+        setUserMenu(defaultUserMenu.filter((item) => item.role === user.role));
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <div className={navStyles.mobileNav}>
@@ -54,12 +82,16 @@ export const Navbar: React.FC = () => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box><Image src="assets/images/poltek-ssn-logo.png" boxSize="40px" alt="logo"/></Box>
-            <HStack
-              as={"nav"}
-              spacing={4}
-              display={{ base: "none", md: "flex" }}
-            >
+            <Box>
+              <Image src="assets/images/poltek-ssn-logo.png" boxSize="40px" alt="logo" />
+            </Box>
+            <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
+              {userMenu.map(({ name, path }) => (
+                // Use filtered user menu
+                <NavLink key={path} path={path}>
+                  {name}
+                </NavLink>
+              ))}
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
@@ -71,15 +103,21 @@ export const Navbar: React.FC = () => {
               size={"sm"}
               mr={4}
               textColor={"blue.900"}
+              onClick={() => {
+                router.replace("/register");
+              }}
             >
               Register
             </Button>
             <Button
               variant={"solid"}
-              bg = "#1A365D"
+              bg="#1A365D"
               textColor={"white"}
               size={"sm"}
               mr={4}
+              onClick={() => {
+                router.replace("/login");
+              }}
             >
               Login
             </Button>
@@ -88,8 +126,9 @@ export const Navbar: React.FC = () => {
 
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
-              {Links.map(({ name, path }) => (
+            <Stack as={"nav"} spacing={4}>123
+              {userMenu.map(({ name, path }) => (
+                // Use filtered user menu
                 <NavLink key={path} path={path}>
                   {name}
                 </NavLink>
@@ -100,4 +139,4 @@ export const Navbar: React.FC = () => {
       </Box>
     </div>
   );
-}
+};
