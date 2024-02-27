@@ -10,7 +10,10 @@ export const parseUser = async () => {
 
   const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
 
-  const parsed = await jwtVerify(token, secret);
-
-  return { ...parsed.payload, id: parsed.payload.sub } as ParsedUser;
+  try {
+    const parsed = await jwtVerify(token, secret);
+    return { ...parsed.payload, id: parsed.payload.sub } as ParsedUser;
+  } catch {
+    return null;
+  }
 };
