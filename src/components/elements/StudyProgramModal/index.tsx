@@ -14,7 +14,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ModalProps, StudyProgramInput } from './interface';
 import { MdTitle } from 'react-icons/md';
-import { CustomAuthInput } from '@/components';
+import { CustomInput } from '@/components';
 
 export default function StudyProgramModal({
   isOpen,
@@ -84,7 +84,7 @@ export default function StudyProgramModal({
         <ModalCloseButton p={6} borderRadius={32} />
         <form onSubmit={handleSubmit(handleFormSubmit)}>
           <ModalBody pb={6}>
-            <CustomAuthInput
+            <CustomInput
               name="name"
               placeholder="Nama Program Studi"
               error={errors.name?.message}

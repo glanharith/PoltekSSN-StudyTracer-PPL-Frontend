@@ -5,7 +5,7 @@ import { FiMail, FiUser } from 'react-icons/fi';
 import { MdPassword } from 'react-icons/md';
 import { PiGraduationCap, PiCertificate } from 'react-icons/pi';
 import { BsBook, BsGenderAmbiguous, BsHouseDoor } from 'react-icons/bs';
-import { CustomAuthInput } from '@/components';
+import { CustomInput } from '@/components/elements';
 import { useRouter } from 'next/router';
 import { axios } from '@/utils';
 
@@ -72,7 +72,7 @@ export const RegisterModule = () => {
           spacingX={{ md: 12, lg: 20 }}
           spacingY={6}
         >
-          <CustomAuthInput
+          <CustomInput
             name="email"
             label="Email"
             placeholder="Email"
@@ -89,7 +89,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="name"
             label="Nama Lengkap"
             placeholder="Nama Lengkap"
@@ -102,7 +102,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="password"
             label="Password"
             placeholder="Password"
@@ -116,7 +116,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="confirmPassword"
             label="Konfirmasi Password"
             placeholder="Konfirmasi Password"
@@ -132,7 +132,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="enrollmentYear"
             label="Tahun Masuk"
             placeholder="Tahun Masuk"
@@ -146,7 +146,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="graduateYear"
             label="Tahun Lulus"
             placeholder="Tahun Lulus"
@@ -158,7 +158,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="address"
             label="Alamat"
             placeholder="Alamat"
@@ -171,7 +171,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="phoneNo"
             label="No. Telepon"
             placeholder="No. Telepon"
@@ -185,7 +185,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="gender"
             label="Jenis Kelamin"
             placeholder="Jenis Kelamin"
@@ -205,7 +205,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="studyProgramId"
             label="Jurusan"
             placeholder="Jurusan"
