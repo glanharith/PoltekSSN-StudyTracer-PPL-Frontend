@@ -10,3 +10,8 @@ export type RegisterInput = {
   phoneNo: string;
   studyProgramId: string;
 };
+
+export type StudyProgram = {
+  id: string;
+  name: string;
+};

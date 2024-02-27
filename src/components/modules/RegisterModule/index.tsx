@@ -1,6 +1,6 @@
 import { Button, Flex, SimpleGrid, Text, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { RegisterInput } from './interface';
+import { RegisterInput, StudyProgram } from './interface';
 import { FiMail, FiUser } from 'react-icons/fi';
 import { MdPassword } from 'react-icons/md';
 import { PiGraduationCap, PiCertificate } from 'react-icons/pi';
@@ -8,6 +8,7 @@ import { BsBook, BsGenderAmbiguous, BsHouseDoor } from 'react-icons/bs';
 import { CustomAuthInput } from '@/components';
 import { useRouter } from 'next/router';
 import { axios } from '@/utils';
+import { useEffect, useState } from 'react';
 
 export const RegisterModule = () => {
   const {
@@ -21,6 +22,7 @@ export const RegisterModule = () => {
   const toLogin = () => {
     router.push('/login');
   };
+  const [studyPrograms, setStudyPrograms] = useState<StudyProgram[]>([]);
 
   const handleFormSubmit = async (data: RegisterInput) => {
     data.enrollmentYear = Number(data.enrollmentYear);
@@ -48,6 +50,15 @@ export const RegisterModule = () => {
       });
     }
   };
+
+  const fetchStudyPrograms = async () => {
+    const result = await axios.get('/prodi');
+    setStudyPrograms(result.data.data);
+  };
+
+  useEffect(() => {
+    fetchStudyPrograms();
+  }, []);
 
   const password = watch('password');
 
@@ -210,16 +221,11 @@ export const RegisterModule = () => {
             label="Jurusan"
             placeholder="Jurusan"
             type="select"
-            selectOptions={
-              <>
-                <option value="48e941a9-3319-4f4c-8a2e-5d6a3287bf89">
-                  Ilmu Sandi
-                </option>
-                <option value="68393bf0-0d80-43a7-889b-c46186a18777">
-                  Ilmu Siber
-                </option>
-              </>
-            }
+            selectOptions={studyPrograms.map((prodi) => (
+              <option key={prodi.id} value={prodi.id}>
+                {prodi.name}
+              </option>
+            ))}
             error={errors.studyProgramId?.message}
             icon={BsBook}
             register={{
