@@ -16,7 +16,7 @@ import { ModalProps, StudyProgramInput } from './interface';
 import { MdTitle } from 'react-icons/md';
 import { CustomAuthInput } from '@/components';
 
-export default function CreateStudyProgramModal({
+export default function StudyProgramModal({
   isOpen,
   onClose,
   method,
