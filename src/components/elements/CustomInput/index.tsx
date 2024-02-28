@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { FormInputProps } from './interface';
 
-export const CustomAuthInput: React.FC<FormInputProps> = ({
+export const CustomInput: React.FC<FormInputProps> = ({
   label,
   name,
   type = 'text',
