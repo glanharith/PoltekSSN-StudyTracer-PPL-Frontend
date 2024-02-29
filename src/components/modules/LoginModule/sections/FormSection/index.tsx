@@ -25,6 +25,7 @@ export const FormSection = () => {
         title: 'Berhasil masuk!',
         status: 'success',
       });
+      router.push('/');
     } catch (e: any) {
       let errorDescription = '';
       if (e.response.data.message === 'Invalid email or password')
