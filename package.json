@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "test:ci": "jest --ci"
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:ci": "jest --ci --coverage --verbose"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -17,6 +19,7 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "axios": "^1.6.7",
+    "axios-mock-adapter": "^1.22.0",
     "framer-motion": "^11.0.5",
     "jose": "^5.2.2",
     "next": "14.1.0",

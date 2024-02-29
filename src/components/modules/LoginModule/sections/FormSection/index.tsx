@@ -1,7 +1,7 @@
 import { Button, Text, useToast } from '@chakra-ui/react';
 import { LoginInput } from './interface';
 import { useForm } from 'react-hook-form';
-import { CustomAuthInput } from '@/components/elements';
+import { CustomInput } from '@/components/elements';
 import { FiMail } from 'react-icons/fi';
 import { MdPassword } from 'react-icons/md';
 import { useRouter } from 'next/router';
@@ -25,6 +25,7 @@ export const FormSection = () => {
         title: 'Berhasil masuk!',
         status: 'success',
       });
+      router.push('/');
     } catch (e: any) {
       let errorDescription = '';
       if (e.response.data.message === 'Invalid email or password')
@@ -50,7 +51,7 @@ export const FormSection = () => {
         >
           Masuk
         </Text>
-        <CustomAuthInput
+        <CustomInput
           name="email"
           placeholder="email"
           error={errors.email?.message}
@@ -66,7 +67,7 @@ export const FormSection = () => {
           }}
         />
 
-        <CustomAuthInput
+        <CustomInput
           name="password"
           placeholder="password"
           type="password"
