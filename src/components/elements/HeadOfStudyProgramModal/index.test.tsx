@@ -113,7 +113,6 @@ describe('Create Head of Study Program', () => {
     userEvent.click(screen.getByText('Buat'))
 
     await waitFor( async () => {
-      console.log(mockAxios.history)
       expect(mockAxios.history.post.length).toBe(1);
 
 

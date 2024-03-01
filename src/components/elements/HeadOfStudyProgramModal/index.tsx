@@ -64,7 +64,6 @@ export default function HeadOfStudyProgramModal({
           name: data.name,
           password: data.password,
         });
-        console.log(res)
   
         if (res.data.message == 'Successfully created a new head of study program') {
           successMessage = 'Berhasil membuat kepala program studi!';

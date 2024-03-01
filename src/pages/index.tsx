@@ -19,7 +19,6 @@ export async function getStaticProps() {
       },
     };
   } catch (error) {
-    console.error('Fetch error:', error);
     return {
       props: {
         data: 'An error occurred while fetching data!',
