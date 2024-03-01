@@ -8,12 +8,17 @@ import {
   ModalHeader,
   ModalOverlay,
   useToast,
-} from '@chakra-ui/react';
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  InputGroup,
+  InputLeftAddon,} from '@chakra-ui/react';
+
 import { axios } from '@/utils';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateHeadOfStudyProgramInput, KaprodiModalProps } from './interface';
-import { MdTitle } from 'react-icons/md';
+import { MdEmail, MdPassword, MdSchool, MdTitle } from 'react-icons/md';
 import { StudyProgram } from '@/components/modules/RegisterModule/interface';
 import { CustomInput } from '../CustomInput';
 import { BsBook } from 'react-icons/bs';
@@ -59,9 +64,9 @@ export default function HeadOfStudyProgramModal({
           name: data.name,
           password: data.password,
         });
+        console.log(res)
   
         if (res.data.message == 'Successfully created a new head of study program') {
-          console.log(res.data)
           successMessage = 'Berhasil membuat kepala program studi!';
           toast({
             title: successMessage,
@@ -73,19 +78,11 @@ export default function HeadOfStudyProgramModal({
           }, 1000);
         }
 
-      } else {
-        successMessage = 'Berhasil mengubah program studi!';
-        toast({
-          title: successMessage,
-          status: 'success',
-        });
-        setTimeout(() => {
-          refetchData();
-        }, 1000);
-      }
+      } 
 
       onClose();
-    } catch (error: any) {
+    } 
+    catch (error: any) {
       const status = error.response?.status;
       let errorMessage;
       if (status === 409) {
@@ -93,9 +90,6 @@ export default function HeadOfStudyProgramModal({
       } 
       else if (method === 'CREATE') {
           errorMessage = 'Gagal membuat kepala program studi!';
-      } 
-      else {
-          errorMessage = 'Gagal mengubah kepala program studi!';
       }
       setError('name', { message: errorMessage });
     }
@@ -132,7 +126,7 @@ export default function HeadOfStudyProgramModal({
               label='Email Kepala Prodi'
               placeholder="Email"
               error={errors.email?.message}
-              icon={MdTitle}
+              icon={MdEmail}
               register={{
                 ...register('email', {
                   required: 'Email tidak boleh kosong!',
@@ -144,31 +138,29 @@ export default function HeadOfStudyProgramModal({
               label='Password'
               placeholder="Password"
               error={errors.password?.message}
-              icon={MdTitle}
+              icon={MdPassword}
               register={{
                 ...register('password', {
                   required: 'password tidak boleh kosong!',
                 }),
               }}
             />
-            <CustomInput
-              name="jurusan"
-              label="Jurusan"
-              placeholder="Jurusan"
-              type="select"
-              selectOptions={studyPrograms.map((prodi) => (
-                <option key={prodi.id} value={prodi.id}>
-                  {prodi.name}
-                </option>
-              ))}
-              error={errors.studyProgramId?.message}
-              icon={BsBook}
-              register={{
-                ...register('studyProgramId', {
-                  required: 'Pilih jurusan Anda',
-                }),
-              }}
-            />
+            <FormControl isInvalid={!!errors.studyProgramId?.message}>
+              <FormLabel>{"Jurusan"}</FormLabel>
+              <InputGroup>
+              <InputLeftAddon>
+                <MdSchool />
+              </InputLeftAddon>
+                <select aria-label='Jurusan' id="jurusan" {...register("studyProgramId")}>
+                {studyPrograms.map((prodi) => (
+                  <option key={prodi.id} value={prodi.id}>
+                    {prodi.name}
+                  </option>
+                ))}
+              </select>
+              </InputGroup>
+              <FormErrorMessage>{errors.studyProgramId?.message}</FormErrorMessage>
+            </FormControl>
           </ModalBody>
         </form>
         <ModalFooter justifyContent={'center'}>
