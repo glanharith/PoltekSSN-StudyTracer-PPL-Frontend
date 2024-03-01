@@ -54,7 +54,7 @@ export const RegisterModule = () => {
   const fetchStudyPrograms = async () => {
     const result = await axios.get('/prodi');
     setStudyPrograms(result.data.data);
-  };
+  };  
 
   useEffect(() => {
     fetchStudyPrograms();
