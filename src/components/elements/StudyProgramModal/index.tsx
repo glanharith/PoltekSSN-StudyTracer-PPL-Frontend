@@ -10,7 +10,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { axios } from '@/utils';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ModalProps, StudyProgramInput } from './interface';
 import { MdTitle } from 'react-icons/md';
@@ -27,9 +27,23 @@ export default function StudyProgramModal({
     handleSubmit,
     register,
     setError,
+    clearErrors,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<StudyProgramInput>();
+
   const toast = useToast();
+
+  useEffect(() => {
+    if (isOpen) {
+      clearErrors();
+      if (method === 'EDIT') {
+        setValue('name', studyProgramName!!);
+      } else {
+        setValue('name', '');
+      }
+    }
+  }, [isOpen, method, setValue, studyProgramName]);
 
   const handleFormSubmit = async (data: StudyProgramInput) => {
     try {
