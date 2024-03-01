@@ -19,6 +19,7 @@ export const CustomInput: React.FC<FormInputProps> = ({
   error,
   selectOptions,
   leftAddon,
+  defaultValue,
 }) => {
   return (
     <FormControl isInvalid={!!error}>
@@ -37,7 +38,12 @@ export const CustomInput: React.FC<FormInputProps> = ({
             {selectOptions}
           </Select>
         ) : (
-          <Input type={type} placeholder={placeholder} {...register} />
+          <Input
+            type={type}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
+            {...register}
+          />
         )}
       </InputGroup>
       <FormErrorMessage>{error}</FormErrorMessage>
