@@ -153,6 +153,7 @@ export const RegisterModule = () => {
             register={{
               ...register('enrollmentYear', {
                 required: 'Masukkan tahun masuk Anda',
+                validate: (value) => value >= 1945 || 'Tahun tidak valid',
               }),
             }}
           />
@@ -165,7 +166,14 @@ export const RegisterModule = () => {
             error={errors.graduateYear?.message}
             icon={PiCertificate}
             register={{
-              ...register('graduateYear'),
+              ...register('graduateYear', {
+                validate: (value: number | string) => {
+                  if (value !== undefined && value !== null && value !== '') {
+                    return Number(value) >= 1945 || 'Tahun tidak valid';
+                  }
+                  return true;
+                },
+              }),
             }}
           />
 
