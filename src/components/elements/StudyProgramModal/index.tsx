@@ -14,7 +14,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { ModalProps, StudyProgramInput } from './interface';
 import { MdTitle } from 'react-icons/md';
-import { CustomInput } from '@/components';
+import { CustomInput } from '@/components/elements';
 
 export default function StudyProgramModal({
   isOpen,
@@ -28,11 +28,7 @@ export default function StudyProgramModal({
     register,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<StudyProgramInput>({
-    defaultValues: {
-      name: method === 'EDIT' ? studyProgramName : '',
-    },
-  });
+  } = useForm<StudyProgramInput>();
   const toast = useToast();
 
   const handleFormSubmit = async (data: StudyProgramInput) => {
@@ -94,6 +90,7 @@ export default function StudyProgramModal({
                   required: 'Nama program studi tidak boleh kosong!',
                 }),
               }}
+              defaultValue={method === 'EDIT' ? studyProgramName : ''}
             />
           </ModalBody>
           <ModalFooter justifyContent={'center'}>
