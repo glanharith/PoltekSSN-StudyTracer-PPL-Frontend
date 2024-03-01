@@ -12,4 +12,5 @@ export interface FormInputProps {
   register: UseFormRegisterReturn;
   error?: string | undefined;
   selectOptions?: ReactNode;
+  defaultValue?: string;
 }
