@@ -136,12 +136,13 @@ export default function HeadOfStudyProgramModal({
             <CustomInput
               name="password"
               label='Password'
+              type='password'
               placeholder="Password"
               error={errors.password?.message}
               icon={MdPassword}
               register={{
                 ...register('password', {
-                  required: 'password tidak boleh kosong!',
+                  required: 'Password tidak boleh kosong!',
                 }),
               }}
             />

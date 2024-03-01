@@ -12,7 +12,6 @@ export const KaprodiModule = () => {
   const fetchHeadofStudyProgram = async () => {
       try {
         const response = await axios.get('/kaprodi');
-        console.log(response)
         setHeadOfStudyProgram(response.data);
       } catch (error) {
         toast({
