@@ -36,7 +36,6 @@ describe('Create Head of Study Program', () => {
     expect(screen.getByText('Buat')).toBeInTheDocument();
     expect(screen.getByText('Tambah Kepala Program Studi')).toBeInTheDocument();
 
-    // Optionally, you can wait for the mock axios call to resolve
     await waitFor(() => {
       expect(mockAxios.history.get.length).toBe(1);
     });
@@ -99,7 +98,6 @@ describe('Create Head of Study Program', () => {
       expect(screen.getByText('Ilmu Sandi')).toBeInTheDocument();
     });
 
-    // Select an option from the dropdown
     fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
     fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
     fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
@@ -160,7 +158,6 @@ describe('Create Head of Study Program', () => {
       expect(screen.getByText('Ilmu Sandi')).toBeInTheDocument();
     });
 
-    // Select an option from the dropdown
     fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
     fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
     fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
@@ -208,7 +205,6 @@ describe('Create Head of Study Program', () => {
       expect(screen.getByText('Ilmu Sandi')).toBeInTheDocument();
     });
 
-    // Select an option from the dropdown
     fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
     fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
     fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
