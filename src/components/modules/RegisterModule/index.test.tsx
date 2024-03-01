@@ -22,8 +22,20 @@ jest.mock('@chakra-ui/react', () => ({
 
 const mockAxios = new MockAdapter(axios);
 
+const prodi = [
+  { id: 'prodi1', name: 'Prodi 1' },
+  { id: 'prodi2', name: 'Prodi 2' },
+];
+
 beforeEach(() => {
   mockAxios.reset();
+
+  (useRouter as jest.Mock).mockReturnValue({
+    push: jest.fn(),
+  });
+  (useToast as jest.Mock).mockReturnValue(jest.fn());
+
+  mockAxios.onGet('/prodi').reply(200, { data: prodi });
 });
 
 const fillForm = (data: any) => {
@@ -60,11 +72,6 @@ const fillForm = (data: any) => {
 };
 
 describe('RegisterModule', () => {
-  const prodi = [
-    { id: 'prodi1', name: 'Prodi 1' },
-    { id: 'prodi2', name: 'Prodi 2' },
-  ];
-
   const postBody = {
     email: 'test@gmail.com',
     name: 'Test',
@@ -80,10 +87,6 @@ describe('RegisterModule', () => {
   };
 
   it('should render correctly', async () => {
-    (useRouter as jest.Mock).mockReturnValue({});
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
-
     act(() => {
       render(<RegisterModule />);
     });
@@ -107,12 +110,6 @@ describe('RegisterModule', () => {
   });
 
   it('should register successfully', async () => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-    (useToast as jest.Mock).mockReturnValue(jest.fn());
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
     mockAxios.onPost('/auth/register').reply(201);
 
     act(() => {
@@ -138,12 +135,6 @@ describe('RegisterModule', () => {
   });
 
   it('should show error if username already exists', async () => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-    (useToast as jest.Mock).mockReturnValue(jest.fn());
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
     mockAxios
       .onPost('/auth/register')
       .reply(400, { message: 'User with given email already exists' });
@@ -170,12 +161,6 @@ describe('RegisterModule', () => {
   });
 
   it('should register successfully if graduateYear is empty', async () => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-    (useToast as jest.Mock).mockReturnValue(jest.fn());
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
     mockAxios.onPost('/auth/register').reply(201);
 
     act(() => {
@@ -208,13 +193,6 @@ describe('RegisterModule', () => {
   });
 
   it('should validate empty fields', async () => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-    (useToast as jest.Mock).mockReturnValue(jest.fn());
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
-
     act(() => {
       render(<RegisterModule />);
     });
@@ -243,13 +221,6 @@ describe('RegisterModule', () => {
   });
 
   it('should validate email format', async () => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-    (useToast as jest.Mock).mockReturnValue(jest.fn());
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
-
     act(() => {
       render(<RegisterModule />);
     });
@@ -271,13 +242,6 @@ describe('RegisterModule', () => {
   });
 
   it('should validate confirmation password', async () => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-    (useToast as jest.Mock).mockReturnValue(jest.fn());
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
-
     act(() => {
       render(<RegisterModule />);
     });
@@ -301,13 +265,6 @@ describe('RegisterModule', () => {
   });
 
   it('should validate enrollment year', async () => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-    (useToast as jest.Mock).mockReturnValue(jest.fn());
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
-
     act(() => {
       render(<RegisterModule />);
     });
@@ -329,13 +286,6 @@ describe('RegisterModule', () => {
   });
 
   it('should validate graduate year', async () => {
-    (useRouter as jest.Mock).mockReturnValue({
-      push: jest.fn(),
-    });
-    (useToast as jest.Mock).mockReturnValue(jest.fn());
-
-    mockAxios.onGet('/prodi').reply(200, { data: prodi });
-
     act(() => {
       render(<RegisterModule />);
     });
@@ -353,6 +303,18 @@ describe('RegisterModule', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Tahun tidak valid')).toBeInTheDocument();
+    });
+  });
+
+  it('should be able to redirect to login form', async () => {
+    act(() => {
+      render(<RegisterModule />);
+    });
+
+    fireEvent.click(screen.getByText('Masuk'));
+
+    await waitFor(() => {
+      expect(useRouter().push).toHaveBeenCalledWith('/login');
     });
   });
 });
