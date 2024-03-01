@@ -78,7 +78,7 @@ describe('Create Head of Study Program', () => {
     };
 
     const result = {
-      "message": "Successfully created a new study program"
+      "message": "Successfully created a new head of study program"
     }
 
     mockAxios.onGet('/prodi').reply(200, mockData);
@@ -107,8 +107,8 @@ describe('Create Head of Study Program', () => {
 
     userEvent.click(screen.getByText('Buat'))
     await waitFor(() => {
-      console.log(mockAxios)
-      console.log(screen.getByText("Berhasil membuat kepala program studi!"))
+      // console.log(mockAxios)
+      // console.log(screen.getByText("Berhasil membuat kepala program studi!"))
       // expect(mockAxios.history.post.length).toBe(1);
       // expect(mockAxios.history.post[0].data).toEqual({
       //   studyProgramId: 'selectedJurusan',
