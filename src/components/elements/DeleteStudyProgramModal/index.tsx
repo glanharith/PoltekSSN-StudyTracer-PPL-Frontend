@@ -46,7 +46,7 @@ export default function DeleteStudyProgramModal({
     } catch (error) {
       toast({
         title: 'Gagal',
-        description: 'Gagal menghapus program studi',
+        description: 'Gagal menghapus program studi!',
         status: 'error',
         duration: 3000,
         isClosable: true,

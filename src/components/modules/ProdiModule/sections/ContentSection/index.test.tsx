@@ -12,7 +12,6 @@ const sampleStudyPrograms: StudyProgram[] = [
 ];
 
 describe('ContentSection', () => {
-
   beforeEach(() => {
     mockRefetchData.mockClear();
   });

@@ -53,7 +53,7 @@ describe('ProdiModule', () => {
     await waitFor(() => {
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Gagal',
-        description: 'Gagal memuat daftar program studi',
+        description: 'Gagal memuat daftar program studi!',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -67,7 +67,7 @@ describe('ProdiModule', () => {
     mockAxios.onGet('/prodi').reply(200, { data: [] });
 
     render(<ProdiModule />);
-    
+
     await waitFor(() => {
       expect(mockRefetchData).toHaveBeenCalledTimes(1);
     });

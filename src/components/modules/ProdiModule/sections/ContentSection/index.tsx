@@ -11,7 +11,7 @@ import {
   Checkbox,
   IconButton,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import { BsTrash } from 'react-icons/bs';
 import { MdPlaylistAdd } from 'react-icons/md';
@@ -68,18 +68,19 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
       if (currentSelectedPrograms.includes(program.id)) {
         // If found, remove from the selected programs
         updatedSelectedPrograms = currentSelectedPrograms.filter(
-          (id) => id !== program.id
+          (id) => id !== program.id,
         );
       } else {
         // If not found, add to the selected programs
         updatedSelectedPrograms = [...currentSelectedPrograms, program.id];
       }
       // Check if all programs are selected
-      const allSelected = updatedSelectedPrograms.length === studyProgram.length;
+      const allSelected =
+        updatedSelectedPrograms.length === studyProgram.length;
       setAllSelected(allSelected);
       return updatedSelectedPrograms;
     });
-  };  
+  };
 
   const handleSelectAll = () => {
     setSelectedPrograms((currentSelectedPrograms) => {
@@ -151,7 +152,7 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
               <Tr>
                 <Th>
                   <Checkbox
-                    aria-label='checkbox'
+                    aria-label="checkbox"
                     isChecked={allSelected}
                     onChange={handleSelectAll}
                     mr={4}
