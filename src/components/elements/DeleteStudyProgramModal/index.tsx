@@ -58,7 +58,7 @@ export default function DeleteStudyProgramModal({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Konfirmasi Penghapusan</ModalHeader>
+        <ModalHeader>Hapus Program Studi</ModalHeader>
         <ModalCloseButton p={6} borderRadius={32} />
         <ModalBody>
           Apakah Anda yakin akan menghapus program yang dipilih?

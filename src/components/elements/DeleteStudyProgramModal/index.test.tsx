@@ -34,7 +34,7 @@ describe('DeleteStudyProgramModal', () => {
         refetchData={mockRefetchData}
       />,
     );
-    expect(screen.getByText('Konfirmasi Penghapusan')).toBeInTheDocument();
+    expect(screen.getByText('Hapus Program Studi')).toBeInTheDocument();
     expect(
       screen.getByText(
         'Apakah Anda yakin akan menghapus program yang dipilih?',
