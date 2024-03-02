@@ -1,6 +1,6 @@
 export interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    refetchData: () => void;
-    dataToBeDeleted: string[]
-  }
+  isOpen: boolean;
+  onClose: () => void;
+  refetchData: () => void;
+  dataToBeDeleted: string[];
+}
