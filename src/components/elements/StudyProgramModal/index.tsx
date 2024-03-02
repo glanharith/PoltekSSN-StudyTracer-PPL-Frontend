@@ -22,6 +22,7 @@ export default function StudyProgramModal({
   method,
   studyProgramId,
   studyProgramName,
+  refetchData,
 }: ModalProps) {
   const {
     handleSubmit,
@@ -63,6 +64,11 @@ export default function StudyProgramModal({
         title: successMessage,
         status: 'success',
       });
+
+      setTimeout(() => {
+        refetchData();
+      }, 1000);
+
       onClose();
     } catch (error: any) {
       const status = error.response?.status;

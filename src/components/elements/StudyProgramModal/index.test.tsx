@@ -8,10 +8,12 @@ import StudyProgramModal from '@/components/elements/StudyProgramModal';
 describe('StudyProgramModal', () => {
   const mockAxios = new MockAdapter(axios);
   const mockOnClose = jest.fn();
+  const mockRefetchData = jest.fn();
 
   beforeEach(() => {
     mockAxios.reset();
     mockOnClose.mockClear();
+    mockRefetchData.mockClear();
   });
 
   describe('Create Study Program', () => {
@@ -21,6 +23,7 @@ describe('StudyProgramModal', () => {
           isOpen={true}
           onClose={mockOnClose}
           method="CREATE"
+          refetchData={mockRefetchData}
         />,
       );
       expect(screen.getByText('Tambah Program Studi')).toBeInTheDocument();
@@ -36,6 +39,7 @@ describe('StudyProgramModal', () => {
           isOpen={true}
           onClose={mockOnClose}
           method="CREATE"
+          refetchData={mockRefetchData}
         />,
       );
       fireEvent.click(screen.getByText('Buat'));
@@ -54,6 +58,7 @@ describe('StudyProgramModal', () => {
           isOpen={true}
           onClose={mockOnClose}
           method="CREATE"
+          refetchData={mockRefetchData}
         />,
       );
       fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
@@ -77,6 +82,7 @@ describe('StudyProgramModal', () => {
           isOpen={true}
           onClose={mockOnClose}
           method="CREATE"
+          refetchData={mockRefetchData}
         />,
       );
       fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
@@ -99,6 +105,7 @@ describe('StudyProgramModal', () => {
           isOpen={true}
           onClose={mockOnClose}
           method="CREATE"
+          refetchData={mockRefetchData}
         />,
       );
       fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
@@ -119,26 +126,20 @@ describe('StudyProgramModal', () => {
       id: 'abc123',
       name: 'Computer Science',
     };
-    it('renders correctly and displays the study program name on the field', () => {
+    it('renders correctly', () => {
       render(
-        <StudyProgramModal
-          isOpen={true}
-          onClose={mockOnClose}
-          method="EDIT"
-          studyProgramName="Computer Science"
-        />,
+        <StudyProgramModal isOpen={true} onClose={mockOnClose} method="EDIT" refetchData={mockRefetchData} />,
       );
       expect(screen.getByText('Ubah Program Studi')).toBeInTheDocument();
       expect(
         screen.getByPlaceholderText('Nama Program Studi'),
       ).toBeInTheDocument();
-      expect(screen.getByDisplayValue('Computer Science')).toBeInTheDocument();
       expect(screen.getByText('Ubah')).toBeInTheDocument();
     });
 
     it('validates empty name and shows error message', async () => {
       render(
-        <StudyProgramModal isOpen={true} onClose={mockOnClose} method="EDIT" />,
+        <StudyProgramModal isOpen={true} onClose={mockOnClose} method="EDIT" refetchData={mockRefetchData} />,
       );
       fireEvent.click(screen.getByText('Ubah'));
       await waitFor(() => {
@@ -157,6 +158,7 @@ describe('StudyProgramModal', () => {
           onClose={mockOnClose}
           method="EDIT"
           studyProgramId={studyProgram.id}
+          refetchData={mockRefetchData}
         />,
       );
       fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
@@ -181,6 +183,7 @@ describe('StudyProgramModal', () => {
           onClose={mockOnClose}
           method="EDIT"
           studyProgramId={studyProgram.id}
+          refetchData={mockRefetchData}
         />,
       );
       fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
@@ -204,6 +207,7 @@ describe('StudyProgramModal', () => {
           onClose={mockOnClose}
           method="EDIT"
           studyProgramId={studyProgram.id}
+          refetchData={mockRefetchData}
         />,
       );
       fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
