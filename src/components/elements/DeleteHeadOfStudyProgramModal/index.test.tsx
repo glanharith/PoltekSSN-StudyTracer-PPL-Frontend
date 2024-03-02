@@ -96,7 +96,7 @@ describe('DeleteHeadOfStudyProgramModal', () => {
       expect(mockOnClose).toHaveBeenCalledTimes(0);
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Gagal',
-        description: 'Gagal menghapus kaprodi',
+        description: 'Gagal menghapus kaprodi!',
         status: 'error',
         duration: 3000,
         isClosable: true,
