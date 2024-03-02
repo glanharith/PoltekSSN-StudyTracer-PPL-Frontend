@@ -23,7 +23,7 @@ export const CustomInput: React.FC<FormInputProps> = ({
 }) => {
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <InputGroup>
         {IconComponent && (
           <InputLeftAddon>
