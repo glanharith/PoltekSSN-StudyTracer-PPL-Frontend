@@ -119,14 +119,20 @@ describe('StudyProgramModal', () => {
       id: 'abc123',
       name: 'Computer Science',
     };
-    it('renders correctly', () => {
+    it('renders correctly and displays the study program name on the field', () => {
       render(
-        <StudyProgramModal isOpen={true} onClose={mockOnClose} method="EDIT" />,
+        <StudyProgramModal
+          isOpen={true}
+          onClose={mockOnClose}
+          method="EDIT"
+          studyProgramName="Computer Science"
+        />,
       );
       expect(screen.getByText('Ubah Program Studi')).toBeInTheDocument();
       expect(
         screen.getByPlaceholderText('Nama Program Studi'),
       ).toBeInTheDocument();
+      expect(screen.getByDisplayValue('Computer Science')).toBeInTheDocument();
       expect(screen.getByText('Ubah')).toBeInTheDocument();
     });
 
