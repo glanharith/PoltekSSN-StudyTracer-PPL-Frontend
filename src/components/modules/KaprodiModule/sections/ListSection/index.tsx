@@ -1,8 +1,43 @@
 import { Table, Thead, Tbody, Tr, Th, Td, Checkbox, Flex, IconButton } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
+import React, { useState, useEffect } from 'react';
 import { ListKaprodi } from "./interface";
+import { Kaprodi } from '../../interface';
 
-export const ListSection: React.FC<ListKaprodi> = ({kaprodi}) => {
+export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, setSelectedKaprodi}) => {
+    const [allSelected, setAllSelected] = useState(false);
+
+    const handleCheckboxChange = (kepala: Kaprodi) => {
+        setSelectedKaprodi((currentSelectedKaprodi) => {
+            let updatedSelectedKaprodi;
+            if (currentSelectedKaprodi.includes(kepala.id)) {
+                updatedSelectedKaprodi= currentSelectedKaprodi.filter(
+                    (id) => id !== kepala.id,
+                );
+            }
+            else {
+                updatedSelectedKaprodi = [...currentSelectedKaprodi, kepala.id];
+            }
+            const allSelected = 
+                updatedSelectedKaprodi.length === kaprodi.length;
+            setAllSelected(allSelected);
+            return updatedSelectedKaprodi;
+        });
+    };
+
+    const handleSelectAll = () => {
+        setSelectedKaprodi((currentSelectedKaprodi) => {
+            if (currentSelectedKaprodi.length === kaprodi.length) {
+                setAllSelected(false);
+                return [];
+            }
+            else {
+                setAllSelected(true);
+                return kaprodi.map((kepala) => kepala.id);
+            }
+        })
+    };
+
     return (
         <section>
             <Flex justify="center" width="100%" margin={10}>
@@ -11,12 +46,17 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi}) => {
                         <Thead>
                             <Tr>
                                 <Th>
-                                    <Checkbox />
+                                    <Checkbox 
+                                        aria-label="checkbox"
+                                        isChecked={allSelected}
+                                        onChange={handleSelectAll}
+                                        mr={4}
+                                    />
                                 </Th>
                                 <Th>Nama</Th>
                                 <Th>Email</Th>
                                 <Th>Program Studi</Th>
-                                <Th>Action</Th>
+                                <Th>Edit</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -24,7 +64,10 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi}) => {
                             kaprodi.map((data) => (
                                 <Tr key={data.id}>
                                     <Td>
-                                        <Checkbox />
+                                        <Checkbox 
+                                            isChecked={selectedKaprodi.includes(data.id)}
+                                            onChange={() => handleCheckboxChange(data)}
+                                        />
                                     </Td>
                                     <Td>{data.name}</Td>
                                     <Td>{data.email}</Td>
@@ -34,7 +77,7 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi}) => {
                                             size={'lg'}
                                             color={'black'}
                                             icon={<FiEdit />}
-                                            aria-label={'Edit Prodi'}
+                                            aria-label={'Edit Kaprodi'}
                                         />
                                     </Td>
                                 </Tr>

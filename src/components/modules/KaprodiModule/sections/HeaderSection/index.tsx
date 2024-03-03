@@ -4,11 +4,14 @@ import { BsTrash } from 'react-icons/bs';
 import { MdPlaylistAdd } from 'react-icons/md';
 import { HeaderSectionProps } from './interface';
 import HeadOfStudyProgramModal from '@/components/elements/HeadOfStudyProgramModal';
+import DeleteHeadOfStudyProgramModal from '@/components/elements/DeleteHeadOfStudyProgramModal';
 
-export const HeaderSection: React.FC<HeaderSectionProps> = ({ refetchData }) => {
+export const HeaderSection: React.FC<HeaderSectionProps> = ({ refetchData, selectedKaprodi }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [method, setMethod] = useState<'CREATE' | 'EDIT'>('CREATE');
     const [studyProgramId, setStudyProgramId] = useState<string>('');
+
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleOpenCreateModal = () => {
         setMethod('CREATE');
@@ -19,6 +22,14 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ refetchData }) => 
         setIsModalOpen(false);
         setStudyProgramId('');
     };
+
+    const handleOpenDeleteModal = () => {
+        setIsDeleteModalOpen(true)
+    };
+
+    const handleCloseDeleteModal = () => {
+        setIsDeleteModalOpen(false);
+    }
 
     return (
         <Flex direction={{ base: 'column', md: 'row' }} justify="space-between" align="center" margin={4}>
@@ -39,6 +50,8 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ refetchData }) => 
                     backgroundColor={'#B81515'}
                     mr={2}
                     size={'sm'}
+                    isDisabled={selectedKaprodi.length === 0}
+                    onClick={handleOpenDeleteModal}
                 >
                     Hapus Kaprodi
                 </Button>
@@ -59,6 +72,13 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ refetchData }) => 
                 onClose={handleCloseModal}
                 method={method}
                 studyProgramId={studyProgramId}
+                refetchData={refetchData}
+            />
+
+            <DeleteHeadOfStudyProgramModal
+                isOpen={isDeleteModalOpen}
+                onClose={handleCloseDeleteModal}
+                dataToBeDeleted={selectedKaprodi}
                 refetchData={refetchData}
             />
         </Flex>
