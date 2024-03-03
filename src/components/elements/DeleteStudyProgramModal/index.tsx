@@ -43,10 +43,21 @@ export default function DeleteStudyProgramModal({
       });
 
       onClose();
-    } catch (error) {
+    } catch (error: any) {
+      const status = error.response?.status;
+      let errorDescription = '';
+
+      if (status === 409) {
+        errorDescription = error.response.data.message + '!';
+      } else if (status === 404) {
+        errorDescription = 'Program studi tidak ditemukan!';
+      } else {
+        errorDescription = 'Gagal menghapus program studi!';
+      }
+
       toast({
         title: 'Gagal',
-        description: 'Gagal menghapus program studi!',
+        description: errorDescription,
         status: 'error',
         duration: 3000,
         isClosable: true,

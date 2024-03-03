@@ -66,20 +66,91 @@ describe('DeleteStudyProgramModal', () => {
         refetchData={mockRefetchData}
       />,
     );
-    mockAxios.onDelete('/prodi').reply(200); // Assuming a successful deletion
+    mockAxios.onDelete('/prodi').reply(200);
+    fireEvent.click(screen.getByText('Hapus'));
+
+    await waitFor(async () => {
+      expect(mockAxios.history.delete.length).toBe(1);
+      expect(mockOnClose).toHaveBeenCalledTimes(1);
+      setTimeout(() => {
+        expect(mockRefetchData).toHaveBeenCalled();
+      }, 1000);
+    });
+  });
+
+  it('displays error toast if study program not found', async () => {
+    const mockToast = jest.fn();
+    (useToast as jest.Mock).mockReturnValue(mockToast);
+
+    render(
+      <DeleteStudyProgramModal
+        isOpen={true}
+        onClose={mockOnClose}
+        dataToBeDeleted={['1', '2', '3']}
+        refetchData={mockRefetchData}
+      />,
+    );
+
+    mockAxios.onDelete('/prodi').reply(404);
     fireEvent.click(screen.getByText('Hapus'));
 
     await waitFor(() => {
       expect(mockAxios.history.delete.length).toBe(1);
-      expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
 
-    setTimeout(() => {
-      expect(mockRefetchData).toHaveBeenCalled();
-    }, 1000);
+    await waitFor(() => {
+      expect(mockOnClose).not.toHaveBeenCalled();
+      expect(mockToast).toHaveBeenCalledWith({
+        title: 'Gagal',
+        description: 'Program studi tidak ditemukan!',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    });
+
+    expect(mockRefetchData).not.toHaveBeenCalled();
   });
 
-  it('displays error toast if deletion fails', async () => {
+  it('displays error toast if deletion conflicts', async () => {
+    const mockToast = jest.fn();
+    (useToast as jest.Mock).mockReturnValue(mockToast);
+
+    render(
+      <DeleteStudyProgramModal
+        isOpen={true}
+        onClose={mockOnClose}
+        dataToBeDeleted={['1', '2', '3']}
+        refetchData={mockRefetchData}
+      />,
+    );
+
+    mockAxios
+      .onDelete('/prodi')
+      .reply(409, {
+        message: 'Studi program 1 terhubung dengan kaprodi atau alumni',
+      });
+    fireEvent.click(screen.getByText('Hapus'));
+
+    await waitFor(() => {
+      expect(mockAxios.history.delete.length).toBe(1);
+    });
+
+    await waitFor(() => {
+      expect(mockOnClose).not.toHaveBeenCalled();
+      expect(mockToast).toHaveBeenCalledWith({
+        title: 'Gagal',
+        description: 'Studi program 1 terhubung dengan kaprodi atau alumni!',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    });
+
+    expect(mockRefetchData).not.toHaveBeenCalled();
+  });
+
+  it('displays error toast if deletion failed', async () => {
     const mockToast = jest.fn();
     (useToast as jest.Mock).mockReturnValue(mockToast);
 
@@ -97,7 +168,10 @@ describe('DeleteStudyProgramModal', () => {
 
     await waitFor(() => {
       expect(mockAxios.history.delete.length).toBe(1);
-      expect(mockOnClose).toHaveBeenCalledTimes(0);
+    });
+
+    await waitFor(() => {
+      expect(mockOnClose).not.toHaveBeenCalled();
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Gagal',
         description: 'Gagal menghapus program studi!',
@@ -106,8 +180,7 @@ describe('DeleteStudyProgramModal', () => {
         isClosable: true,
       });
     });
-    setTimeout(() => {
-      expect(mockRefetchData).toHaveBeenCalled();
-    }, 1000);
+
+    expect(mockRefetchData).not.toHaveBeenCalled();
   });
 });

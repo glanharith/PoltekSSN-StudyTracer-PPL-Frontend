@@ -13,7 +13,6 @@ export const ProdiModule = () => {
     try {
       const response = await axios.get('/prodi');
       setStudyPrograms(response.data.data);
-      console.log(response);
     } catch (error) {
       toast({
         title: 'Gagal',
