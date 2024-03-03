@@ -4,7 +4,6 @@ export interface Kaprodi {
     headStudyProgram: {
         studyProgram: {
             name: string
-            id: string
         }
     }
     email: string

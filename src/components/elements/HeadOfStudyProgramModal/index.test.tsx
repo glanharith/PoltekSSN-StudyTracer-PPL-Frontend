@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import HeadOfStudyProgramModal from '.';
 import userEvent from "@testing-library/user-event";
 
-describe('Head of Study Program Modal', () => {
+describe('Create Head of Study Program', () => {
   const mockOnClose = jest.fn();
   const mockAxios = new MockAdapter(axios);
 
@@ -143,7 +143,7 @@ describe('Head of Study Program Modal', () => {
     };
 
     mockAxios.onGet('/prodi').reply(200, mockData);
-    mockAxios.onPost('/kaprodi').replyOnce(400);
+    mockAxios.onPost('/kaprodi').replyOnce(409);
     await render(
       <HeadOfStudyProgramModal
         refetchData={mockRefetch}
@@ -173,7 +173,7 @@ describe('Head of Study Program Modal', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Email sudah digunakan!'),
+        screen.getByText('Nama kepala program studi sudah digunakan!'),
       ).toBeInTheDocument();
     });
   });

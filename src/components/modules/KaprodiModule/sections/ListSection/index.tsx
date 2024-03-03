@@ -3,12 +3,9 @@ import { FiEdit } from "react-icons/fi";
 import React, { useState, useEffect } from 'react';
 import { ListKaprodi } from "./interface";
 import { Kaprodi } from '../../interface';
-import EditHeadOfStudyProgramModal from "@/components/elements/EditHeadOfStudyProgramModal";
 
 export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, setSelectedKaprodi}) => {
     const [allSelected, setAllSelected] = useState(false);
-    const [editKaprodi, setEditKaprodi] = useState<Kaprodi | null>(null);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const handleCheckboxChange = (kepala: Kaprodi) => {
         setSelectedKaprodi((currentSelectedKaprodi) => {
@@ -39,11 +36,6 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, se
                 return kaprodi.map((kepala) => kepala.id);
             }
         })
-    };
-
-    const openEditModal = (kaprodiData: Kaprodi) => {
-        setEditKaprodi(kaprodiData);
-        setIsEditModalOpen(true);
     };
 
     return (
@@ -82,7 +74,6 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, se
                                     <Td>{data.headStudyProgram?.studyProgram?.name}</Td>
                                     <Td textAlign={"center"}>
                                         <IconButton
-                                            onClick={() => openEditModal(data)}
                                             size={'lg'}
                                             color={'black'}
                                             icon={<FiEdit />}
@@ -100,17 +91,6 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, se
                     </Table>
                 </div>
             </Flex>
-            {isEditModalOpen && editKaprodi && (
-                <EditHeadOfStudyProgramModal
-                    isOpen={isEditModalOpen}
-                    onClose={() => setIsEditModalOpen(false)}
-                    kaprodiId={editKaprodi.id}
-                    kaprodiName={editKaprodi.name}
-                    studyProgramId={editKaprodi.headStudyProgram?.studyProgram?.id || ''}
-                    studyProgramName={editKaprodi.headStudyProgram?.studyProgram?.name || ''}
-                    refetchData={ () => {} }
-                />
-            )}
         </section>
     )
 }
