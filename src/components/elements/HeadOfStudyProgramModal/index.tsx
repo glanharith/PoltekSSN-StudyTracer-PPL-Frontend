@@ -82,7 +82,6 @@ export default function HeadOfStudyProgramModal({
     } 
     catch (error: any) {
       const status = error.response?.status;
-      console.log(error)
       let errorMessage;
       if (status === 400) {
         errorMessage = 'Email sudah digunakan!';

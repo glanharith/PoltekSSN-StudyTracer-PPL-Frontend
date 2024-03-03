@@ -143,7 +143,7 @@ describe('Create Head of Study Program', () => {
     };
 
     mockAxios.onGet('/prodi').reply(200, mockData);
-    mockAxios.onPost('/kaprodi').replyOnce(409);
+    mockAxios.onPost('/kaprodi').replyOnce(400);
     await render(
       <HeadOfStudyProgramModal
         refetchData={mockRefetch}
@@ -173,7 +173,7 @@ describe('Create Head of Study Program', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Nama kepala program studi sudah digunakan!'),
+        screen.getByText('Email sudah digunakan!'),
       ).toBeInTheDocument();
     });
   });
