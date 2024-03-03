@@ -21,7 +21,6 @@ import { CreateHeadOfStudyProgramInput, KaprodiModalProps } from './interface';
 import { MdEmail, MdPassword, MdSchool, MdTitle } from 'react-icons/md';
 import { StudyProgram } from '@/components/modules/RegisterModule/interface';
 import { CustomInput } from '../CustomInput';
-import { BsBook } from 'react-icons/bs';
 
 export default function HeadOfStudyProgramModal({
   isOpen,
@@ -29,7 +28,7 @@ export default function HeadOfStudyProgramModal({
   method,
   studyProgramId,
   refetchData,
-}: KaprodiModalProps) {
+}: Readonly<KaprodiModalProps>) {
 
   const [studyPrograms, setStudyPrograms] = useState<StudyProgram[]>([]);
 
@@ -83,14 +82,16 @@ export default function HeadOfStudyProgramModal({
     } 
     catch (error: any) {
       const status = error.response?.status;
+      console.log(error)
       let errorMessage;
-      if (status === 409) {
-        errorMessage = 'Nama kepala program studi sudah digunakan!';
+      if (status === 400) {
+        errorMessage = 'Email sudah digunakan!';
+        setError('email', { message: errorMessage });
       } 
       else if (method === 'CREATE') {
           errorMessage = 'Gagal membuat kepala program studi!';
+          setError('studyProgramId', { message: errorMessage });
       }
-      setError('name', { message: errorMessage });
     }
   };
 
