@@ -71,11 +71,8 @@ export default function HeadOfStudyProgramModal({
             status: 'success',
           });
 
-          setTimeout(() => {
-            refetchData();
-          }, 1000);
+          await refetchData()
         }
-
       } 
 
       onClose();

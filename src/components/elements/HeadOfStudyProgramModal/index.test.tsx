@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import HeadOfStudyProgramModal from '.';
 import userEvent from "@testing-library/user-event";
 
-describe('Create Head of Study Program', () => {
+describe('Head of Study Program Modal', () => {
   const mockOnClose = jest.fn();
   const mockAxios = new MockAdapter(axios);
 
