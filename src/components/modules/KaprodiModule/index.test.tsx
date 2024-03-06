@@ -34,7 +34,17 @@ describe('Header Section of Kaprodi Module', () => {
             }
         },
         email: "yudi.putra@ui.asdasdsad2er22asda"
-    }
+    },
+    {
+      id: "62eedb5f-b2b2-448b-8979-954f29ad4b3d",
+      name: "hanifhanif",
+      headStudyProgram: {
+          studyProgram: {
+              name: "ilmu padi"
+          }
+      },
+      email: "hanif.hanif@ui.asdasdsad2er22asda"
+  }
 ]
 
   it("renders correctly", async () => {
@@ -58,6 +68,29 @@ describe('Header Section of Kaprodi Module', () => {
     });
     fireEvent.click(screen.getByText("Tambah Kaprodi"))
     fireEvent.click(screen.getByText("Batal"))
+  });
+
+  it('able to select kaprodi for deletion', async () => {
+    mockAxios.onGet('/prodi').reply(200, prodi);
+    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+
+    await act(async () => {
+      render (
+        <KaprodiModule/>
+      )
+    });
+    await waitFor(() => expect(screen.getByText(kaprodi[0].name)).toBeInTheDocument());
+
+    const kaprodiCheckbox = screen.getByLabelText("checkbox");
+    const checkboxes = screen.getAllByLabelText("checkboxes");
+
+    fireEvent.click(kaprodiCheckbox);
+    fireEvent.click(kaprodiCheckbox);
+
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[1]);
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[1]);
   });
 
   it("renders list kaprodi", async () => {

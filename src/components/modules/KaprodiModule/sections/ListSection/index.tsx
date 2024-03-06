@@ -88,6 +88,7 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
                                 <Tr key={data.id}>
                                     <Td>
                                         <Checkbox 
+                                            aria-label="checkboxes"
                                             isChecked={selectedKaprodi.includes(data.id)}
                                             onChange={() => handleCheckboxChange(data)}
                                         />
