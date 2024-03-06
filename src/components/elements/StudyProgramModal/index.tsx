@@ -10,11 +10,11 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { axios } from '@/utils';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ModalProps, StudyProgramInput } from './interface';
 import { MdTitle } from 'react-icons/md';
-import { CustomInput } from '@/components';
+import { CustomInput } from '@/components/elements';
 
 export default function StudyProgramModal({
   isOpen,
@@ -22,18 +22,29 @@ export default function StudyProgramModal({
   method,
   studyProgramId,
   studyProgramName,
+  refetchData,
 }: ModalProps) {
   const {
     handleSubmit,
     register,
     setError,
+    clearErrors,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm<StudyProgramInput>({
-    defaultValues: {
-      name: method === 'EDIT' ? studyProgramName : '',
-    },
-  });
+  } = useForm<StudyProgramInput>();
+
   const toast = useToast();
+
+  useEffect(() => {
+    if (isOpen) {
+      clearErrors();
+      if (method === 'EDIT') {
+        setValue('name', studyProgramName!!);
+      } else {
+        setValue('name', '');
+      }
+    }
+  }, [isOpen, method, setValue, studyProgramName]);
 
   const handleFormSubmit = async (data: StudyProgramInput) => {
     try {
@@ -53,6 +64,11 @@ export default function StudyProgramModal({
         title: successMessage,
         status: 'success',
       });
+
+      setTimeout(() => {
+        refetchData();
+      }, 1000);
+
       onClose();
     } catch (error: any) {
       const status = error.response?.status;
@@ -94,6 +110,7 @@ export default function StudyProgramModal({
                   required: 'Nama program studi tidak boleh kosong!',
                 }),
               }}
+              defaultValue={method === 'EDIT' ? studyProgramName : ''}
             />
           </ModalBody>
           <ModalFooter justifyContent={'center'}>
