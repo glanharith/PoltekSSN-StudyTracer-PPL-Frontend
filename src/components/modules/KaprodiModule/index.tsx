@@ -36,7 +36,7 @@ export const KaprodiModule = () => {
   return (
       <Flex className="min-h-screen" px={{ base: 4, md: 16 }} gap={4} flexDirection={'column'} justifyItems="center" padding={4}>
           <HeaderSection refetchData={refetchData} selectedKaprodi={selectedKaprodi}/>
-          <ListSection kaprodi={headOfStudyProgram} selectedKaprodi={selectedKaprodi} setSelectedKaprodi={setSelectedKaprodi}/>
+          <ListSection refetchData={refetchData} kaprodi={headOfStudyProgram} selectedKaprodi={selectedKaprodi} setSelectedKaprodi={setSelectedKaprodi}/>
       </Flex>
   )
 }

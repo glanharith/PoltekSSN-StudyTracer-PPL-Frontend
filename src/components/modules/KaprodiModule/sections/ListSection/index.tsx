@@ -3,10 +3,15 @@ import { FiEdit } from "react-icons/fi";
 import React, { useState, useEffect } from 'react';
 import { ListKaprodi } from "./interface";
 import { Kaprodi } from '../../interface';
+import EditHeadOfStudyProgramModal from "@/components/elements/EditHeadOfStudyProgramModal";
 
-export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, setSelectedKaprodi}) => {
+export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, selectedKaprodi, setSelectedKaprodi}) => {
     const [allSelected, setAllSelected] = useState(false);
-    const [editKaprodi, setEditKaprodi] = useState<Kaprodi | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [kaprodiId, setKaprodiId] = useState<string>('');
+    const [kaprodiName, setKaprodiName] = useState<string>('');
+    const [studyProgramId, setStudyProgramId] = useState<string>('');
+    const [studyProgramName, setStudyProgramName] = useState<string>('');
 
     const handleCheckboxChange = (kepala: Kaprodi) => {
         setSelectedKaprodi((currentSelectedKaprodi) => {
@@ -39,6 +44,22 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, se
         })
     };
 
+    const handleOpenEditModal = (
+        kaprodiId: string, 
+        kaprodiName: string,
+        studyProgramId: string,
+        studyProgramName: string,
+        ) => {
+        setIsModalOpen(true);
+        setKaprodiId(kaprodiId);
+        setKaprodiName(kaprodiName);
+        setStudyProgramId(studyProgramId);
+        setStudyProgramName(studyProgramName);
+    };
+
+    const handleCloseEditModal = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <section>
@@ -80,6 +101,11 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, se
                                             color={'black'}
                                             icon={<FiEdit />}
                                             aria-label={'Edit Prodi'}
+                                            onClick={() => handleOpenEditModal(
+                                                data.id, 
+                                                data.name, 
+                                                data.headStudyProgram?.studyProgram?.id, 
+                                                data.headStudyProgram?.studyProgram?.name)}
                                         />
                                     </Td>
                                 </Tr>
@@ -92,6 +118,15 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi, selectedKaprodi, se
                         </Tbody>
                     </Table>
                 </div>
+                <EditHeadOfStudyProgramModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseEditModal}
+                    kaprodiId={kaprodiId}
+                    kaprodiName={kaprodiName}
+                    studyProgramId={studyProgramId}
+                    studyProgramName={studyProgramName}
+                    refetchData={refetchData}
+                />  
             </Flex>
         </section>
     )
