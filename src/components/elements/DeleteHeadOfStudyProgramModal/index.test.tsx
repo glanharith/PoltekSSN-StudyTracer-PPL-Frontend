@@ -107,4 +107,24 @@ describe('DeleteHeadOfStudyProgramModal', () => {
       expect(mockRefetchData).toHaveBeenCalled();
     }, 1000);
   });
+
+  it('calls refetchData after a delay', async () => {
+    jest.useFakeTimers();
+    render(
+      <DeleteHeadOfStudyProgramModal
+        isOpen = {true}
+        onClose = {mockOnClose}
+        dataToBeDeleted = { ['1', '2', '3'] }
+        refetchData = {mockRefetchData}
+      />,
+    );
+    mockAxios.onDelete('/kaprodi').reply(200);
+    fireEvent.click(screen.getByText('Hapus'));
+
+    await waitFor(() => expect(mockAxios.history.delete.length).toBe(1));
+    jest.advanceTimersByTime(1000);
+    await waitFor(() => expect(mockRefetchData).toHaveBeenCalled());
+
+    jest.useRealTimers();
+  });
 });
