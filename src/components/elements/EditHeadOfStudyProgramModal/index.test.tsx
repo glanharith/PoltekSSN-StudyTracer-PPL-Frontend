@@ -129,4 +129,30 @@ describe('Edit Head of Study Program Modal', () => {
       expect(mockAxios.history.patch.length).toBe(0);
     });
   });
+
+  it('calls refetchData after a delay', async () => {
+    jest.useFakeTimers();
+    mockAxios.onGet('/prodi').reply(200, mockData);
+    mockAxios.onPatch(`/kaprodi/${mockKaprodi.id}`).reply(200);
+  
+    render(
+      <EditHeadOfStudyProgramModal
+        isOpen={true}
+        onClose={mockOnClose}
+        refetchData={mockRefetchData}
+        kaprodiId={mockKaprodi.id}
+        kaprodiName={mockUser.name}
+        studyProgramId={mockKaprodi.studyProgramId}
+        studyProgramName={mockStudyProgram.name}
+      />
+    );
+    fireEvent.click(screen.getByText('Ubah'));
+  
+    await waitFor(() => expect(mockAxios.history.patch.length).toBe(1));
+    jest.advanceTimersByTime(1000);
+    expect(mockRefetchData).toHaveBeenCalled();
+  
+    jest.useRealTimers();
+  });
+  
 });
