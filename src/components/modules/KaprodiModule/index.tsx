@@ -8,6 +8,7 @@ export const KaprodiModule = () => {
   const toast = useToast();
 
   const [headOfStudyProgram, setHeadOfStudyProgram] = useState<Kaprodi[]>([])
+  const [selectedKaprodi, setSelectedKaprodi] = useState<string[]>([]);
 
   const fetchHeadofStudyProgram = async () => {
       try {
@@ -34,8 +35,8 @@ export const KaprodiModule = () => {
 
   return (
       <Flex className="min-h-screen" px={{ base: 4, md: 16 }} gap={4} flexDirection={'column'} justifyItems="center" padding={4}>
-          <HeaderSection refetchData={refetchData}/>
-          <ListSection kaprodi={headOfStudyProgram} />
+          <HeaderSection refetchData={refetchData} selectedKaprodi={selectedKaprodi}/>
+          <ListSection kaprodi={headOfStudyProgram} selectedKaprodi={selectedKaprodi} setSelectedKaprodi={setSelectedKaprodi}/>
       </Flex>
   )
 }
