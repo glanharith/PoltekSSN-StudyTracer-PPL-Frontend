@@ -11,4 +11,5 @@ export interface FormInputProps {
   defaultValue?: string;
   withValidation?: boolean;
   password?: string;
+  scoreCallback?: (score: number) => void;
 }

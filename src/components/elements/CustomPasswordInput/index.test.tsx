@@ -34,7 +34,7 @@ describe('CustomPasswordInput', () => {
     expect(screen.getByLabelText(props.label!)).toBeInTheDocument();
   });
 
-  it('should render password input correctly', async () => {
+  it('should toggle password visibility', async () => {
     const props: FormInputProps = {
       label: 'Password',
       placeholder: 'Password',
@@ -46,6 +46,7 @@ describe('CustomPasswordInput', () => {
       },
       withValidation: true,
       password: 'password1234',
+      scoreCallback: jest.fn(),
     };
     (zxcvbnAsync as jest.Mock).mockResolvedValue({ score: 3 });
 

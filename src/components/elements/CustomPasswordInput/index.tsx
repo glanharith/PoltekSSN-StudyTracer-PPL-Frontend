@@ -40,6 +40,7 @@ export const CustomPasswordInput: React.FC<FormInputProps> = ({
   defaultValue,
   withValidation = false,
   password = '',
+  scoreCallback = () => {},
 }) => {
   const [type, setType] = useState('password');
   const [securityScore, setSecurityScore] = useState(0);
@@ -47,6 +48,7 @@ export const CustomPasswordInput: React.FC<FormInputProps> = ({
   const countScore = async (value: string) => {
     const { score } = await zxcvbnAsync(value);
     setSecurityScore(score);
+    scoreCallback(score);
   };
 
   const debounced = useDebouncedCallback((value) => countScore(value), 1000);

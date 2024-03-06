@@ -16,6 +16,7 @@ export const RegisterModule = () => {
     handleSubmit,
     register,
     watch,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<RegisterInput>();
   const toast = useToast();
@@ -24,6 +25,7 @@ export const RegisterModule = () => {
     router.push('/login');
   };
   const [studyPrograms, setStudyPrograms] = useState<StudyProgram[]>([]);
+  const [passwordScore, setPasswordScore] = useState(0);
 
   const handleFormSubmit = async (data: RegisterInput) => {
     data.enrollmentYear = Number(data.enrollmentYear);
@@ -60,6 +62,10 @@ export const RegisterModule = () => {
   useEffect(() => {
     fetchStudyPrograms();
   }, []);
+
+  useEffect(() => {
+    trigger(['password']);
+  }, [passwordScore]);
 
   const password = watch('password');
 
@@ -130,10 +136,16 @@ export const RegisterModule = () => {
                   value: 128,
                   message: 'Password harus maksimal 128 karakter',
                 },
+                validate: () =>
+                  passwordScore >= 3 ||
+                  'Harap gunakan password yang lebih kuat',
               }),
             }}
             withValidation
             password={password}
+            scoreCallback={(score) => {
+              setPasswordScore(score);
+            }}
           />
 
           <CustomPasswordInput

@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import MockAdapter from 'axios-mock-adapter';
 import { axios } from '@/utils';
 import { useToast } from '@chakra-ui/react';
+import { zxcvbnAsync } from '@zxcvbn-ts/core';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
@@ -19,6 +20,8 @@ jest.mock('@chakra-ui/react', () => ({
   ...jest.requireActual('@chakra-ui/react'),
   useToast: jest.fn(),
 }));
+
+jest.mock('@zxcvbn-ts/core');
 
 const mockAxios = new MockAdapter(axios);
 
@@ -75,8 +78,8 @@ describe('RegisterModule', () => {
   const postBody = {
     email: 'test@gmail.com',
     name: 'Test',
-    password: 'password1234',
-    confirmPassword: 'password1234',
+    password: 'awdjygawdkauawd',
+    confirmPassword: 'awdjygawdkauawd',
     enrollmentYear: 2018,
     graduateYear: 2022,
     gender: 'MALE',
@@ -111,6 +114,7 @@ describe('RegisterModule', () => {
 
   it('should register successfully', async () => {
     mockAxios.onPost('/auth/register').reply(201);
+    (zxcvbnAsync as jest.Mock).mockResolvedValue({ score: 3 });
 
     act(() => {
       render(<RegisterModule />);
@@ -121,17 +125,25 @@ describe('RegisterModule', () => {
     });
 
     fillForm(postBody);
-    fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
 
-    await waitFor(() => {
-      expect(mockAxios.history.post.length).toBe(1);
-      expect(JSON.parse(mockAxios.history.post[0].data)).toEqual(postBody);
-      expect(useToast()).toHaveBeenCalledWith({
-        title: 'Berhasil mendaftar!',
-        status: 'success',
-      });
-      expect(useRouter().push).toHaveBeenCalledWith('/login');
+    await act(async () => {
+      setTimeout(() => {
+        fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
+      }, 1000);
     });
+
+    await waitFor(
+      () => {
+        expect(mockAxios.history.post.length).toBe(1);
+        expect(JSON.parse(mockAxios.history.post[0].data)).toEqual(postBody);
+        expect(useToast()).toHaveBeenCalledWith({
+          title: 'Berhasil mendaftar!',
+          status: 'success',
+        });
+        expect(useRouter().push).toHaveBeenCalledWith('/login');
+      },
+      { timeout: 2000 },
+    );
   });
 
   it('should show error if username already exists', async () => {
@@ -148,16 +160,24 @@ describe('RegisterModule', () => {
     });
 
     fillForm(postBody);
-    fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
 
-    await waitFor(() => {
-      expect(mockAxios.history.post.length).toBe(1);
-      expect(useToast()).toHaveBeenCalledWith({
-        title: 'Pendaftaran gagal',
-        description: 'Email sudah terdaftar',
-        status: 'error',
-      });
+    await act(async () => {
+      setTimeout(() => {
+        fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
+      }, 1000);
     });
+
+    await waitFor(
+      () => {
+        expect(mockAxios.history.post.length).toBe(1);
+        expect(useToast()).toHaveBeenCalledWith({
+          title: 'Pendaftaran gagal',
+          description: 'Email sudah terdaftar',
+          status: 'error',
+        });
+      },
+      { timeout: 2000 },
+    );
   });
 
   it('should register successfully if graduateYear is empty', async () => {
@@ -176,20 +196,28 @@ describe('RegisterModule', () => {
       graduateYear: undefined,
     };
     fillForm(postBodyWithoutGraduateYear);
-    fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
 
-    await waitFor(() => {
-      expect(mockAxios.history.post.length).toBe(1);
-      expect(JSON.parse(mockAxios.history.post[0].data)).toEqual({
-        ...postBody,
-        graduateYear: -1,
-      });
-      expect(useToast()).toHaveBeenCalledWith({
-        title: 'Berhasil mendaftar!',
-        status: 'success',
-      });
-      expect(useRouter().push).toHaveBeenCalledWith('/login');
+    await act(async () => {
+      setTimeout(() => {
+        fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
+      }, 1000);
     });
+
+    await waitFor(
+      () => {
+        expect(mockAxios.history.post.length).toBe(1);
+        expect(JSON.parse(mockAxios.history.post[0].data)).toEqual({
+          ...postBody,
+          graduateYear: -1,
+        });
+        expect(useToast()).toHaveBeenCalledWith({
+          title: 'Berhasil mendaftar!',
+          status: 'success',
+        });
+        expect(useRouter().push).toHaveBeenCalledWith('/login');
+      },
+      { timeout: 2000 },
+    );
   });
 
   it('should validate empty fields', async () => {
@@ -353,6 +381,41 @@ describe('RegisterModule', () => {
         screen.getByText('Password harus maksimal 128 karakter'),
       ).toBeInTheDocument();
     });
+  });
+
+  it('should validate weak password', async () => {
+    (zxcvbnAsync as jest.Mock).mockResolvedValue({ score: 0 });
+
+    act(() => {
+      render(<RegisterModule />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(prodi[0].name)).toBeInTheDocument();
+    });
+
+    const weakPassword = 'a'.repeat(12);
+    const postBodyWithWeakPassword = {
+      ...postBody,
+      password: weakPassword,
+      confirmPassword: weakPassword,
+    };
+    fillForm(postBodyWithWeakPassword);
+
+    await act(async () => {
+      setTimeout(() => {
+        fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
+      }, 1000);
+    });
+
+    await waitFor(
+      () => {
+        expect(
+          screen.getByText('Harap gunakan password yang lebih kuat'),
+        ).toBeInTheDocument();
+      },
+      { timeout: 2000 },
+    );
   });
 
   it('should be able to redirect to login form', async () => {
