@@ -54,7 +54,7 @@ export const RegisterModule = () => {
   const fetchStudyPrograms = async () => {
     const result = await axios.get('/prodi');
     setStudyPrograms(result.data.data);
-  };  
+  };
 
   useEffect(() => {
     fetchStudyPrograms();
@@ -123,6 +123,14 @@ export const RegisterModule = () => {
             register={{
               ...register('password', {
                 required: 'Masukkan password Anda',
+                minLength: {
+                  value: 12,
+                  message: 'Password harus minimal 12 karakter',
+                },
+                maxLength: {
+                  value: 128,
+                  message: 'Password harus maksimal 128 karakter',
+                },
               }),
             }}
           />
