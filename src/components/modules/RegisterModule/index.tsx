@@ -9,6 +9,7 @@ import { CustomInput } from '@/components/elements';
 import { useRouter } from 'next/router';
 import { axios } from '@/utils';
 import { useEffect, useState } from 'react';
+import { CustomPasswordInput } from '@/components/elements/CustomPasswordInput';
 
 export const RegisterModule = () => {
   const {
@@ -113,11 +114,9 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomInput
-            name="password"
+          <CustomPasswordInput
             label="Password"
             placeholder="Password"
-            type="password"
             error={errors.password?.message}
             icon={MdPassword}
             register={{
@@ -133,13 +132,13 @@ export const RegisterModule = () => {
                 },
               }),
             }}
+            withValidation
+            password={password}
           />
 
-          <CustomInput
-            name="confirmPassword"
+          <CustomPasswordInput
             label="Konfirmasi Password"
             placeholder="Konfirmasi Password"
-            type="password"
             error={errors.confirmPassword?.message}
             icon={MdPassword}
             register={{
