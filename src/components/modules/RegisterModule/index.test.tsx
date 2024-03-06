@@ -75,8 +75,8 @@ describe('RegisterModule', () => {
   const postBody = {
     email: 'test@gmail.com',
     name: 'Test',
-    password: 'password',
-    confirmPassword: 'password',
+    password: 'password1234',
+    confirmPassword: 'password1234',
     enrollmentYear: 2018,
     graduateYear: 2022,
     gender: 'MALE',
@@ -303,6 +303,55 @@ describe('RegisterModule', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Tahun tidak valid')).toBeInTheDocument();
+    });
+  });
+
+  it('should validate password at least 12 characters', async () => {
+    act(() => {
+      render(<RegisterModule />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(prodi[0].name)).toBeInTheDocument();
+    });
+
+    const postBodyWithTooShortPassword = {
+      ...postBody,
+      password: 'password',
+      confirmPassword: 'password',
+    };
+    fillForm(postBodyWithTooShortPassword);
+    fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Password harus minimal 12 karakter'),
+      ).toBeInTheDocument();
+    });
+  });
+
+  it('should validate password max 128 characters', async () => {
+    act(() => {
+      render(<RegisterModule />);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText(prodi[0].name)).toBeInTheDocument();
+    });
+
+    const longPassword = 'a'.repeat(129);
+    const postBodyWithTooLongPassword = {
+      ...postBody,
+      password: longPassword,
+      confirmPassword: longPassword,
+    };
+    fillForm(postBodyWithTooLongPassword);
+    fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Password harus maksimal 128 karakter'),
+      ).toBeInTheDocument();
     });
   });
 
