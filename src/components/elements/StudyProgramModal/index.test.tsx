@@ -222,4 +222,5 @@ describe('StudyProgramModal', () => {
       });
     });
   });
+  
 });
