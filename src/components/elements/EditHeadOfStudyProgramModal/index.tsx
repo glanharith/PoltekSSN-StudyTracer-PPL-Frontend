@@ -46,10 +46,10 @@ export default function EditHeadOfStudyProgramModal({
   };  
 
   useEffect(() => {
+    fetchStudyPrograms();
     if (isOpen) {
       setValue('studyProgramId', studyProgramId);
       setValue('name', kaprodiName);
-      fetchStudyPrograms();
     }
   }, [setValue, studyProgramId, kaprodiName, isOpen]);
 
@@ -92,6 +92,7 @@ export default function EditHeadOfStudyProgramModal({
         <form onSubmit={handleSubmit(handleEditKaprodi)}>
           <ModalBody pb={6}>
             <CustomInput
+              label='Nama'
               name='name'
               placeholder='Nama Kepala Program Studi'
               icon={MdTitle}
@@ -109,7 +110,7 @@ export default function EditHeadOfStudyProgramModal({
                   <MdSchool/>
                 </InputLeftAddon>
                   <select 
-                    aria-label='Program Studi' 
+                    aria-label='studyProgramId' 
                     id='studyProgramId' {...register("studyProgramId")}
                     >
                     {studyPrograms.map((prodi) => (
