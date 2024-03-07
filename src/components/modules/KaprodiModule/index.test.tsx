@@ -7,7 +7,7 @@ import { KaprodiModule } from '.';
 import { HeaderSection } from './sections';
 import userEvent from '@testing-library/user-event';
 
-describe('Header Section of Kaprodi Module', () => {
+describe('Kaprodi Module', () => {
   const refetchData = jest.fn();
   const mockAxios = new MockAdapter(axios);
 
@@ -142,7 +142,7 @@ describe('Header Section of Kaprodi Module', () => {
     expect(screen.getByText('Ubah Kepala Program Studi')).toBeInTheDocument();
   
     const nameInput = screen.getByPlaceholderText('Nama Kepala Program Studi');
-    const prodiInput = screen.getByLabelText('Program Studi');
+    const prodiInput = screen.getByLabelText('studyProgramId');
 
     fireEvent.change(nameInput, { target: { value: 'Nama baru' } });
     fireEvent.change(prodiInput, { target: { value: prodi.data[0].id } })
@@ -150,8 +150,7 @@ describe('Header Section of Kaprodi Module', () => {
 
     await waitFor(() => {
       expect(mockAxios.history.patch.length).toBe(1);
-    })
-  
+    });
   });
 
   it('create kaprodi', async () => {

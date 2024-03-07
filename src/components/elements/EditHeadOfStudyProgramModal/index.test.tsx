@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import { axios } from '@/utils';
 import MockAdapter from 'axios-mock-adapter';
 import EditHeadOfStudyProgramModal from '.';
-import userEvent from "@testing-library/user-event";
 
 describe('Edit Head of Study Program Modal', () => {
   const mockOnClose = jest.fn();
@@ -98,7 +97,7 @@ describe('Edit Head of Study Program Modal', () => {
         studyProgramName={mockStudyProgram.name}
       />
     );
-    fireEvent.change(screen.getByLabelText('Program Studi'), {
+    fireEvent.change(screen.getByLabelText('studyProgramId'), {
       target: { value: mockStudyProgram2.id }
     })
     fireEvent.click(screen.getByText('Ubah'));
@@ -121,7 +120,7 @@ describe('Edit Head of Study Program Modal', () => {
         studyProgramName={mockStudyProgram.name}
       />
     );
-    fireEvent.change(screen.getByLabelText('Program Studi'), {
+    fireEvent.change(screen.getByLabelText('studyProgramId'), {
       target: { value: mockStudyProgram.id }
     })
     fireEvent.click(screen.getByText('Ubah'));
