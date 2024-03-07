@@ -85,8 +85,14 @@ export default function EditHeadOfStudyProgramModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
-      <ModalContent>
-        <ModalHeader>Ubah Kepala Program Studi</ModalHeader>
+      <ModalContent borderRadius={48} p={8}>
+        <ModalHeader
+          textAlign={'center'}
+          textColor={'blue.900'}
+          fontSize={'3xl'}
+        >
+          Ubah Kepala Program Studi
+        </ModalHeader>
         <ModalCloseButton p={6} borderRadius={32}/>
         <form onSubmit={handleSubmit(handleEditKaprodi)}>
           <ModalBody pb={6}>
