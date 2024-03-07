@@ -52,6 +52,7 @@ export const HeaderSection: React.FC<HeaderSectionProps> = ({ refetchData, selec
                     mr={2}
                     size={'sm'}
                     onClick={handleOpenDeleteModal}
+                    isDisabled={selectedKaprodi.length === 0}
                 >
                     Hapus Kaprodi
                 </Button>

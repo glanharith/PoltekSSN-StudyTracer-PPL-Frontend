@@ -20,7 +20,6 @@ import { KaprodiEditInput, ModalProps } from './interface';
 import { MdTitle, MdSchool } from 'react-icons/md';
 import { CustomInput } from '@/components/elements';
 import { StudyProgram } from '@/components/modules/RegisterModule/interface';
-import { error } from 'console';
 
 export default function EditHeadOfStudyProgramModal({
   isOpen,

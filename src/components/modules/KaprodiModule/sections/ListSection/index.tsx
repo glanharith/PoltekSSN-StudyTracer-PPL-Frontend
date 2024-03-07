@@ -64,7 +64,7 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
     return (
         <section>
             <Flex justify="center" width="100%" margin={10}>
-                <div className="study-program" style={{ width: '50%', border: '1px solid #ccc', borderRadius: '10px', padding: '20px' }}>
+                <div className="study-program" style={{ width: '70%', border: '1px solid #ccc', borderRadius: '10px', padding: '20px' }}>
                     <Table variant="simple" size="md">
                         <Thead>
                             <Tr>
