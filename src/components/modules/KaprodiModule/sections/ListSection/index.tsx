@@ -1,17 +1,80 @@
 import { Table, Thead, Tbody, Tr, Th, Td, Checkbox, Flex, IconButton } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
+import React, { useState, useEffect } from 'react';
 import { ListKaprodi } from "./interface";
+import { Kaprodi } from '../../interface';
+import EditHeadOfStudyProgramModal from "@/components/elements/EditHeadOfStudyProgramModal";
 
-export const ListSection: React.FC<ListKaprodi> = ({kaprodi}) => {
+export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, selectedKaprodi, setSelectedKaprodi}) => {
+    const [allSelected, setAllSelected] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [kaprodiId, setKaprodiId] = useState<string>('');
+    const [kaprodiName, setKaprodiName] = useState<string>('');
+    const [studyProgramId, setStudyProgramId] = useState<string>('');
+    const [studyProgramName, setStudyProgramName] = useState<string>('');
+
+    const handleCheckboxChange = (kepala: Kaprodi) => {
+        setSelectedKaprodi((currentSelectedKaprodi) => {
+            let updatedSelectedKaprodi;
+            if (currentSelectedKaprodi.includes(kepala.id)) {
+                updatedSelectedKaprodi= currentSelectedKaprodi.filter(
+                    (id) => id !== kepala.id,
+                );
+            }
+            else {
+                updatedSelectedKaprodi = [...currentSelectedKaprodi, kepala.id];
+            }
+            const allSelected = 
+                updatedSelectedKaprodi.length === kaprodi.length;
+            setAllSelected(allSelected);
+            return updatedSelectedKaprodi;
+        });
+    };
+
+    const handleSelectAll = () => {
+        setSelectedKaprodi((currentSelectedKaprodi) => {
+            if (currentSelectedKaprodi.length === kaprodi.length) {
+                setAllSelected(false);
+                return [];
+            }
+            else {
+                setAllSelected(true);
+                return kaprodi.map((kepala) => kepala.id);
+            }
+        })
+    };
+
+    const handleOpenEditModal = (
+        kaprodiId: string, 
+        kaprodiName: string,
+        studyProgramId: string,
+        studyProgramName: string,
+        ) => {
+        setIsModalOpen(true);
+        setKaprodiId(kaprodiId);
+        setKaprodiName(kaprodiName);
+        setStudyProgramId(studyProgramId);
+        setStudyProgramName(studyProgramName);
+    };
+
+    const handleCloseEditModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <section>
             <Flex justify="center" width="100%" margin={10}>
-                <div className="study-program" style={{ width: '50%', border: '1px solid #ccc', borderRadius: '10px', padding: '20px' }}>
+                <div className="study-program" style={{ width: '70%', border: '1px solid #ccc', borderRadius: '10px', padding: '20px' }}>
                     <Table variant="simple" size="md">
                         <Thead>
                             <Tr>
                                 <Th>
-                                    <Checkbox />
+                                    <Checkbox 
+                                        aria-label="checkbox"
+                                        isChecked={allSelected}
+                                        onChange={handleSelectAll}
+                                        mr={4}
+                                    />
                                 </Th>
                                 <Th>Nama</Th>
                                 <Th>Email</Th>
@@ -24,7 +87,11 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi}) => {
                             kaprodi.map((data) => (
                                 <Tr key={data.id}>
                                     <Td>
-                                        <Checkbox />
+                                        <Checkbox 
+                                            aria-label="checkboxes"
+                                            isChecked={selectedKaprodi.includes(data.id)}
+                                            onChange={() => handleCheckboxChange(data)}
+                                        />
                                     </Td>
                                     <Td>{data.name}</Td>
                                     <Td>{data.email}</Td>
@@ -35,6 +102,11 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi}) => {
                                             color={'black'}
                                             icon={<FiEdit />}
                                             aria-label={'Edit Prodi'}
+                                            onClick={() => handleOpenEditModal(
+                                                data.id, 
+                                                data.name, 
+                                                data.headStudyProgram?.studyProgram?.id, 
+                                                data.headStudyProgram?.studyProgram?.name)}
                                         />
                                     </Td>
                                 </Tr>
@@ -47,6 +119,15 @@ export const ListSection: React.FC<ListKaprodi> = ({kaprodi}) => {
                         </Tbody>
                     </Table>
                 </div>
+                <EditHeadOfStudyProgramModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseEditModal}
+                    kaprodiId={kaprodiId}
+                    kaprodiName={kaprodiName}
+                    studyProgramId={studyProgramId}
+                    studyProgramName={studyProgramName}
+                    refetchData={refetchData}
+                />  
             </Flex>
         </section>
     )

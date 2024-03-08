@@ -7,7 +7,7 @@ import { KaprodiModule } from '.';
 import { HeaderSection } from './sections';
 import userEvent from '@testing-library/user-event';
 
-describe('Header Section of Kaprodi Module', () => {
+describe('Kaprodi Module', () => {
   const refetchData = jest.fn();
   const mockAxios = new MockAdapter(axios);
 
@@ -30,11 +30,21 @@ describe('Header Section of Kaprodi Module', () => {
         name: "yudiasdsai",
         headStudyProgram: {
             studyProgram: {
-                name: "yudiasdsai"
+                name: "yudiasdsaii"
             }
         },
         email: "yudi.putra@ui.asdasdsad2er22asda"
-    }
+    },
+    {
+      id: "62eedb5f-b2b2-448b-8979-954f29ad4b3d",
+      name: "hanifhanif",
+      headStudyProgram: {
+          studyProgram: {
+              name: "ilmu padi"
+          }
+      },
+      email: "hanif.hanif@ui.asdasdsad2er22asda"
+  }
 ]
 
   it("renders correctly", async () => {
@@ -60,6 +70,29 @@ describe('Header Section of Kaprodi Module', () => {
     fireEvent.click(screen.getByText("Batal"))
   });
 
+  it('able to select kaprodi for deletion', async () => {
+    mockAxios.onGet('/prodi').reply(200, prodi);
+    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+
+    await act(async () => {
+      render (
+        <KaprodiModule/>
+      )
+    });
+    await waitFor(() => expect(screen.getByText(kaprodi[0].name)).toBeInTheDocument());
+
+    const kaprodiCheckbox = screen.getByLabelText("checkbox");
+    const checkboxes = screen.getAllByLabelText("checkboxes");
+
+    fireEvent.click(kaprodiCheckbox);
+    fireEvent.click(kaprodiCheckbox);
+
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[1]);
+    fireEvent.click(checkboxes[0]);
+    fireEvent.click(checkboxes[1]);
+  });
+
   it("renders list kaprodi", async () => {
     mockAxios.onGet('/prodi').reply(200, prodi);
     mockAxios.onGet('/kaprodi').reply(200, kaprodi);
@@ -70,7 +103,55 @@ describe('Header Section of Kaprodi Module', () => {
       )
     });
     expect(mockAxios.history.get.length).toBeGreaterThanOrEqual(1)
-  })
+  });
+
+  it("delete kaprodi", async () => {
+    mockAxios.onGet('/prodi').reply(200, prodi);
+    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+    mockAxios.onDelete('/kaprodi').reply(200)
+
+    await act(async () => {
+      render (
+        <KaprodiModule/>
+      )
+    });
+    await waitFor(() => expect(screen.getByText(kaprodi[0].name)).toBeInTheDocument());
+
+    const kaprodiCheckbox = screen.getByLabelText("checkbox");
+    fireEvent.click(kaprodiCheckbox);
+
+    fireEvent.click(screen.getByText('Hapus Kaprodi'));
+    fireEvent.click(screen.getByText('Hapus'));
+
+    await waitFor(() => expect(mockAxios.history.delete.length).toBe(1));
+  });
+
+  it("edit kaprodi", async () => {
+    mockAxios.onGet('/prodi').reply(200, prodi);
+    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+    mockAxios.onPatch(`/kaprodi/${kaprodi[0].id}`).reply(200);
+
+    await act(async () => {
+      render (
+        <KaprodiModule/>
+      )
+    });
+    await waitFor(() => expect(screen.getByText(kaprodi[0].name)).toBeInTheDocument());
+
+    fireEvent.click(screen.getAllByLabelText('Edit Prodi')[0]);
+    expect(screen.getByText('Ubah Kepala Program Studi')).toBeInTheDocument();
+  
+    const nameInput = screen.getByPlaceholderText('Nama Kepala Program Studi');
+    const prodiInput = screen.getByLabelText('studyProgramId');
+
+    fireEvent.change(nameInput, { target: { value: 'Nama baru' } });
+    fireEvent.change(prodiInput, { target: { value: prodi.data[0].id } })
+    fireEvent.click(screen.getByText('Ubah'));
+
+    await waitFor(() => {
+      expect(mockAxios.history.patch.length).toBe(1);
+    });
+  });
 
   it('create kaprodi', async () => {
 
