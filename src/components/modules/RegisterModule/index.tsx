@@ -68,6 +68,7 @@ export const RegisterModule = () => {
   }, [passwordScore]);
 
   const password = watch('password');
+  const enrollmentYear = watch('enrollmentYear');
 
   return (
     <Flex
@@ -166,13 +167,24 @@ export const RegisterModule = () => {
             name="enrollmentYear"
             label="Tahun Masuk"
             placeholder="Tahun Masuk"
-            type="number"
+            type="select"
+            selectOptions={
+              <>
+                {Array.from(
+                  { length: new Date().getFullYear() - 1944 },
+                  (_, index) => (
+                    <option key={index} value={1945 + index}>
+                      {1945 + index}
+                    </option>
+                  ),
+                )}
+              </>
+            }
             error={errors.enrollmentYear?.message}
             icon={PiGraduationCap}
             register={{
               ...register('enrollmentYear', {
                 required: 'Masukkan tahun masuk Anda',
-                validate: (value) => value >= 1945 || 'Tahun tidak valid',
               }),
             }}
           />
@@ -181,14 +193,31 @@ export const RegisterModule = () => {
             name="graduateYear"
             label="Tahun Lulus"
             placeholder="Tahun Lulus"
-            type="number"
-            error={errors.graduateYear?.message}
+            type="select"
+            selectOptions={
+              <>
+                {Array.from(
+                  { length: new Date().getFullYear() - 1944 },
+                  (_, index) => (
+                    <option key={index} value={1945 + index}>
+                      {1945 + index}
+                    </option>
+                  ),
+                )}
+              </>
+            }
             icon={PiCertificate}
+            error={errors.graduateYear?.message}
             register={{
               ...register('graduateYear', {
-                validate: (value: number | string) => {
-                  if (value !== undefined && value !== null && value !== '') {
-                    return Number(value) >= 1945 || 'Tahun tidak valid';
+                validate: (value) => {
+                  console.log(value);
+                  console.log(enrollmentYear);
+                  if (value && enrollmentYear) {
+                    return (
+                      Number(value) > Number(enrollmentYear) ||
+                      'Tahun lulus harus lebih besar dari tahun masuk'
+                    );
                   }
                   return true;
                 },

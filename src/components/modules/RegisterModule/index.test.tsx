@@ -292,27 +292,6 @@ describe('RegisterModule', () => {
     });
   });
 
-  it('should validate enrollment year', async () => {
-    act(() => {
-      render(<RegisterModule />);
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText(prodi[0].name)).toBeInTheDocument();
-    });
-
-    const postBodyWithInvalidEnrollmentYear = {
-      ...postBody,
-      enrollmentYear: 0,
-    };
-    fillForm(postBodyWithInvalidEnrollmentYear);
-    fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
-
-    await waitFor(() => {
-      expect(screen.getByText('Tahun tidak valid')).toBeInTheDocument();
-    });
-  });
-
   it('should validate graduate year', async () => {
     act(() => {
       render(<RegisterModule />);
@@ -324,13 +303,15 @@ describe('RegisterModule', () => {
 
     const postBodyWithInvalidGraduateYear = {
       ...postBody,
-      graduateYear: 0,
+      graduateYear: 2000,
     };
     fillForm(postBodyWithInvalidGraduateYear);
     fireEvent.click(screen.getByRole('button', { name: 'Daftar' }));
 
     await waitFor(() => {
-      expect(screen.getByText('Tahun tidak valid')).toBeInTheDocument();
+      expect(
+        screen.getByText('Tahun lulus harus lebih besar dari tahun masuk'),
+      ).toBeInTheDocument();
     });
   });
 
