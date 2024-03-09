@@ -5,7 +5,8 @@ export interface Kaprodi {
         studyProgram: {
             name: string
             id: string
-        }
+        },
+        isActive: boolean,
     }
     email: string
 }
