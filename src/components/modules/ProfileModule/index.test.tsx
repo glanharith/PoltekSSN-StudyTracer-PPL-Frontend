@@ -2,7 +2,7 @@ import { render, waitFor, screen } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
 import { axios } from '@/utils';
 import { ProfileModule } from '.';
-import { Tabs, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('@chakra-ui/react', () => ({

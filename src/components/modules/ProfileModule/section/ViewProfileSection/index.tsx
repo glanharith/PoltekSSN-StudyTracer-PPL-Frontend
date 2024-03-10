@@ -1,4 +1,4 @@
-import { Button, Flex, SimpleGrid, Text, useToast } from '@chakra-ui/react';
+import { Button, Flex, SimpleGrid, useToast } from '@chakra-ui/react';
 import { ProfileInput, ViewProfileProps } from './interface';
 import { FiUser } from 'react-icons/fi';
 import { PiGraduationCap } from 'react-icons/pi';

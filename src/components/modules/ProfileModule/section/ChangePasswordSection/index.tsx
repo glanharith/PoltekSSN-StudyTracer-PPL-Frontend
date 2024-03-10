@@ -2,7 +2,6 @@ import {
   Button,
   Flex,
   SimpleGrid,
-  Text,
   useToast,
   Alert,
   AlertIcon,

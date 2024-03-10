@@ -1,4 +1,4 @@
-import { Flex, useToast, Text, SimpleGrid } from '@chakra-ui/react';
+import { Flex, useToast, Text } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { axios } from '@/utils';
 import { Profile } from './interface';
