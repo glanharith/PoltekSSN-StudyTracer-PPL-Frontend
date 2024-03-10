@@ -4,7 +4,6 @@ import { FiUser } from 'react-icons/fi';
 import { PiGraduationCap } from 'react-icons/pi';
 import { BsHouseDoor } from 'react-icons/bs';
 import { CustomInput } from '@/components/elements';
-import { MdPassword } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import { axios } from '@/utils';
 
@@ -16,13 +15,10 @@ export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
     formState: { errors, isSubmitting },
   } = useForm<ProfileInput>();
   const toast = useToast();
-  const password = watch('password');
   const handleEditProfile = async (data: ProfileInput) => {
-    try{
-      const updatedData: any = {
-        password: data.confirmPassword,
-      };
-  
+    try {
+      const updatedData: any = {};
+
       if (data.name?.trim()) {
         updatedData.name = data.name;
       }
@@ -40,14 +36,12 @@ export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
         title: 'Profil berhasil diperbarui!',
         status: 'success',
       });
-    }catch(error:any){
+    } catch (error: any) {
       toast({
         title: 'Profil gagal diperbarui!',
         status: 'error',
       });
     }
-    
-
   };
 
   return (
@@ -58,9 +52,7 @@ export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
       py={{ base: 10 }}
       gap={6}
     >
-      <Text fontSize={{ base: 28, md: 40 }} fontWeight="semibold">
-        Edit Profile
-      </Text>
+     
 
       <form
         onSubmit={handleSubmit(handleEditProfile)}
@@ -90,9 +82,7 @@ export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
             type="select"
             selectOptions={
               <>
-                <option>
-                  {user?.alumni?.enrollmentYear?.toString()}
-                </option>
+                <option>{user?.alumni?.enrollmentYear?.toString()}</option>
                 {Array.from(
                   { length: new Date().getFullYear() - 1944 },
                   (_, index) => (
@@ -122,17 +112,6 @@ export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
           />
 
           <CustomInput
-            name="password"
-            label="Password Baru"
-            placeholder="Password"
-            type="password"
-            icon={MdPassword}
-            register={{
-              ...register('password', {}),
-            }}
-          />
-
-          <CustomInput
             name="address"
             label="Alamat"
             placeholder="Alamat"
@@ -142,38 +121,9 @@ export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
               ...register('alumni.address', {}),
             }}
           />
-
-          <CustomInput
-            name="confirmPassword"
-            label="Konfirmasi Password"
-            placeholder="Konfirmasi Password"
-            type="password"
-            icon={MdPassword}
-            error={errors.confirmPassword?.message}
-            register={{
-              ...register('confirmPassword', {
-                 validate: (value) =>
-                value === password || 'Masukkan password yang sama',
-              }),
-            }}
-          />
         </SimpleGrid>
 
         <Flex align="center" pt={20} gap={10}>
-          <Button
-            colorScheme="blue"
-            style={{
-              width: '156px',
-              height: '40px',
-              borderRadius: '6px',
-              border: '1px solid var(--gray-500, #718096)',
-              background: 'var(--white, #FFF)',
-              color: 'var(--gray-500, #718096)',
-            }}
-            onClick={() => history.back()}
-          >
-            Kembali
-          </Button>
           <Button
             type="submit"
             isLoading={isSubmitting}

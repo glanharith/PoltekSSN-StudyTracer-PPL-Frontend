@@ -5,8 +5,6 @@ export type ViewProfileProps = {
 };
 export type ProfileInput = {
   name?: string;
-  password?: string;
-  confirmPassword?: string;
   alumni: {
     phoneNo?: string;
     address?: string;
