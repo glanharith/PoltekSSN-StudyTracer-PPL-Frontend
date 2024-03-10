@@ -46,11 +46,7 @@ export default function HeadOfStudyProgramModal({
     register,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<CreateHeadOfStudyProgramInput>({
-    defaultValues: {
-      name: method === 'EDIT' ? studyProgramId : '',
-    },
-  });
+  } = useForm<CreateHeadOfStudyProgramInput>();
   const toast = useToast();
 
   const handleFormSubmit = async (data: CreateHeadOfStudyProgramInput) => {
@@ -100,7 +96,7 @@ export default function HeadOfStudyProgramModal({
           textColor={'blue.900'}
           fontSize={'3xl'}
         >
-          {method === 'CREATE' ? 'Tambah' : 'Ubah'} Kepala Program Studi
+          Tambah Kepala Program Studi
         </ModalHeader>
         <ModalCloseButton p={6} borderRadius={32} />
         <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -173,7 +169,7 @@ export default function HeadOfStudyProgramModal({
               isLoading={isSubmitting}
               onClick={handleSubmit(handleFormSubmit)}
             >
-              {method === 'CREATE' ? 'Buat' : 'Ubah'}
+              Buat
             </Button>
           </ModalFooter>
       </ModalContent>

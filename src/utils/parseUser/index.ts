@@ -2,6 +2,10 @@ import { jwtVerify } from 'jose';
 import { ParsedUser } from './interface';
 
 export const parseUser = async () => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
   const token = localStorage.getItem('tracer-token');
 
   if (!token) return null;
@@ -17,3 +21,4 @@ export const parseUser = async () => {
     return null;
   }
 };
+

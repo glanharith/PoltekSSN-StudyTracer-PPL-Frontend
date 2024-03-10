@@ -75,6 +75,7 @@ describe('DeleteStudyProgramModal', () => {
       setTimeout(() => {
         expect(mockRefetchData).toHaveBeenCalled();
       }, 1000);
+      
     });
   });
 
