@@ -139,7 +139,7 @@ export default function StudyProgramModal({
                       message: 'Kode program studi tidak valid',
                     },
                   }),
-                }}}
+                }}
                 defaultValue={method === 'EDIT' ? studyProgramCode : ''}
               />
               <CustomInput
