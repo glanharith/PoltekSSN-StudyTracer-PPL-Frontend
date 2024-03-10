@@ -1,4 +1,12 @@
-import { Button, Flex, SimpleGrid, Text, useToast,Alert, AlertIcon } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  SimpleGrid,
+  Text,
+  useToast,
+  Alert,
+  AlertIcon,
+} from '@chakra-ui/react';
 import { PasswordInput } from './interface';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { CustomInput } from '@/components/elements';
@@ -41,8 +49,13 @@ export const ChangePassword = () => {
       py={{ base: 10 }}
       gap={5}
     >
-      <Alert status="warning" w="fit-content" alignSelf="flex-start" rounded="md">
-      <AlertIcon as={FiAlertTriangle} color="yellow.400" />
+      <Alert
+        status="warning"
+        w="fit-content"
+        alignSelf="flex-start"
+        rounded="md"
+      >
+        <AlertIcon as={FiAlertTriangle} color="yellow.400" />
         Isi jika Anda ingin mengubah password.
       </Alert>
       <form

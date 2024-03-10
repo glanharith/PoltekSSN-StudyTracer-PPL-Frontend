@@ -108,10 +108,6 @@ export const Navbar: React.FC = () => {
     fetchUser();
   };
 
-  const navigateToProfile = () => {
-    router.push('/profile'); 
-  };
-
   return (
     <div className={navStyles.mobileNav} style={{ zIndex: 999 }}>
       <Box
@@ -182,50 +178,6 @@ export const Navbar: React.FC = () => {
                   variant={"link"}
                   cursor={"pointer"}
                 >
-<<<<<<< HEAD
-                  Register
-                </Button>
-                <Button
-                  variant={'solid'}
-                  bg="#1A365D"
-                  textColor={'white'}
-                  size={'sm'}
-                  mr={4}
-                  onClick={() => {
-                    router.replace('/login');
-                  }}
-                >
-                  Login
-                </Button>
-              </>
-            ) : (
-              <>
-                <Flex alignItems={'center'}>
-                  <Menu>
-                    <MenuButton
-                      as={Button}
-                      rounded={'full'}
-                      variant={'link'}
-                      cursor={'pointer'}
-                    >
-                      <Avatar
-                        size={'sm'}
-                        src={
-                          'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                        }
-                      />
-                    </MenuButton>
-                    <MenuList>
-                    {userRole=== 'ALUMNI' && (
-                        <MenuItem onClick={navigateToProfile}>Edit Profile</MenuItem>
-                    )}
-                      <MenuItem onClick={logout}>Logout</MenuItem>
-                    </MenuList>
-                  </Menu>
-                </Flex>
-              </>
-            )}
-=======
                   <Avatar
                     size={"sm"}
                     src={
@@ -242,7 +194,6 @@ export const Navbar: React.FC = () => {
             </Flex>
               </>}
             
->>>>>>> 7ce4f4d61c477b7cb151e0ce536f2d239677e535
           </Flex>
         </Flex>
 
