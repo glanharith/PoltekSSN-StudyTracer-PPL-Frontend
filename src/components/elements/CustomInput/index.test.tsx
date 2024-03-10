@@ -68,4 +68,5 @@ describe('CustomInput', () => {
 
     expect(screen.getByText(props.leftAddon!)).toBeInTheDocument();
   });
+  
 });

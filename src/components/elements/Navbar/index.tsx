@@ -108,6 +108,10 @@ export const Navbar: React.FC = () => {
     fetchUser();
   };
 
+  const navigateToProfile = () => {
+    router.push('/profile'); 
+  };
+
   return (
     <div className={navStyles.mobileNav} style={{ zIndex: 999 }}>
       <Box
@@ -186,7 +190,7 @@ export const Navbar: React.FC = () => {
                 />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>Edit Profile</MenuItem>
+                  <MenuItem onClick={navigateToProfile}>Edit Profile</MenuItem>
                   <MenuDivider />
                   <MenuItem onClick={logout}>Logout</MenuItem>
                 </MenuList>
