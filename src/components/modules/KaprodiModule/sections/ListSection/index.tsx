@@ -12,6 +12,7 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
     const [kaprodiName, setKaprodiName] = useState<string>('');
     const [studyProgramId, setStudyProgramId] = useState<string>('');
     const [studyProgramName, setStudyProgramName] = useState<string>('');
+    const [isActive, setIsActive] = useState<boolean>(false)
 
     const handleCheckboxChange = (kepala: Kaprodi) => {
         setSelectedKaprodi((currentSelectedKaprodi) => {
@@ -49,14 +50,15 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
         kaprodiName: string,
         studyProgramId: string,
         studyProgramName: string,
+        isActive: boolean,
         ) => {
         setIsModalOpen(true);
         setKaprodiId(kaprodiId);
         setKaprodiName(kaprodiName);
         setStudyProgramId(studyProgramId);
         setStudyProgramName(studyProgramName);
+        setIsActive(isActive);
     };
-
     const handleCloseEditModal = () => {
         setIsModalOpen(false);
     };
@@ -79,6 +81,7 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
                                 <Th>Nama</Th>
                                 <Th>Email</Th>
                                 <Th>Program Studi</Th>
+                                <Th>Status Active</Th>
                                 <Th>Action</Th>
                             </Tr>
                         </Thead>
@@ -96,6 +99,13 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
                                     <Td>{data.name}</Td>
                                     <Td>{data.email}</Td>
                                     <Td>{data.headStudyProgram?.studyProgram?.name}</Td>
+                                    <Td>
+                                        <div className={` w-fit px-3 py-2 rounded-2xl ${data.headStudyProgram.isActive ? "bg-green-700" : "bg-red-500"}`}>
+                                            <span className=" font-bold text-white">
+                                                {data.headStudyProgram.isActive ? "Aktif" : "Tidak"}
+                                            </span>
+                                        </div>
+                                    </Td>
                                     <Td textAlign={"center"}>
                                         <IconButton
                                             size={'lg'}
@@ -106,7 +116,8 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
                                                 data.id, 
                                                 data.name, 
                                                 data.headStudyProgram?.studyProgram?.id, 
-                                                data.headStudyProgram?.studyProgram?.name)}
+                                                data.headStudyProgram?.studyProgram?.name,
+                                                data.headStudyProgram?.isActive)}
                                         />
                                     </Td>
                                 </Tr>
@@ -127,6 +138,7 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
                     studyProgramId={studyProgramId}
                     studyProgramName={studyProgramName}
                     refetchData={refetchData}
+                    isActive = {isActive}
                 />  
             </Flex>
         </section>

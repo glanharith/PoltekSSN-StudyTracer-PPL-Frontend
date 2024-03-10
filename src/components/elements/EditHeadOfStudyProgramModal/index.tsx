@@ -11,13 +11,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useToast
-} from '@chakra-ui/react';
+  useToast} from '@chakra-ui/react';
 import { axios } from '@/utils';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { KaprodiEditInput, ModalProps } from './interface';
-import { MdTitle, MdSchool } from 'react-icons/md';
+import { MdTitle, MdSchool, MdCheckBox } from 'react-icons/md';
 import { CustomInput } from '@/components/elements';
 import { StudyProgram } from '@/components/modules/RegisterModule/interface';
 
@@ -27,11 +26,17 @@ export default function EditHeadOfStudyProgramModal({
   refetchData,
   kaprodiId,
   kaprodiName,
-  studyProgramName,
   studyProgramId,
-}: ModalProps) {
+  isActive,
+}: Readonly<ModalProps>) {
   const toast = useToast();
   const [studyPrograms, setStudyPrograms] = useState<StudyProgram[]>([]);
+  const [active, setActive] = useState(isActive? "Aktif" : "Tidak")
+
+  const handleDropdownChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setActive(event.target.value); 
+  };
+
   const {
     register,
     handleSubmit,
@@ -47,14 +52,20 @@ export default function EditHeadOfStudyProgramModal({
   useEffect(() => {
     fetchStudyPrograms();
     if (isOpen) {
+      setActive(isActive? "Aktif" : "Tidak")
       setValue('studyProgramId', studyProgramId);
       setValue('name', kaprodiName);
+      setValue('isActive', isActive)
     }
-  }, [setValue, studyProgramId, kaprodiName, isOpen]);
+  }, [setValue, studyProgramId, kaprodiName, isOpen, isActive]);
 
   const handleEditKaprodi = async (data: KaprodiEditInput) => {
     try {
-      const dataToSend = { name: data.name, studyProgramId: data.studyProgramId }
+      const dataToSend = { 
+        name: data.name, 
+        studyProgramId: data.studyProgramId, 
+        isActive: active == "Aktif" ? true : false
+    };
       await axios.patch(`/kaprodi/${kaprodiId}`, dataToSend);
 
       setTimeout(() => {
@@ -126,6 +137,23 @@ export default function EditHeadOfStudyProgramModal({
                   </select>
               </InputGroup>
             </FormControl>
+            <FormControl>
+            <FormLabel>{"Status Keaktifan"}</FormLabel>
+              <InputGroup>
+                <InputLeftAddon>
+                  <MdCheckBox/>
+                </InputLeftAddon>
+                <select 
+                  aria-label='isActive'
+                  id='isActive' {...register('isActive')}
+                  onChange={handleDropdownChange}
+                  value={active}
+                >
+                  <option value={"Aktif"}>Aktif</option>
+                  <option value={"Tidak"}>Tidak</option>
+                </select>
+              </InputGroup>
+          </FormControl>
           </ModalBody>
           <ModalFooter justifyContent={'center'}>
             <Button onClick={onClose} mr={3}>

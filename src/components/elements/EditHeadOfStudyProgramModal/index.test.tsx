@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import { axios } from '@/utils';
 import MockAdapter from 'axios-mock-adapter';
 import EditHeadOfStudyProgramModal from '.';
+import { act } from 'react-dom/test-utils';
 
 describe('Edit Head of Study Program Modal', () => {
   const mockOnClose = jest.fn();
@@ -48,6 +49,7 @@ describe('Edit Head of Study Program Modal', () => {
     await render(
       <EditHeadOfStudyProgramModal
         isOpen={true}
+        isActive={true}
         onClose={mockOnClose}
         refetchData={() => {}}
         kaprodiId={mockKaprodi.id}
@@ -55,10 +57,13 @@ describe('Edit Head of Study Program Modal', () => {
         studyProgramId={mockKaprodi.studyProgramId}
         studyProgramName={mockStudyProgram.name}
       />
-    );
-    expect(screen.getByText('Ubah')).toBeInTheDocument();
-    expect(screen.getByText('Batal')).toBeInTheDocument();
-    expect(screen.getByText('Ubah Kepala Program Studi')).toBeInTheDocument();
+    );      
+
+    await waitFor(() => {
+      expect(screen.getByText('Ubah')).toBeInTheDocument();
+      expect(screen.getByText('Batal')).toBeInTheDocument();
+      expect(screen.getByText('Ubah Kepala Program Studi')).toBeInTheDocument();
+    });
   });
 
   it('validates empty name and shows error message', async () => {
@@ -67,6 +72,7 @@ describe('Edit Head of Study Program Modal', () => {
     await render(
       <EditHeadOfStudyProgramModal
         isOpen={true}
+        isActive ={true}
         onClose={mockOnClose}
         refetchData={() => {}}
         kaprodiId={mockKaprodi.id}
@@ -89,6 +95,7 @@ describe('Edit Head of Study Program Modal', () => {
     await render(
       <EditHeadOfStudyProgramModal
         isOpen={true}
+        isActive={true}
         onClose={mockOnClose}
         refetchData={() => {}}
         kaprodiId={mockKaprodi.id}
@@ -100,6 +107,11 @@ describe('Edit Head of Study Program Modal', () => {
     fireEvent.change(screen.getByLabelText('studyProgramId'), {
       target: { value: mockStudyProgram2.id }
     })
+
+    fireEvent.change(screen.getByLabelText('isActive'), {
+      target: { value: "Tidak" }
+    })
+    
     fireEvent.click(screen.getByText('Ubah'));
     await waitFor(() => {
       expect(mockAxios.history.patch.length).toBe(1);
@@ -112,6 +124,7 @@ describe('Edit Head of Study Program Modal', () => {
     await render(
       <EditHeadOfStudyProgramModal
         isOpen={true}
+        isActive={true}
         onClose={mockOnClose}
         refetchData={() => {}}
         kaprodiId={mockKaprodi.id}
@@ -123,6 +136,11 @@ describe('Edit Head of Study Program Modal', () => {
     fireEvent.change(screen.getByLabelText('studyProgramId'), {
       target: { value: mockStudyProgram.id }
     })
+
+    fireEvent.change(screen.getByLabelText('isActive'), {
+      target: { value: "Tidak" }
+    })
+
     fireEvent.click(screen.getByText('Ubah'));
     await waitFor(() => {
       expect(mockAxios.history.patch.length).toBe(0);
@@ -134,9 +152,10 @@ describe('Edit Head of Study Program Modal', () => {
     mockAxios.onGet('/prodi').reply(200, mockData);
     mockAxios.onPatch(`/kaprodi/${mockKaprodi.id}`).reply(200);
   
-    render(
+    await render(
       <EditHeadOfStudyProgramModal
         isOpen={true}
+        isActive = {true}
         onClose={mockOnClose}
         refetchData={mockRefetchData}
         kaprodiId={mockKaprodi.id}
