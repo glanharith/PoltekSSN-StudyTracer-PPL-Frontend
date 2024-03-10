@@ -31,7 +31,8 @@ describe('Kaprodi Module', () => {
         headStudyProgram: {
             studyProgram: {
                 name: "yudiasdsaii"
-            }
+            },
+            isActive: true,
         },
         email: "yudi.putra@ui.asdasdsad2er22asda"
     },
@@ -41,7 +42,8 @@ describe('Kaprodi Module', () => {
       headStudyProgram: {
           studyProgram: {
               name: "ilmu padi"
-          }
+          },
+          isActive: false,
       },
       email: "hanif.hanif@ui.asdasdsad2er22asda"
   }
