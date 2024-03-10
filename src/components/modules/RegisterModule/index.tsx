@@ -211,8 +211,6 @@ export const RegisterModule = () => {
             register={{
               ...register('graduateYear', {
                 validate: (value) => {
-                  console.log(value);
-                  console.log(enrollmentYear);
                   if (value && enrollmentYear) {
                     return (
                       Number(value) > Number(enrollmentYear) ||
