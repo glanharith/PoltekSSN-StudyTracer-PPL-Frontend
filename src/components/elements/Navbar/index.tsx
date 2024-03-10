@@ -104,7 +104,12 @@ export const Navbar: React.FC = () => {
 
   return (
     <div className={navStyles.mobileNav} style={{ zIndex: 999 }}>
-      <Box className='' bg={useColorModeValue('gray.100', 'gray.900')} px={4} rounded={40}>
+      <Box
+        className=""
+        bg={useColorModeValue('gray.100', 'gray.900')}
+        px={4}
+        rounded={40}
+      >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <IconButton
             size={'md'}

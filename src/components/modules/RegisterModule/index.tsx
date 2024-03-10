@@ -9,12 +9,14 @@ import { CustomInput } from '@/components/elements';
 import { useRouter } from 'next/router';
 import { axios } from '@/utils';
 import { useEffect, useState } from 'react';
+import { CustomPasswordInput } from '@/components/elements/CustomPasswordInput';
 
 export const RegisterModule = () => {
   const {
     handleSubmit,
     register,
     watch,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<RegisterInput>();
   const toast = useToast();
@@ -23,6 +25,7 @@ export const RegisterModule = () => {
     router.push('/login');
   };
   const [studyPrograms, setStudyPrograms] = useState<StudyProgram[]>([]);
+  const [passwordScore, setPasswordScore] = useState(0);
 
   const handleFormSubmit = async (data: RegisterInput) => {
     data.enrollmentYear = Number(data.enrollmentYear);
@@ -54,13 +57,18 @@ export const RegisterModule = () => {
   const fetchStudyPrograms = async () => {
     const result = await axios.get('/prodi');
     setStudyPrograms(result.data.data);
-  };  
+  };
 
   useEffect(() => {
     fetchStudyPrograms();
   }, []);
 
+  useEffect(() => {
+    trigger(['password']);
+  }, [passwordScore]);
+
   const password = watch('password');
+  const enrollmentYear = watch('enrollmentYear');
 
   return (
     <Flex
@@ -113,25 +121,37 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomInput
-            name="password"
+          <CustomPasswordInput
             label="Password"
             placeholder="Password"
-            type="password"
             error={errors.password?.message}
             icon={MdPassword}
             register={{
               ...register('password', {
                 required: 'Masukkan password Anda',
+                minLength: {
+                  value: 12,
+                  message: 'Password harus minimal 12 karakter',
+                },
+                maxLength: {
+                  value: 128,
+                  message: 'Password harus maksimal 128 karakter',
+                },
+                validate: () =>
+                  passwordScore >= 3 ||
+                  'Harap gunakan password yang lebih kuat',
               }),
+            }}
+            withValidation
+            password={password}
+            scoreCallback={(score) => {
+              setPasswordScore(score);
             }}
           />
 
-          <CustomInput
-            name="confirmPassword"
+          <CustomPasswordInput
             label="Konfirmasi Password"
             placeholder="Konfirmasi Password"
-            type="password"
             error={errors.confirmPassword?.message}
             icon={MdPassword}
             register={{
@@ -147,13 +167,24 @@ export const RegisterModule = () => {
             name="enrollmentYear"
             label="Tahun Masuk"
             placeholder="Tahun Masuk"
-            type="number"
+            type="select"
+            selectOptions={
+              <>
+                {Array.from(
+                  { length: new Date().getFullYear() - 1944 },
+                  (_, index) => (
+                    <option key={index} value={1945 + index}>
+                      {1945 + index}
+                    </option>
+                  ),
+                )}
+              </>
+            }
             error={errors.enrollmentYear?.message}
             icon={PiGraduationCap}
             register={{
               ...register('enrollmentYear', {
                 required: 'Masukkan tahun masuk Anda',
-                validate: (value) => value >= 1945 || 'Tahun tidak valid',
               }),
             }}
           />
@@ -162,14 +193,31 @@ export const RegisterModule = () => {
             name="graduateYear"
             label="Tahun Lulus"
             placeholder="Tahun Lulus"
-            type="number"
-            error={errors.graduateYear?.message}
+            type="select"
+            selectOptions={
+              <>
+                {Array.from(
+                  { length: new Date().getFullYear() - 1944 },
+                  (_, index) => (
+                    <option key={index} value={1945 + index}>
+                      {1945 + index}
+                    </option>
+                  ),
+                )}
+              </>
+            }
             icon={PiCertificate}
+            error={errors.graduateYear?.message}
             register={{
               ...register('graduateYear', {
-                validate: (value: number | string) => {
-                  if (value !== undefined && value !== null && value !== '') {
-                    return Number(value) >= 1945 || 'Tahun tidak valid';
+                validate: (value) => {
+                  console.log(value);
+                  console.log(enrollmentYear);
+                  if (value && enrollmentYear) {
+                    return (
+                      Number(value) > Number(enrollmentYear) ||
+                      'Tahun lulus harus lebih besar dari tahun masuk'
+                    );
                   }
                   return true;
                 },
