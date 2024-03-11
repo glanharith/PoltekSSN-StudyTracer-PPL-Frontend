@@ -56,7 +56,7 @@ describe('StudyProgramModal', () => {
       expect(screen.getByText('Buat')).toBeInTheDocument();
     });
 
-    it('validates empty name and shows error message', async () => {
+    it('validates empty name and code and shows error message', async () => {
       render(
         <StudyProgramModal
           isOpen={true}
@@ -69,6 +69,10 @@ describe('StudyProgramModal', () => {
       await waitFor(() => {
         expect(
           screen.getByText('Nama program studi tidak boleh kosong!'),
+        ).toBeInTheDocument();
+
+        expect(
+          screen.getByText('Kode program studi tidak boleh kosong!'),
         ).toBeInTheDocument();
       });
     });
@@ -176,7 +180,7 @@ describe('StudyProgramModal', () => {
       expect(screen.getByText('Ubah')).toBeInTheDocument();
     });
 
-    it('validates empty name and shows error message', async () => {
+    it('validates empty name and code and shows error message', async () => {
       render(
         <StudyProgramModal
           isOpen={true}
@@ -189,6 +193,10 @@ describe('StudyProgramModal', () => {
       await waitFor(() => {
         expect(
           screen.getByText('Nama program studi tidak boleh kosong!'),
+        ).toBeInTheDocument();
+
+        expect(
+          screen.getByText('Kode program studi tidak boleh kosong!'),
         ).toBeInTheDocument();
       });
     });
@@ -228,9 +236,9 @@ describe('StudyProgramModal', () => {
           refetchData={mockRefetchData}
         />,
       );
-      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
-        target: { value: 'Informatika' },
-      });
+
+      fillForm(studyProgram);
+
       fireEvent.click(screen.getByText('Ubah'));
 
       await waitFor(() => {
@@ -252,9 +260,9 @@ describe('StudyProgramModal', () => {
           refetchData={mockRefetchData}
         />,
       );
-      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
-        target: { value: 'Informatika' },
-      });
+
+      fillForm(studyProgram);
+
       fireEvent.click(screen.getByText('Ubah'));
 
       await waitFor(() => {
