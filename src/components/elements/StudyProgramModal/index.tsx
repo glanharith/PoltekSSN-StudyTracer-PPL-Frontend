@@ -134,6 +134,7 @@ export default function StudyProgramModal({
                 icon={MdTitle}
                 register={{
                   ...register('code', {
+                    required: 'Kode program studi tidak boleh kosong!',
                     pattern: {
                       value: /^([a-zA-Z0-9\-\_]+)?$/,
                       message: 'Kode program studi tidak valid',
@@ -157,7 +158,7 @@ export default function StudyProgramModal({
                 icon={BsMortarboard}
                 register={{
                   ...register('level', {
-                    required: 'Pilih jenjang pendidikan program studi',
+                    required: 'Pilih jenjang pendidikan program studi!',
                   }),
                 }}
               />
