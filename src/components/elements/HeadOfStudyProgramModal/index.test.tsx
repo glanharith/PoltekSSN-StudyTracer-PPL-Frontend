@@ -204,7 +204,9 @@ describe('Head of Study Program Modal', () => {
     };
 
     mockAxios.onGet('/prodi').reply(200, mockData);
-    mockAxios.onPost('/kaprodi').replyOnce(400);
+    mockAxios.onPost('/kaprodi').replyOnce(400, {
+      message: "Email sudah digunakan!"
+    });
     await render(
       <HeadOfStudyProgramModal
         refetchData={mockRefetch}
