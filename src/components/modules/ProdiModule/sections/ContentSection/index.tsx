@@ -28,6 +28,8 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
   const [method, setMethod] = useState<'CREATE' | 'EDIT'>('CREATE');
   const [studyProgramId, setStudyProgramId] = useState<string>('');
   const [studyProgramName, setStudyProgramName] = useState<string>('');
+  const [studyProgramCode, setStudyProgramCode] = useState<string>('');
+  const [studyProgramLevel, setStudyProgramLevel] = useState<string>('');
 
   const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
   const [allSelected, setAllSelected] = useState(false);
@@ -39,10 +41,12 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
     setIsModalOpen(true);
   };
 
-  const handleOpenEditModal = (id: string, name: string) => {
+  const handleOpenEditModal = ({ id, name, code, level }: StudyProgram) => {
     setMethod('EDIT');
     setStudyProgramId(id);
     setStudyProgramName(name);
+    setStudyProgramCode(code);
+    setStudyProgramLevel(level);
     setIsModalOpen(true);
   };
 
@@ -50,6 +54,8 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
     setIsModalOpen(false);
     setStudyProgramId('');
     setStudyProgramName('');
+    setStudyProgramCode('');
+    setStudyProgramLevel('');
   };
 
   const handleOpenDeleteModal = () => {
@@ -137,11 +143,10 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
           </Button>
         </Flex>
       </Flex>
-      <Flex justify="center" width="100%" margin={10}>
+      <Flex justify="center" width="100%" paddingTop={10}>
         <div
           className="study-program"
           style={{
-            width: '50%',
             border: '1px solid #ccc',
             borderRadius: '10px',
             padding: '20px',
@@ -158,7 +163,9 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
                     mr={4}
                   />
                 </Th>
+                <Th>Kode</Th>
                 <Th>Nama</Th>
+                <Th>Jenjang</Th>
                 <Th textAlign={'center'}>Edit</Th>
               </Tr>
             </Thead>
@@ -172,14 +179,16 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
                         onChange={() => handleCheckboxChange(data)}
                       />
                     </Td>
+                    <Td>{data.code}</Td>
                     <Td>{data.name}</Td>
+                    <Td>{data.level}</Td>
                     <Td textAlign={'center'}>
                       <IconButton
                         size={'lg'}
                         color={'black'}
                         icon={<FiEdit />}
                         aria-label={'Edit Prodi'}
-                        onClick={() => handleOpenEditModal(data.id, data.name)}
+                        onClick={() => handleOpenEditModal({ ...data })}
                       />
                     </Td>
                   </Tr>
@@ -202,6 +211,8 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
         method={method}
         studyProgramId={studyProgramId}
         studyProgramName={studyProgramName}
+        studyProgramCode={studyProgramCode}
+        studyProgramLevel={studyProgramLevel}
         refetchData={refetchData}
       />
 

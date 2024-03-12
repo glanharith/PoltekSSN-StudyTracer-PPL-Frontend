@@ -174,44 +174,52 @@ describe('Kaprodi Module', () => {
     mockAxios.onGet('/prodi').reply(200, mockData);
     mockAxios.onPost('/kaprodi').replyOnce(200, result);
     mockAxios.onGet('/kaprodi').reply(200, kaprodi);
-    await act(async () => {
+    act(() => {
       render (
         <KaprodiModule/>
       )
     });
-    fireEvent.click(screen.getByText("Tambah Kaprodi"))
+
+    act(() => {
+      userEvent.click(screen.getByText("Tambah Kaprodi"))
+    })
+
     await waitFor(() => {
       expect(screen.getByText('Ilmu Sandi')).toBeInTheDocument();
     });
 
-    fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
-    fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
-    fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
+    await act(async () => {
+      fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Juggernaut123*' } });
 
-    const selectInput = document.querySelector('#jurusan'); 
-    if (selectInput) { 
-      fireEvent.change(selectInput,{ target: { value: '48e941a9-3319-4f4c-8a2e-5d6a3287bf89' }});
-    }
-    else {
-      throw new Error('Select input not found');
-    }
+      const selectInput = document.querySelector('#jurusan'); 
+      if (selectInput) { 
+        fireEvent.change(selectInput,{ target: { value: '48e941a9-3319-4f4c-8a2e-5d6a3287bf89' }});
+      }
+      else {
+        throw new Error('Select input not found');
+      }
+      await new Promise((r) => setTimeout(r, 2000));
+    })
 
-    userEvent.click(screen.getByText('Buat'))
+
+    act(() => {
+      fireEvent.click(screen.getByText('Buat'));
+    })
 
     await waitFor( async () => {
       expect(mockAxios.history.post.length).toBe(1);
-
-
       expect(mockAxios.history.post[0].data).toEqual(JSON.stringify({
         studyProgramId: '48e941a9-3319-4f4c-8a2e-5d6a3287bf89',
         email: 'john@example.com',
         name: 'John Doe',
-        password: 'password123',
+        password: 'Juggernaut123*',
       }));
 
       await setTimeout(() => {
         expect(mockRefetch).toHaveBeenCalled()
       }, 1000)
-    })
+    },)
   });
 });

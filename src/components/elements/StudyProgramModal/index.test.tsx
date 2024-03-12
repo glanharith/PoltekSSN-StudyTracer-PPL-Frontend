@@ -5,6 +5,29 @@ import { axios } from '@/utils';
 import MockAdapter from 'axios-mock-adapter';
 import StudyProgramModal from '@/components/elements/StudyProgramModal';
 
+const fillForm = (data: any) => {
+  fireEvent.change(screen.getByLabelText('Nama'), {
+    target: { value: data.name },
+  });
+  fireEvent.change(screen.getByLabelText('Kode'), {
+    target: { value: data.code },
+  });
+  fireEvent.change(screen.getByLabelText('Jenjang Pendidikan'), {
+    target: { value: data.level },
+  });
+};
+
+const studyProgramAttributes = {
+  name: 'Computer Science',
+  code: 'ABC123',
+  level: 'D3',
+};
+
+const studyProgram = {
+  id: 'aa-bb-11-22',
+  ...studyProgramAttributes,
+};
+
 describe('StudyProgramModal', () => {
   const mockAxios = new MockAdapter(axios);
   const mockOnClose = jest.fn();
@@ -33,7 +56,7 @@ describe('StudyProgramModal', () => {
       expect(screen.getByText('Buat')).toBeInTheDocument();
     });
 
-    it('validates empty name and shows error message', async () => {
+    it('validates empty name and code and shows error message', async () => {
       render(
         <StudyProgramModal
           isOpen={true}
@@ -46,6 +69,31 @@ describe('StudyProgramModal', () => {
       await waitFor(() => {
         expect(
           screen.getByText('Nama program studi tidak boleh kosong!'),
+        ).toBeInTheDocument();
+
+        expect(
+          screen.getByText('Kode program studi tidak boleh kosong!'),
+        ).toBeInTheDocument();
+      });
+    });
+
+    it('validates study program code and shows error message', async () => {
+      render(
+        <StudyProgramModal
+          isOpen={true}
+          onClose={mockOnClose}
+          method="CREATE"
+          refetchData={mockRefetchData}
+        />,
+      );
+      fillForm(studyProgram);
+      fireEvent.change(screen.getByLabelText('Kode'), {
+        target: { value: '@#$%^' },
+      });
+      fireEvent.click(screen.getByText('Buat'));
+      await waitFor(() => {
+        expect(
+          screen.getByText('Kode program studi tidak valid'),
         ).toBeInTheDocument();
       });
     });
@@ -61,15 +109,13 @@ describe('StudyProgramModal', () => {
           refetchData={mockRefetchData}
         />,
       );
-      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
-        target: { value: 'Informatika' },
-      });
+      fillForm(studyProgram);
       fireEvent.click(screen.getByText('Buat'));
 
       await waitFor(() => {
         expect(mockAxios.history.post.length).toBe(1);
         expect(mockAxios.history.post[0].data).toEqual(
-          JSON.stringify({ name: 'Informatika' }),
+          JSON.stringify({ ...studyProgramAttributes }),
         );
       });
     });
@@ -85,9 +131,7 @@ describe('StudyProgramModal', () => {
           refetchData={mockRefetchData}
         />,
       );
-      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
-        target: { value: 'Informatika' },
-      });
+      fillForm(studyProgram);
       fireEvent.click(screen.getByText('Buat'));
 
       await waitFor(() => {
@@ -108,9 +152,7 @@ describe('StudyProgramModal', () => {
           refetchData={mockRefetchData}
         />,
       );
-      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
-        target: { value: 'Informatika' },
-      });
+      fillForm(studyProgram);
       fireEvent.click(screen.getByText('Buat'));
 
       await waitFor(() => {
@@ -122,13 +164,14 @@ describe('StudyProgramModal', () => {
   });
 
   describe('Update Study Program', () => {
-    const studyProgram = {
-      id: 'abc123',
-      name: 'Computer Science',
-    };
     it('renders correctly', () => {
       render(
-        <StudyProgramModal isOpen={true} onClose={mockOnClose} method="EDIT" refetchData={mockRefetchData} />,
+        <StudyProgramModal
+          isOpen={true}
+          onClose={mockOnClose}
+          method="EDIT"
+          refetchData={mockRefetchData}
+        />,
       );
       expect(screen.getByText('Ubah Program Studi')).toBeInTheDocument();
       expect(
@@ -137,14 +180,23 @@ describe('StudyProgramModal', () => {
       expect(screen.getByText('Ubah')).toBeInTheDocument();
     });
 
-    it('validates empty name and shows error message', async () => {
+    it('validates empty name and code and shows error message', async () => {
       render(
-        <StudyProgramModal isOpen={true} onClose={mockOnClose} method="EDIT" refetchData={mockRefetchData} />,
+        <StudyProgramModal
+          isOpen={true}
+          onClose={mockOnClose}
+          method="EDIT"
+          refetchData={mockRefetchData}
+        />,
       );
       fireEvent.click(screen.getByText('Ubah'));
       await waitFor(() => {
         expect(
           screen.getByText('Nama program studi tidak boleh kosong!'),
+        ).toBeInTheDocument();
+
+        expect(
+          screen.getByText('Kode program studi tidak boleh kosong!'),
         ).toBeInTheDocument();
       });
     });
@@ -161,15 +213,13 @@ describe('StudyProgramModal', () => {
           refetchData={mockRefetchData}
         />,
       );
-      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
-        target: { value: 'Informatika' },
-      });
+      fillForm(studyProgram);
       fireEvent.click(screen.getByText('Ubah'));
 
       await waitFor(() => {
         expect(mockAxios.history.patch.length).toBe(1);
         expect(mockAxios.history.patch[0].data).toEqual(
-          JSON.stringify({ name: 'Informatika' }),
+          JSON.stringify({ ...studyProgramAttributes }),
         );
       });
     });
@@ -186,9 +236,9 @@ describe('StudyProgramModal', () => {
           refetchData={mockRefetchData}
         />,
       );
-      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
-        target: { value: 'Informatika' },
-      });
+
+      fillForm(studyProgram);
+
       fireEvent.click(screen.getByText('Ubah'));
 
       await waitFor(() => {
@@ -210,9 +260,9 @@ describe('StudyProgramModal', () => {
           refetchData={mockRefetchData}
         />,
       );
-      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), {
-        target: { value: 'Informatika' },
-      });
+
+      fillForm(studyProgram);
+
       fireEvent.click(screen.getByText('Ubah'));
 
       await waitFor(() => {

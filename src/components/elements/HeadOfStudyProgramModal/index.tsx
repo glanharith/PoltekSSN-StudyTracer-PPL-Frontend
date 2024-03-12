@@ -21,6 +21,7 @@ import { CreateHeadOfStudyProgramInput, KaprodiModalProps } from './interface';
 import { MdEmail, MdPassword, MdSchool, MdTitle } from 'react-icons/md';
 import { StudyProgram } from '@/components/modules/RegisterModule/interface';
 import { CustomInput } from '../CustomInput';
+import { CustomPasswordInput } from '../CustomPasswordInput';
 
 export default function HeadOfStudyProgramModal({
   isOpen,
@@ -31,6 +32,7 @@ export default function HeadOfStudyProgramModal({
 }: Readonly<KaprodiModalProps>) {
 
   const [studyPrograms, setStudyPrograms] = useState<StudyProgram[]>([]);
+  const [passwordScore, setPasswordScore] = useState(0);
 
   const fetchStudyPrograms = async () => {
     const result = await axios.get('/prodi');
@@ -45,8 +47,11 @@ export default function HeadOfStudyProgramModal({
     handleSubmit,
     register,
     setError,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<CreateHeadOfStudyProgramInput>();
+
+  const password = watch('password');
   const toast = useToast();
 
   const handleFormSubmit = async (data: CreateHeadOfStudyProgramInput) => {
@@ -122,20 +127,38 @@ export default function HeadOfStudyProgramModal({
               register={{
                 ...register('email', {
                   required: 'Email tidak boleh kosong!',
+                  pattern: {
+                    value: /^\S+@\S+\.\S+$/,
+                    message: 'Email tidak valid',
+                  },
                 }),
               }}
             />
-            <CustomInput
-              name="password"
-              label='Password'
-              type='password'
+            <CustomPasswordInput
+              label="Password"
               placeholder="Password"
               error={errors.password?.message}
               icon={MdPassword}
               register={{
                 ...register('password', {
-                  required: 'Password tidak boleh kosong!',
+                  required: 'Masukkan password Anda',
+                  minLength: {
+                    value: 12,
+                    message: 'Password harus minimal 12 karakter',
+                  },
+                  maxLength: {
+                    value: 128,
+                    message: 'Password harus maksimal 128 karakter',
+                  },
+                  validate: () =>
+                    passwordScore >= 3 ||
+                    'Harap gunakan password yang lebih kuat',
                 }),
+              }}
+              withValidation
+              password={password}
+              scoreCallback={(score) => {
+                setPasswordScore(score);
               }}
             />
             <FormControl isInvalid={!!errors.studyProgramId?.message}>
