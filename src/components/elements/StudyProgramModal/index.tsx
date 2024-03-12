@@ -69,7 +69,6 @@ export default function StudyProgramModal({
         successMessage = 'Berhasil membuat program studi!';
       } else {
         await axios.patch(`/prodi/${studyProgramId}`, { ...data });
-        console.log(data);
         successMessage = 'Berhasil mengubah program studi!';
       }
       toast({

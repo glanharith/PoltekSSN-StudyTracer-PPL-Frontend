@@ -1,12 +1,17 @@
 import React from 'react';
-import { render, waitFor, screen } from '@testing-library/react';
+import {
+  render,
+  waitFor,
+  screen,
+  act,
+  fireEvent,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
+import userEvent from '@testing-library/user-event';
 import { axios } from '@/utils';
 import MockAdapter from 'axios-mock-adapter';
 import { ProdiModule } from '.';
 import { useToast } from '@chakra-ui/react';
-
-const mockAxios = new MockAdapter(axios);
 
 jest.mock('@chakra-ui/react', () => ({
   ...jest.requireActual('@chakra-ui/react'),
@@ -14,31 +19,36 @@ jest.mock('@chakra-ui/react', () => ({
 }));
 
 describe('ProdiModule', () => {
+  const mockAxios = new MockAdapter(axios);
   const mockOnClose = jest.fn();
-  const mockRefetchData = jest.fn();
+  const refetchData = jest.fn();
 
   beforeEach(() => {
     mockAxios.reset();
     mockOnClose.mockClear();
-    mockRefetchData.mockClear();
+    refetchData.mockClear();
     (useToast as jest.Mock).mockClear();
     (useToast as jest.Mock).mockReturnValue(jest.fn());
   });
 
-  it('fetches study programs and renders them correctly', async () => {
-    const mockData = {
-      data: [
-        { id: '1', name: 'Study Program 1' },
-        { id: '2', name: 'Study Program 2' },
-      ],
-    };
-    mockAxios.onGet('/prodi').reply(200, mockData);
+  const prodi = {
+    message: 'Successfully got all study programs',
+    data: [
+      { id: '48e941a9-3319-4f4c-8a2e-5d6a3287bf89', name: 'Ilmu Sandi' },
+      { id: '68393bf0-0d80-43a7-889b-c46186a18777', name: 'Ilmu Siber' },
+    ],
+  };
 
-    render(<ProdiModule />);
+  it('fetches study programs and renders them correctly', async () => {
+    mockAxios.onGet('/prodi').reply(200, prodi);
+
+    await act(async () => {
+      render(<ProdiModule />);
+    });
 
     await waitFor(() => {
-      expect(screen.getByText('Study Program 1')).toBeInTheDocument();
-      expect(screen.getByText('Study Program 2')).toBeInTheDocument();
+      expect(screen.getByText('Ilmu Sandi')).toBeInTheDocument();
+      expect(screen.getByText('Ilmu Siber')).toBeInTheDocument();
     });
   });
 
@@ -48,7 +58,9 @@ describe('ProdiModule', () => {
 
     mockAxios.onGet('/prodi').reply(500);
 
-    render(<ProdiModule />);
+    await act(async () => {
+      render(<ProdiModule />);
+    });
 
     await waitFor(() => {
       expect(mockToast).toHaveBeenCalledWith({
@@ -61,21 +73,57 @@ describe('ProdiModule', () => {
     });
   });
 
-  it('calls refetchData function when refetchData is called', async () => {
-    jest.spyOn(React, 'useState').mockReturnValueOnce([[], mockRefetchData]);
-
-    mockAxios.onGet('/prodi').reply(200, { data: [] });
-
-    render(<ProdiModule />);
-
-    await waitFor(() => {
-      expect(mockRefetchData).toHaveBeenCalledTimes(1);
+  it('create prodi', async () => {
+    const result = {
+      message: "Successfully created a new study program"
+    };
+  
+    mockAxios.onPost('/prodi').replyOnce(200, result);
+    mockAxios.onGet('/prodi').reply(200, prodi);
+  
+    await act(async () => {
+      render(<ProdiModule />);
     });
-
-    mockRefetchData();
-
+  
+    fireEvent.click(screen.getByText("Tambah Prodi"));
+  
+    fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), { target: { value: 'Ilmu Komputer' } });
+    fireEvent.change(screen.getByPlaceholderText('Kode Program Studi'), { target: { value: 'CS1234' } });
+    fireEvent.change(screen.getByLabelText('Jenjang Pendidikan'), { target: { value: 'D3' } });
+  
+    fireEvent.click(screen.getByText('Buat'));
+  
     await waitFor(() => {
-      expect(mockRefetchData).toHaveBeenCalledTimes(2);
+      expect(mockAxios.history.post.length).toBe(1);
+      expect(mockAxios.history.post[0].data).toEqual(JSON.stringify({
+        name: 'Ilmu Komputer',
+        code: 'CS1234',
+        level: 'D3'
+      }));
+  
+      expect(mockAxios.history.get.length).toBe(1);
     });
   });
+  
+  it('calls refetchData when clicking "Tambah Prodi"', async () => {
+    mockAxios.onGet('/prodi').reply(200, prodi);
+    mockAxios.onPost('/prodi').reply(200, { message: "Success" }); // Mock the POST request
+
+    await act(async () => {
+      render (
+        <ProdiModule/>
+      )
+    });
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByText('Tambah Prodi'));
+      fireEvent.change(screen.getByPlaceholderText('Nama Program Studi'), { target: { value: 'Ilmu Komputer' } });
+      userEvent.click(screen.getByText('Buat'));
+    });
+
+    await waitFor(() => {
+      expect(mockAxios.history.get.length).toBe(2);
+    });
+});
+
 });

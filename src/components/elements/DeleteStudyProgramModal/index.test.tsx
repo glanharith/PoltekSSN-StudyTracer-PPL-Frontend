@@ -69,14 +69,14 @@ describe('DeleteStudyProgramModal', () => {
     mockAxios.onDelete('/prodi').reply(200);
     fireEvent.click(screen.getByText('Hapus'));
 
-    await waitFor(async () => {
+    await waitFor(() => {
       expect(mockAxios.history.delete.length).toBe(1);
       expect(mockOnClose).toHaveBeenCalledTimes(1);
-      setTimeout(() => {
-        expect(mockRefetchData).toHaveBeenCalled();
-      }, 1000);
-      
     });
+
+    setTimeout(() => {
+      expect(mockRefetchData).toHaveBeenCalled();
+    }, 1000);
   });
 
   it('displays error toast if study program not found', async () => {
@@ -97,10 +97,7 @@ describe('DeleteStudyProgramModal', () => {
 
     await waitFor(() => {
       expect(mockAxios.history.delete.length).toBe(1);
-    });
-
-    await waitFor(() => {
-      expect(mockOnClose).not.toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalledTimes(0);
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Gagal',
         description: 'Program studi tidak ditemukan!',
@@ -110,7 +107,9 @@ describe('DeleteStudyProgramModal', () => {
       });
     });
 
-    expect(mockRefetchData).not.toHaveBeenCalled();
+    setTimeout(() => {
+      expect(mockRefetchData).toHaveBeenCalled();
+    }, 1000);
   });
 
   it('displays error toast if deletion conflicts', async () => {
@@ -138,7 +137,7 @@ describe('DeleteStudyProgramModal', () => {
     });
 
     await waitFor(() => {
-      expect(mockOnClose).not.toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalledTimes(0);
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Gagal',
         description: 'Studi program 1 terhubung dengan kaprodi atau alumni!',
@@ -148,7 +147,9 @@ describe('DeleteStudyProgramModal', () => {
       });
     });
 
-    expect(mockRefetchData).not.toHaveBeenCalled();
+    setTimeout(() => {
+      expect(mockRefetchData).toHaveBeenCalled();
+    }, 1000);
   });
 
   it('displays error toast if deletion failed', async () => {
@@ -169,10 +170,7 @@ describe('DeleteStudyProgramModal', () => {
 
     await waitFor(() => {
       expect(mockAxios.history.delete.length).toBe(1);
-    });
-
-    await waitFor(() => {
-      expect(mockOnClose).not.toHaveBeenCalled();
+      expect(mockOnClose).toHaveBeenCalledTimes(0);
       expect(mockToast).toHaveBeenCalledWith({
         title: 'Gagal',
         description: 'Gagal menghapus program studi!',
@@ -183,5 +181,25 @@ describe('DeleteStudyProgramModal', () => {
     });
 
     expect(mockRefetchData).not.toHaveBeenCalled();
+  });
+
+  it('calls refetchData after a delay', async () => {
+    jest.useFakeTimers();
+    render(
+      <DeleteStudyProgramModal
+        isOpen = {true}
+        onClose = {mockOnClose}
+        dataToBeDeleted = { ['1', '2', '3'] }
+        refetchData = {mockRefetchData}
+      />,
+    );
+    mockAxios.onDelete('/prodi').reply(200);
+    fireEvent.click(screen.getByText('Hapus'));
+
+    await waitFor(() => expect(mockAxios.history.delete.length).toBe(1));
+    jest.advanceTimersByTime(1000);
+    await waitFor(() => expect(mockRefetchData).toHaveBeenCalled());
+
+    jest.useRealTimers();
   });
 });
