@@ -1,28 +1,24 @@
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-export default function Home({ data }: { data: string }) {
+export default function Home() {
   return (
-    <div>
-      <h1>Hello World!</h1>
-      <h2>{data}</h2>
-    </div>
+    <Flex px={{ base: 4, md: 16 }} pt={4} gap={16} justifyItems="center">
+      <section className="hidden md:flex w-full md:w-1/2 flex-col min-h-screen">
+        <Text
+          color="blue.900"
+          fontWeight="bold"
+          fontSize={{ base: 40, md: 64 }}
+        >
+          Welcome!
+        </Text>
+        <Text>
+          Untuk memulai, silahkan lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Sed eros eros, imp erdiet vitae volutpat a,
+          consectetur sed elit. Vivamus dolor arcu, cursus in arcu nec, faucibus
+          gravida dui.
+        </Text>
+      </section>
+    </Flex>
   );
-}
-
-export async function getStaticProps() {
-  try {
-    const res = await fetch(`${process.env.API_URL}/hello/yudisabri`);
-    const data = 'Response from back end: ' + (await res.text());
-    return {
-      props: {
-        data,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        data: 'An error occurred while fetching data!',
-      },
-    };
-  }
 }
