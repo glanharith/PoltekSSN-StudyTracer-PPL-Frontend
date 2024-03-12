@@ -7,8 +7,8 @@ import { StudyProgram } from '../../interface';
 const mockRefetchData = jest.fn();
 
 const sampleStudyPrograms: StudyProgram[] = [
-  { id: '1', name: 'Program 1' },
-  { id: '2', name: 'Program 2' },
+  { id: '1', name: 'Program 1', code: 'code', level: 'D3' },
+  { id: '2', name: 'Program 2', code: 'code', level: 'D3' },
 ];
 
 describe('ContentSection', () => {
