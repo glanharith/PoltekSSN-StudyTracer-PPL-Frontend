@@ -82,7 +82,7 @@ export default function HeadOfStudyProgramModal({
       const status = error.response?.status;
       let errorMessage;
       if (status === 400) {
-        errorMessage = 'Email sudah digunakan!';
+        errorMessage = error.response.data.message;
         setError('email', { message: errorMessage });
       } 
       else if (method === 'CREATE') {
