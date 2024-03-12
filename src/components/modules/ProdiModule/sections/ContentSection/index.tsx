@@ -177,6 +177,7 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
                       <Checkbox
                         isChecked={selectedPrograms.includes(data.id)}
                         onChange={() => handleCheckboxChange(data)}
+                        aria-label={`checkbox-${data.id}`}
                       />
                     </Td>
                     <Td>{data.code}</Td>
