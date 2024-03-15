@@ -4,6 +4,12 @@ import '@testing-library/jest-dom';
 import { axios } from '@/utils';
 import MockAdapter from 'axios-mock-adapter';
 import HeadOfStudyProgramModal from '.';
+import { useToast } from '@chakra-ui/react';
+
+jest.mock('@chakra-ui/react', () => ({
+  ...jest.requireActual('@chakra-ui/react'),
+  useToast: jest.fn(),
+}));
 
 describe('Head of Study Program Modal', () => {
   const mockOnClose = jest.fn();
@@ -11,6 +17,7 @@ describe('Head of Study Program Modal', () => {
 
   beforeEach(() => {
     mockAxios.reset();
+    (useToast as jest.Mock).mockReturnValue(jest.fn());
     mockOnClose.mockClear();
   });
 
@@ -100,6 +107,7 @@ describe('Head of Study Program Modal', () => {
     await act(async () => {
       fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
       fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByPlaceholderText('Nip'), { target: { value: '123' } });
       fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Juggernaut123*' } });
 
       const selectInput = document.querySelector('#jurusan'); 
@@ -123,6 +131,7 @@ describe('Head of Study Program Modal', () => {
 
       expect(mockAxios.history.post[0].data).toEqual(JSON.stringify({
         studyProgramId: '48e941a9-3319-4f4c-8a2e-5d6a3287bf89',
+        nip: '123',
         email: 'john@example.com',
         name: 'John Doe',
         password: 'Juggernaut123*',
@@ -170,6 +179,7 @@ describe('Head of Study Program Modal', () => {
     await act(async () => {
       fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
       fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByPlaceholderText('Nip'), { target: { value: '123' } });
       fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'nanananananana' } });
 
       const selectInput = document.querySelector('#jurusan'); 
@@ -192,7 +202,7 @@ describe('Head of Study Program Modal', () => {
     })
   });
 
-  it('verifies if head of study program name is taken and displays error message', async () => {
+  it('verifies if head of study program email is taken and displays error message', async () => {
     const mockRefetch = jest.fn();
 
     const mockData = {
@@ -223,6 +233,7 @@ describe('Head of Study Program Modal', () => {
     await act(async () => {
       fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
       fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByPlaceholderText('Nip'), { target: { value: '123' } });
       fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Juggernaut123*' } });
 
       const selectInput = document.querySelector('#jurusan'); 
@@ -241,14 +252,12 @@ describe('Head of Study Program Modal', () => {
     })
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Email sudah digunakan!'),
-      ).toBeInTheDocument();
+      expect(useToast()).toHaveBeenCalledWith({
+        title: 'Email sudah digunakan!',
+        status: 'error',
+      });
     });
   });
-
-
-
 
   it('verifies unknown displays error message', async () => {
     const mockRefetch = jest.fn();
@@ -280,6 +289,7 @@ describe('Head of Study Program Modal', () => {
       fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
       fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
       fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Juggernaut123*' } });
+      fireEvent.change(screen.getByPlaceholderText('Nip'), { target: { value: '123' } });
 
       const selectInput = document.querySelector('#jurusan'); 
       if (selectInput) { 
@@ -291,15 +301,15 @@ describe('Head of Study Program Modal', () => {
       await new Promise((r) => setTimeout(r, 2000));
     })
 
-
     act(() => {
       fireEvent.click(screen.getByText('Buat'));
     })
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Gagal membuat kepala program studi!'),
-      ).toBeInTheDocument();
+      expect(useToast()).toHaveBeenCalledWith({
+        title: 'Gagal membuat kepala program studi!',
+        status: 'error',
+      });
     });
   });
 });

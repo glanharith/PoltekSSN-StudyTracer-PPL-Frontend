@@ -11,4 +11,5 @@ export interface CreateHeadOfStudyProgramInput {
   email: string;
   name: string;
   password: string;
+  nip: string;
 }
