@@ -83,6 +83,9 @@ export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
                 </InputLeftAddon>
                 <Input
                   type={'number'}
+                  cursor={'not-allowed'}
+                  bg={'gray.200'}
+                  opacity={0.5}
                   readOnly                  
                   defaultValue={user.alumni.npm}
                 />
