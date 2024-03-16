@@ -1,4 +1,4 @@
-import { Button, Flex, SimpleGrid, useToast } from '@chakra-ui/react';
+import { Button, Flex, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, SimpleGrid, useToast } from '@chakra-ui/react';
 import { ProfileInput, ViewProfileProps } from './interface';
 import { FiUser } from 'react-icons/fi';
 import { PiGraduationCap } from 'react-icons/pi';
@@ -6,6 +6,7 @@ import { BsHouseDoor } from 'react-icons/bs';
 import { CustomInput } from '@/components/elements';
 import { useForm } from 'react-hook-form';
 import { axios } from '@/utils';
+import { MdNumbers } from 'react-icons/md';
 
 export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
   const {
@@ -73,6 +74,20 @@ export const ViewProfile: React.FC<ViewProfileProps> = ({ user }) => {
               ...register('name', {}),
             }}
           />
+
+          <FormControl>
+            <FormLabel>NPM</FormLabel>
+            <InputGroup>
+                <InputLeftAddon>
+                <MdNumbers/>
+                </InputLeftAddon>
+                <Input
+                  type={'number'}
+                  readOnly                  
+                  defaultValue={user.alumni.npm}
+                />
+            </InputGroup>
+          </FormControl>
 
           <CustomInput
             name="enrollmentYear"
