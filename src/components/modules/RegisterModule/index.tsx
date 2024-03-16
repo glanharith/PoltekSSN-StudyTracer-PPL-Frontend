@@ -2,7 +2,7 @@ import { Button, Flex, SimpleGrid, Text, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { RegisterInput, StudyProgram } from './interface';
 import { FiMail, FiUser } from 'react-icons/fi';
-import { MdPassword } from 'react-icons/md';
+import { MdNumbers, MdPassword } from 'react-icons/md';
 import { PiGraduationCap, PiCertificate } from 'react-icons/pi';
 import { BsBook, BsGenderAmbiguous, BsHouseDoor } from 'react-icons/bs';
 import { CustomInput } from '@/components/elements';
@@ -162,6 +162,23 @@ export const RegisterModule = () => {
               }),
             }}
           />
+
+          <CustomInput
+              name="npm"
+              label='NPM Alumni'
+              placeholder="NPM"
+              error={errors.npm?.message}
+              icon={MdNumbers}
+              register={{
+                ...register('npm', {
+                  required: 'NPM tidak boleh kosong!',
+                  pattern: {
+                    value: /^\d{1,10}$/,
+                    message: 'Hanya nomor dengan panjang maksimum 10 digit yang diperbolehkan',
+                  },
+                }),
+              }}
+            />
 
           <CustomInput
             name="enrollmentYear"

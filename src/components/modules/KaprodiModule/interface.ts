@@ -7,6 +7,7 @@ export interface Kaprodi {
             id: string
         },
         isActive: boolean,
+        nip: string,
     }
     email: string
 }
