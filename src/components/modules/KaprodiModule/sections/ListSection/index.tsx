@@ -78,6 +78,7 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
                                         mr={4}
                                     />
                                 </Th>
+                                <Th>NIP</Th>
                                 <Th>Nama</Th>
                                 <Th>Email</Th>
                                 <Th>Program Studi</Th>
@@ -96,6 +97,7 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
                                             onChange={() => handleCheckboxChange(data)}
                                         />
                                     </Td>
+                                    <Td>{data.headStudyProgram.nip}</Td>
                                     <Td>{data.name}</Td>
                                     <Td>{data.email}</Td>
                                     <Td>{data.headStudyProgram?.studyProgram?.name}</Td>
