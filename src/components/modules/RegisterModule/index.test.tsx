@@ -45,6 +45,8 @@ const fillForm = (data: any) => {
   fireEvent.change(screen.getByLabelText('Email'), {
     target: { value: data.email },
   });
+  fireEvent.change(screen.getByPlaceholderText('NPM'), { 
+    target: { value: data.npm } });
   fireEvent.change(screen.getByLabelText('Nama Lengkap'), {
     target: { value: data.name },
   });
@@ -77,6 +79,7 @@ const fillForm = (data: any) => {
 describe('RegisterModule', () => {
   const postBody = {
     email: 'test@gmail.com',
+    npm: '123',
     name: 'Test',
     password: 'awdjygawdkauawd',
     confirmPassword: 'awdjygawdkauawd',
@@ -108,6 +111,7 @@ describe('RegisterModule', () => {
     expect(screen.getByLabelText('No. Telepon')).toBeInTheDocument();
     expect(screen.getByLabelText('Jenis Kelamin')).toBeInTheDocument();
     expect(screen.getByLabelText('Jurusan')).toBeInTheDocument();
+    expect(screen.getByLabelText('NPM Alumni')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Daftar' })).toBeInTheDocument();
     expect(screen.getByText('Masuk')).toBeInTheDocument();
   });
