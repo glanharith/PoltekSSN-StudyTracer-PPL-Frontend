@@ -1,1 +1,4 @@
 export * from './RegisterModule';
+export * from './KaprodiModule';
+export * from './LoginModule';
+export * from './ProfileModule'

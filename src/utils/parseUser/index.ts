@@ -2,6 +2,10 @@ import { jwtVerify } from 'jose';
 import { ParsedUser } from './interface';
 
 export const parseUser = async () => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
   const token = localStorage.getItem('tracer-token');
 
   if (!token) return null;
@@ -10,7 +14,11 @@ export const parseUser = async () => {
 
   const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
 
-  const parsed = await jwtVerify(token, secret);
-
-  return { ...parsed.payload, id: parsed.payload.sub } as ParsedUser;
+  try {
+    const parsed = await jwtVerify(token, secret);
+    return { ...parsed.payload, id: parsed.payload.sub } as ParsedUser;
+  } catch {
+    return null;
+  }
 };
+

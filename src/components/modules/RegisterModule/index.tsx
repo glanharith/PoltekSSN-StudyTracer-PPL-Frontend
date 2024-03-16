@@ -1,19 +1,22 @@
 import { Button, Flex, SimpleGrid, Text, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { RegisterInput } from './interface';
+import { RegisterInput, StudyProgram } from './interface';
 import { FiMail, FiUser } from 'react-icons/fi';
-import { MdPassword } from 'react-icons/md';
+import { MdNumbers, MdPassword } from 'react-icons/md';
 import { PiGraduationCap, PiCertificate } from 'react-icons/pi';
 import { BsBook, BsGenderAmbiguous, BsHouseDoor } from 'react-icons/bs';
-import { CustomAuthInput } from '@/components';
+import { CustomInput } from '@/components/elements';
 import { useRouter } from 'next/router';
 import { axios } from '@/utils';
+import { useEffect, useState } from 'react';
+import { CustomPasswordInput } from '@/components/elements/CustomPasswordInput';
 
 export const RegisterModule = () => {
   const {
     handleSubmit,
     register,
     watch,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<RegisterInput>();
   const toast = useToast();
@@ -21,6 +24,8 @@ export const RegisterModule = () => {
   const toLogin = () => {
     router.push('/login');
   };
+  const [studyPrograms, setStudyPrograms] = useState<StudyProgram[]>([]);
+  const [passwordScore, setPasswordScore] = useState(0);
 
   const handleFormSubmit = async (data: RegisterInput) => {
     data.enrollmentYear = Number(data.enrollmentYear);
@@ -49,7 +54,21 @@ export const RegisterModule = () => {
     }
   };
 
+  const fetchStudyPrograms = async () => {
+    const result = await axios.get('/prodi');
+    setStudyPrograms(result.data.data);
+  };
+
+  useEffect(() => {
+    fetchStudyPrograms();
+  }, []);
+
+  useEffect(() => {
+    trigger(['password']);
+  }, [passwordScore]);
+
   const password = watch('password');
+  const enrollmentYear = watch('enrollmentYear');
 
   return (
     <Flex
@@ -72,7 +91,7 @@ export const RegisterModule = () => {
           spacingX={{ md: 12, lg: 20 }}
           spacingY={6}
         >
-          <CustomAuthInput
+          <CustomInput
             name="email"
             label="Email"
             placeholder="Email"
@@ -89,7 +108,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="name"
             label="Nama Lengkap"
             placeholder="Nama Lengkap"
@@ -102,25 +121,37 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
-            name="password"
+          <CustomPasswordInput
             label="Password"
             placeholder="Password"
-            type="password"
             error={errors.password?.message}
             icon={MdPassword}
             register={{
               ...register('password', {
                 required: 'Masukkan password Anda',
+                minLength: {
+                  value: 12,
+                  message: 'Password harus minimal 12 karakter',
+                },
+                maxLength: {
+                  value: 128,
+                  message: 'Password harus maksimal 128 karakter',
+                },
+                validate: () =>
+                  passwordScore >= 3 ||
+                  'Harap gunakan password yang lebih kuat',
               }),
+            }}
+            withValidation
+            password={password}
+            scoreCallback={(score) => {
+              setPasswordScore(score);
             }}
           />
 
-          <CustomAuthInput
-            name="confirmPassword"
+          <CustomPasswordInput
             label="Konfirmasi Password"
             placeholder="Konfirmasi Password"
-            type="password"
             error={errors.confirmPassword?.message}
             icon={MdPassword}
             register={{
@@ -132,11 +163,40 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
+              name="npm"
+              label='NPM Alumni'
+              placeholder="NPM"
+              error={errors.npm?.message}
+              icon={MdNumbers}
+              register={{
+                ...register('npm', {
+                  required: 'NPM tidak boleh kosong!',
+                  pattern: {
+                    value: /^\d{1,10}$/,
+                    message: 'Hanya nomor dengan panjang maksimum 10 digit yang diperbolehkan',
+                  },
+                }),
+              }}
+            />
+
+          <CustomInput
             name="enrollmentYear"
             label="Tahun Masuk"
             placeholder="Tahun Masuk"
-            type="number"
+            type="select"
+            selectOptions={
+              <>
+                {Array.from(
+                  { length: new Date().getFullYear() - 1944 },
+                  (_, index) => (
+                    <option key={index} value={1945 + index}>
+                      {1945 + index}
+                    </option>
+                  ),
+                )}
+              </>
+            }
             error={errors.enrollmentYear?.message}
             icon={PiGraduationCap}
             register={{
@@ -146,19 +206,41 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="graduateYear"
             label="Tahun Lulus"
             placeholder="Tahun Lulus"
-            type="number"
-            error={errors.graduateYear?.message}
+            type="select"
+            selectOptions={
+              <>
+                {Array.from(
+                  { length: new Date().getFullYear() - 1944 },
+                  (_, index) => (
+                    <option key={index} value={1945 + index}>
+                      {1945 + index}
+                    </option>
+                  ),
+                )}
+              </>
+            }
             icon={PiCertificate}
+            error={errors.graduateYear?.message}
             register={{
-              ...register('graduateYear'),
+              ...register('graduateYear', {
+                validate: (value) => {
+                  if (value && enrollmentYear) {
+                    return (
+                      Number(value) > Number(enrollmentYear) ||
+                      'Tahun lulus harus lebih besar dari tahun masuk'
+                    );
+                  }
+                  return true;
+                },
+              }),
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="address"
             label="Alamat"
             placeholder="Alamat"
@@ -171,7 +253,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="phoneNo"
             label="No. Telepon"
             placeholder="No. Telepon"
@@ -185,7 +267,7 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="gender"
             label="Jenis Kelamin"
             placeholder="Jenis Kelamin"
@@ -205,21 +287,16 @@ export const RegisterModule = () => {
             }}
           />
 
-          <CustomAuthInput
+          <CustomInput
             name="studyProgramId"
             label="Jurusan"
             placeholder="Jurusan"
             type="select"
-            selectOptions={
-              <>
-                <option value="48e941a9-3319-4f4c-8a2e-5d6a3287bf89">
-                  Ilmu Sandi
-                </option>
-                <option value="68393bf0-0d80-43a7-889b-c46186a18777">
-                  Ilmu Siber
-                </option>
-              </>
-            }
+            selectOptions={studyPrograms.map((prodi) => (
+              <option key={prodi.id} value={prodi.id}>
+                {prodi.name}
+              </option>
+            ))}
             error={errors.studyProgramId?.message}
             icon={BsBook}
             register={{

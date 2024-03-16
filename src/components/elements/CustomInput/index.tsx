@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { FormInputProps } from './interface';
 
-export const CustomAuthInput: React.FC<FormInputProps> = ({
+export const CustomInput: React.FC<FormInputProps> = ({
   label,
   name,
   type = 'text',
@@ -19,10 +19,11 @@ export const CustomAuthInput: React.FC<FormInputProps> = ({
   error,
   selectOptions,
   leftAddon,
+  defaultValue,
 }) => {
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <InputGroup>
         {IconComponent && (
           <InputLeftAddon>
@@ -37,7 +38,12 @@ export const CustomAuthInput: React.FC<FormInputProps> = ({
             {selectOptions}
           </Select>
         ) : (
-          <Input type={type} placeholder={placeholder} {...register} />
+          <Input
+            type={type}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
+            {...register}
+          />
         )}
       </InputGroup>
       <FormErrorMessage>{error}</FormErrorMessage>

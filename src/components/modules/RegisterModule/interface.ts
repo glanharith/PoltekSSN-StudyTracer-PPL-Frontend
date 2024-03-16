@@ -9,4 +9,10 @@ export type RegisterInput = {
   address: string;
   phoneNo: string;
   studyProgramId: string;
+  npm: string;
+};
+
+export type StudyProgram = {
+  id: string;
+  name: string;
 };

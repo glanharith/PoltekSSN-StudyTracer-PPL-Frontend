@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "test:ci": "jest --ci"
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:ci": "jest --ci --coverage --verbose"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -16,18 +18,26 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@zxcvbn-ts/core": "^3.0.4",
+    "@zxcvbn-ts/language-common": "^3.0.4",
+    "@zxcvbn-ts/language-en": "^3.0.2",
+    "@zxcvbn-ts/language-id": "^3.0.2",
+    "@zxcvbn-ts/matcher-pwned": "^3.0.4",
     "axios": "^1.6.7",
+    "axios-mock-adapter": "^1.22.0",
     "framer-motion": "^11.0.5",
     "jose": "^5.2.2",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.50.1",
-    "react-icons": "^5.0.1"
+    "react-icons": "^5.0.1",
+    "use-debounce": "^10.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.1.5",
-    "@testing-library/react": "14.1.2",
+    "@testing-library/react": "^14.2.1",
     "@types/jest": "29.5.11",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -40,7 +50,8 @@
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "whatwg-fetch": "^3.6.20"
   },
   "resolutions": {
     "string-width": "4.2.3",
