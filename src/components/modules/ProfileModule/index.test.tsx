@@ -36,7 +36,7 @@ describe('ProfileModule', () => {
       },
     };
 
-    // Mock axios response
+    // Mock axios respons
     mockAxios.onGet('/profile').reply(200, { data: mockUserData });
 
     render(<ProfileModule />);
