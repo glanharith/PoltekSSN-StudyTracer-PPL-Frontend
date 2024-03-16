@@ -192,7 +192,8 @@ describe('Kaprodi Module', () => {
       fireEvent.change(screen.getByPlaceholderText('Nama Kepala Program Studi'), { target: { value: 'John Doe' } });
       fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'john@example.com' } });
       fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'Juggernaut123*' } });
-
+      fireEvent.change(screen.getByPlaceholderText('Nip'), { target: { value: '123' } });
+      
       const selectInput = document.querySelector('#jurusan'); 
       if (selectInput) { 
         fireEvent.change(selectInput,{ target: { value: '48e941a9-3319-4f4c-8a2e-5d6a3287bf89' }});
@@ -212,6 +213,7 @@ describe('Kaprodi Module', () => {
       expect(mockAxios.history.post.length).toBe(1);
       expect(mockAxios.history.post[0].data).toEqual(JSON.stringify({
         studyProgramId: '48e941a9-3319-4f4c-8a2e-5d6a3287bf89',
+        nip: '123',
         email: 'john@example.com',
         name: 'John Doe',
         password: 'Juggernaut123*',

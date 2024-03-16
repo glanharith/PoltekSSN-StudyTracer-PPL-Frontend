@@ -18,7 +18,7 @@ import { axios } from '@/utils';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateHeadOfStudyProgramInput, KaprodiModalProps } from './interface';
-import { MdEmail, MdPassword, MdSchool, MdTitle } from 'react-icons/md';
+import { MdEmail, MdNumbers, MdPassword, MdSchool, MdTitle } from 'react-icons/md';
 import { StudyProgram } from '@/components/modules/RegisterModule/interface';
 import { CustomInput } from '../CustomInput';
 import { CustomPasswordInput } from '../CustomPasswordInput';
@@ -46,7 +46,6 @@ export default function HeadOfStudyProgramModal({
   const {
     handleSubmit,
     register,
-    setError,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<CreateHeadOfStudyProgramInput>();
@@ -60,6 +59,7 @@ export default function HeadOfStudyProgramModal({
       if (method === 'CREATE') {
         const res = await axios.post('/kaprodi', {
           studyProgramId: data.studyProgramId,
+          nip: data.nip,
           email: data.email,
           name: data.name,
           password: data.password,
@@ -83,11 +83,17 @@ export default function HeadOfStudyProgramModal({
       let errorMessage;
       if (status === 400) {
         errorMessage = error.response.data.message;
-        setError('email', { message: errorMessage });
+        toast({
+          title: errorMessage,
+          status: 'error',
+        });
       } 
       else if (method === 'CREATE') {
           errorMessage = 'Gagal membuat kepala program studi!';
-          setError('studyProgramId', { message: errorMessage });
+          toast({
+            title: errorMessage,
+            status: 'error',
+          });
       }
     }
   };
@@ -115,6 +121,22 @@ export default function HeadOfStudyProgramModal({
               register={{
                 ...register('name', {
                   required: 'Nama kepala program studi tidak boleh kosong!',
+                }),
+              }}
+            />
+            <CustomInput
+              name="nip"
+              label='NIP Kepala Prodi'
+              placeholder="Nip"
+              error={errors.nip?.message}
+              icon={MdNumbers}
+              register={{
+                ...register('nip', {
+                  required: 'NIP tidak boleh kosong!',
+                  pattern: {
+                    value: /^\d{1,10}$/,
+                    message: 'Hanya nomor dengan panjang maksimum 10 digit yang diperbolehkan',
+                  },
                 }),
               }}
             />
@@ -161,7 +183,7 @@ export default function HeadOfStudyProgramModal({
                 setPasswordScore(score);
               }}
             />
-            <FormControl isInvalid={!!errors.studyProgramId?.message}>
+            <FormControl>
               <FormLabel>{"Jurusan"}</FormLabel>
               <InputGroup>
               <InputLeftAddon>
@@ -175,7 +197,6 @@ export default function HeadOfStudyProgramModal({
                 ))}
               </select>
               </InputGroup>
-              <FormErrorMessage>{errors.studyProgramId?.message}</FormErrorMessage>
             </FormControl>
           </ModalBody>
         </form>
