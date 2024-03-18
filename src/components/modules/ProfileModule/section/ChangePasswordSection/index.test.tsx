@@ -44,7 +44,7 @@ describe('ChangePassword', () => {
     const saveButton = screen.getByText('Simpan');
     fireEvent.click(saveButton);
     await waitFor(() => {
-      expect(screen.getByText('Masukkan Password Baru Anda')).toBeInTheDocument();
+      expect(screen.getByText('Masukkan password baru Anda')).toBeInTheDocument();
     });
   }); 
   test('displays error toast when confirm password does not match new password', async () => {
@@ -67,43 +67,90 @@ describe('ChangePassword', () => {
         expect(screen.getByText('Masukkan password yang sama')).toBeInTheDocument();
       });
   });
+
   test('displays error when input current password is invalid', async () => {
     mockAxios.onPatch('/profile').reply(200)
-    render(<ChangePassword />);
+    await render(<ChangePassword />);
 
-    fireEvent.input(screen.getByLabelText('Password Lama'), {
-      target: { value: 'password' },
-    });
-    fireEvent.input(screen.getByLabelText('Password Baru'), {
-      target: { value: 'newPassword' },
-    });
-    fireEvent.input(screen.getByLabelText('Konfirmasi Password Baru'), {
-      target: { value: 'newPassword' },
-    });
 
-    fireEvent.click(screen.getByText('Simpan'));
+    await act( async () => {
+      fireEvent.input(screen.getByLabelText('Password Lama'), {
+        target: { value: 'password' },
+      });
+      fireEvent.input(screen.getByLabelText('Password Baru'), {
+        target: { value: 'Juggernaut123*' },
+      });
+      fireEvent.input(screen.getByLabelText('Konfirmasi Password Baru'), {
+        target: { value: 'Juggernaut123*' },
+      });
+  
+      await new Promise((r) => setTimeout(r, 2000));
+    })
+
+
+    act(() => {
+      fireEvent.click(screen.getByText('Simpan'));
+    })
 
     await waitFor(() => {
       expect(useToast()).toHaveBeenCalledWith({
-        title: "Profil berhasil diperbarui!",   
+        title: 'Profil berhasil diperbarui!',
         status: 'success',
       });
     });
   });
-  it('displays error when current password is invalid', async () => {
+
+  it('display error when the new password is not strong enough', async () => {
+    mockAxios.onPatch('/profile').reply(200)
+    await render(<ChangePassword />);
+
+
+    await act( async () => {
+      fireEvent.input(screen.getByLabelText('Password Lama'), {
+        target: { value: 'password' },
+      });
+      fireEvent.input(screen.getByLabelText('Password Baru'), {
+        target: { value: 'nanananananana' },
+      });
+      fireEvent.input(screen.getByLabelText('Konfirmasi Password Baru'), {
+        target: { value: 'nanananananana' },
+      });
+  
+      await new Promise((r) => setTimeout(r, 2000));
+    })
+
     act(() => {
+      fireEvent.click(screen.getByText('Simpan'));
+    })
+    
+    await waitFor( async () => {
+      expect(screen.getByText("Harap gunakan password yang lebih kuat")).toBeInTheDocument()
+    })
+  })
+
+  it('displays error when current password is invalid', async () => {
+    await act(() => {
         render(<ChangePassword />);
       });
-    fireEvent.input(screen.getByLabelText('Password Lama'), {
-    target: { value: 'InvalidPassword' },
-    });
-    fireEvent.input(screen.getByLabelText('Password Baru'), {
-    target: { value: 'newPassword' },
-    });
-    fireEvent.input(screen.getByLabelText('Konfirmasi Password Baru'), {
-    target: { value: 'newPassword' },
-    });  
-    fireEvent.click(screen.getByRole('button', { name: 'Simpan' }));
+    
+    await act( async () => {
+      fireEvent.input(screen.getByLabelText('Password Lama'), {
+        target: { value: 'password' },
+      });
+      fireEvent.input(screen.getByLabelText('Password Baru'), {
+        target: { value: 'Juggernaut123*' },
+      });
+      fireEvent.input(screen.getByLabelText('Konfirmasi Password Baru'), {
+        target: { value: 'Juggernaut123*' },
+      });
+  
+      await new Promise((r) => setTimeout(r, 2000));
+    })
+
+    act(() => {
+      fireEvent.click(screen.getByText('Simpan'));
+    })
+
     await waitFor(() => {
         expect(useToast()).toHaveBeenCalledWith({
             title: "Profil gagal diperbarui, password lama salah!",   
