@@ -1,10 +1,11 @@
-import { Button, Divider, Flex, Icon } from '@chakra-ui/react';
+import { Button, Divider, Flex, Icon, useToast } from '@chakra-ui/react';
 import { CustomInput } from '../CustomInput';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { FormBuilderInput } from './interface';
 import { GenericFormTextInput } from './GenericFormTextInput';
 import { QuestionInput } from './QuestionInput';
 import { FiPlusCircle } from 'react-icons/fi';
+import { axios } from '@/utils';
 
 export const FormBuilder = () => {
   const methods = useForm<FormBuilderInput>({
@@ -17,15 +18,43 @@ export const FormBuilder = () => {
     control,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = methods;
   const { fields, append, remove } = useFieldArray({
     name: 'questions',
     control,
   });
+  const toast = useToast();
 
-  const onSubmit = (data: FormBuilderInput) => {
+  const onSubmit = async (data: FormBuilderInput) => {
     console.log(data);
+    const dataWithOrder = {
+      ...data,
+      questions: data.questions.map((q, questionIdx) => {
+        return {
+          ...q,
+          order: questionIdx,
+          options: q.options?.map((o, optionIdx) => {
+            return { ...o, order: optionIdx };
+          }),
+        };
+      }),
+    };
+    try {
+      await axios.post(`/survey`, {
+        ...dataWithOrder,
+      });
+      toast({
+        title: 'Berhasil menyimpan survey!',
+        status: 'success',
+      });
+    } catch (e: any) {
+      console.log(e);
+      toast({
+        title: 'Gagal menyimpan survey',
+        status: 'error',
+      });
+    }
   };
 
   const startTime = watch('startTime');
@@ -143,6 +172,7 @@ export const FormBuilder = () => {
           bgColor: 'blue.600',
         }}
         alignSelf="end"
+        isLoading={isSubmitting}
       >
         Simpan
       </Button>
