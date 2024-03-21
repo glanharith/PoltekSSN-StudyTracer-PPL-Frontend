@@ -16,5 +16,9 @@ export interface FormBuilderInput {
   type: 'CURRICULUM' | 'CAREER';
   startTime: Date;
   endTime: Date;
+  admissionYearFrom?: number;
+  admissionYearTo?: number;
+  graduateYearFrom?: number;
+  graduateYearTo?: number;
   questions: FormQuestion[];
 }

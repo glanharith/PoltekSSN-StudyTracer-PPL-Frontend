@@ -1,4 +1,16 @@
-import { Button, Divider, Flex, Icon, useToast } from '@chakra-ui/react';
+import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  Button,
+  Divider,
+  Flex,
+  Icon,
+  useToast,
+  Box,
+  AccordionPanel,
+} from '@chakra-ui/react';
 import { CustomInput } from '../CustomInput';
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
 import { FormBuilderInput } from './interface';
@@ -27,7 +39,11 @@ export const FormBuilder = () => {
   const toast = useToast();
 
   const onSubmit = async (data: FormBuilderInput) => {
-    console.log(data);
+    if (data.admissionYearFrom === -1) delete data.admissionYearFrom;
+    if (data.admissionYearTo === -1) delete data.admissionYearTo;
+    if (data.graduateYearFrom === -1) delete data.graduateYearFrom;
+    if (data.graduateYearTo === -1) delete data.graduateYearTo;
+
     const dataWithOrder = {
       ...data,
       questions: data.questions.map((q, questionIdx) => {
@@ -58,6 +74,8 @@ export const FormBuilder = () => {
   };
 
   const startTime = watch('startTime');
+  const admissionYearFrom = watch('admissionYearFrom');
+  const graduateYearFrom = watch('graduateYearFrom');
 
   return (
     <form
@@ -130,6 +148,176 @@ export const FormBuilder = () => {
               error={errors.endTime?.message}
             />
           </Flex>
+
+          <Accordion allowToggle>
+            <AccordionItem>
+              <AccordionButton>
+                <Box as="span" flex="1" textAlign="left">
+                  Batasan (opsional)
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel>
+                <Flex direction="column">
+                  <Box as="span" fontWeight={500}>
+                    Tahun masuk alumni
+                  </Box>
+                  <Flex
+                    direction={{ base: 'column', md: 'row' }}
+                    gap={2}
+                    alignItems={{ base: 'start', md: 'center' }}
+                    w={{
+                      base: '60%',
+                      sm: '40%',
+                      md: '85%',
+                      lg: '75%',
+                      xl: '50%',
+                    }}
+                  >
+                    <CustomInput
+                      type="select"
+                      name="admissionYearFrom"
+                      error={errors.admissionYearTo?.message}
+                      register={{
+                        ...register('admissionYearFrom', {
+                          valueAsNumber: true,
+                        }),
+                      }}
+                      selectOptions={
+                        <>
+                          <option value={-1}>Tidak diset</option>
+                          {Array.from(
+                            { length: new Date().getFullYear() - 1944 },
+                            (_, index) => (
+                              <option key={index} value={1945 + index}>
+                                {1945 + index}
+                              </option>
+                            ),
+                          )}
+                        </>
+                      }
+                    />
+                    <span className="pl-4 md:pl-0">hingga</span>
+                    <CustomInput
+                      type="select"
+                      name="admissionYearTo"
+                      error={errors.admissionYearTo?.message}
+                      register={{
+                        ...register('admissionYearTo', {
+                          valueAsNumber: true,
+                          validate: (year) => {
+                            if (
+                              year === undefined ||
+                              year === -1 ||
+                              admissionYearFrom === undefined ||
+                              year === -1
+                            )
+                              return true;
+                            return (
+                              year >= admissionYearFrom ||
+                              'Batasan tahun masuk tidak valid'
+                            );
+                          },
+                        }),
+                      }}
+                      selectOptions={
+                        <>
+                          <option value={-1}>Tidak diset</option>
+                          {Array.from(
+                            { length: new Date().getFullYear() - 1944 },
+                            (_, index) => (
+                              <option key={index} value={1945 + index}>
+                                {1945 + index}
+                              </option>
+                            ),
+                          )}
+                        </>
+                      }
+                    />
+                  </Flex>
+                </Flex>
+
+                <Flex direction="column" pt={4}>
+                  <Box as="span" fontWeight={500}>
+                    Tahun lulus alumni
+                  </Box>
+                  <Flex
+                    direction={{ base: 'column', md: 'row' }}
+                    gap={2}
+                    alignItems={{ base: 'start', md: 'center' }}
+                    w={{
+                      base: '60%',
+                      sm: '40%',
+                      md: '85%',
+                      lg: '75%',
+                      xl: '50%',
+                    }}
+                  >
+                    <CustomInput
+                      type="select"
+                      name="graduateYearFrom"
+                      error={errors.graduateYearTo?.message}
+                      register={{
+                        ...register('graduateYearFrom', {
+                          valueAsNumber: true,
+                        }),
+                      }}
+                      selectOptions={
+                        <>
+                          <option value={-1}>Tidak diset</option>
+                          {Array.from(
+                            { length: new Date().getFullYear() - 1944 },
+                            (_, index) => (
+                              <option key={index} value={1945 + index}>
+                                {1945 + index}
+                              </option>
+                            ),
+                          )}
+                        </>
+                      }
+                    />
+                    <span className="pl-4 md:pl-0">hingga</span>
+                    <CustomInput
+                      type="select"
+                      name="graduateYearTo"
+                      error={errors.graduateYearTo?.message}
+                      register={{
+                        ...register('graduateYearTo', {
+                          valueAsNumber: true,
+                          validate: (year) => {
+                            if (
+                              year === undefined ||
+                              year === -1 ||
+                              graduateYearFrom === undefined ||
+                              year === -1
+                            )
+                              return true;
+                            return (
+                              year >= graduateYearFrom ||
+                              'Batasan tahun masuk tidak valid'
+                            );
+                          },
+                        }),
+                      }}
+                      selectOptions={
+                        <>
+                          <option value={-1}>Tidak diset</option>
+                          {Array.from(
+                            { length: new Date().getFullYear() - 1944 },
+                            (_, index) => (
+                              <option key={index} value={1945 + index}>
+                                {1945 + index}
+                              </option>
+                            ),
+                          )}
+                        </>
+                      }
+                    />
+                  </Flex>
+                </Flex>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </section>
 
         <section className="flex flex-col gap-6 p-4 rounded-xl bg-white items-center">
