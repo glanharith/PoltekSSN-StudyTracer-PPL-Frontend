@@ -1,4 +1,3 @@
-// components/SurveyForm.tsx
 import React from 'react';
 import {
   Box,
@@ -14,8 +13,9 @@ import {
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
+  SliderMark,
 } from '@chakra-ui/react';
-import { Survey, Question } from './interface';
+import { Survey } from './interface';
 
 interface Props {
   survey: Survey;
@@ -64,6 +64,11 @@ const SurveyForm: React.FC<Props> = ({ survey }) => {
                       <SliderFilledTrack />
                     </SliderTrack>
                     <SliderThumb />
+                    {Array.from({ length: question.rangeTo as number - (question.rangeFrom as number) + 1 }, (_, index) => (
+                      <SliderMark key={index} value={question.rangeFrom as number + index}>
+                        {question.rangeFrom as number + index}
+                      </SliderMark>
+                    ))}
                   </Slider>
                 </Box>
               )}
