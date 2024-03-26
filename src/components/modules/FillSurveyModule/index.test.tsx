@@ -20,6 +20,11 @@ describe('Fill Survey Module', () => {
       mockAxios.reset();
       (useToast as jest.Mock).mockReturnValue(jest.fn());
       refetchData.mockClear();
+      global.ResizeObserver = jest.fn().mockImplementation(() => ({
+        observe: jest.fn(),
+        unobserve: jest.fn(),
+        disconnect: jest.fn(),
+    }))
     });
 
     const tempSurvey = {
