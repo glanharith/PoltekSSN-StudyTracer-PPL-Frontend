@@ -29,3 +29,8 @@ export interface Survey {
     graduateYearTo?: number;
     questions: Question[];
   }
+
+
+export interface SurveyFormProps {
+  surveyId: string;
+}

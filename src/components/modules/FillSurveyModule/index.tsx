@@ -18,20 +18,16 @@ import {
   useToast,
   Text,
 } from '@chakra-ui/react';
-import { Survey } from './interface';
+import { Survey, SurveyFormProps } from './interface';
 import { axios } from '@/utils';
 import { useForm } from 'react-hook-form';
 
 
-interface Props {
-  surveyId: string;
-}
-
-const SurveyForm: React.FC<Props> = ({ surveyId }) => {
+const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
   const [survey, setSurvey] = useState<Survey | undefined>();
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
   const toast = useToast();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit} = useForm();
 
   const onSubmit = async (data: any) => {
     const formData: { [key: string]: number | string } = {};
