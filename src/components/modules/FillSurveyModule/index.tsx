@@ -33,7 +33,7 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
   useEffect(() => {
     const fetchSurvey = async () => {
       try {
-        const response = await axios.get('/survey/' + surveyId);
+        const response = await axios.get('/survey/get/' + surveyId);
         setSurvey(response.data);
       } catch (error) {
         toast({
