@@ -33,6 +33,48 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
   const toast = useToast();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
+  const onSubmit = (data: any) => {
+    const formData: { [key: string]: number | string } = {};
+
+    survey?.questions.forEach((question) => {
+      const questionId = question.id;
+
+      if (question.type == 'RANGE'){
+        const sliderElement = document.getElementById("slider-thumb-" + questionId) as HTMLInputElement;
+          if (sliderElement) {
+            const sliderSelectedValue = parseFloat(sliderElement.ariaValueNow as string);
+            formData[questionId] = sliderSelectedValue;
+          } 
+      }
+      else if (question.type == 'RADIO'){
+        const radioSelectedValue = selectedOptions[questionId];
+        formData[questionId] = radioSelectedValue;
+      }
+    });
+    
+    const submission = {...data, ...formData}
+    
+    let toastShown = false;
+
+    Object.entries(submission).forEach(([key, value]) => {
+      if (!toastShown && (value === false || value === "" || value === undefined || (Array.isArray(value) && value.length === 0))) {
+        toastShown = true; // Set the flag to true to indicate that toast has been shown
+        toast({
+          title: 'Warning',
+          description: 'Harap isi semua pertanyaan yang ada',
+          status: 'warning',
+          duration: 3000,
+          isClosable: true,
+        });
+        return; 
+      }
+    });
+
+    if(!toastShown){
+      // send ke backend
+    }
+  };
+
   useEffect(() => {
     const fetchSurvey = async () => {
       try {
@@ -56,49 +98,7 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
     setSelectedOptions({ ...selectedOptions, [questionId]: optionLabel });
   };
 
-  const handleSubmite = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  
-    const formData: { [key: string]: string | string[] | number } = {};
-  
-    // Iterate through each question in the survey
-    survey?.questions.forEach((question) => {
-      const questionId = question.id;
-  
-      // Handle different question types
-      switch (question.type) {
-        case 'TEXT':
-          const textInputValue = (document.getElementById(questionId) as HTMLInputElement).value;
-          formData[questionId] = textInputValue;
-          break;
 
-        case 'CHECKBOX':
-          const checkboxInputs = document.querySelectorAll(`input[name="${question.id}"]:checked`);
-          const checkboxValues = Array.from(checkboxInputs).map((checkbox) => {
-            return (checkbox as HTMLInputElement).value;
-          });
-          formData[question.id] = checkboxValues;
-          break;
-  
-        case 'RADIO':
-          const radioSelectedValue = selectedOptions[questionId];
-          formData[questionId] = radioSelectedValue;
-          break;
-  
-        case 'RANGE':
-          const sliderElement = document.getElementById("slider-thumb-" + questionId) as HTMLInputElement;
-          if (sliderElement) {
-            const sliderSelectedValue = parseFloat(sliderElement.ariaValueNow as string);
-            formData[questionId] = sliderSelectedValue;
-          } 
-          break;
-  
-        default:
-          break;
-      }
-    });
-    console.log(formData);
-  };
 
   return (
     <Box>
@@ -114,19 +114,28 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
                 <Text textColor={'gray.500'} fontStyle={'italic'}>
                   Silahkan isi pertanyaan-pertanyaan berikut ini dengan jawaban yang sesuai.
                 </Text>
-                <form onSubmit={handleSubmite}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <Stack spacing={4}>
                     {survey.questions.map((question) => (
                       <FormControl key={question.id}>
                         <FormLabel htmlFor={question.id}>{question.order+1}. {question.question}</FormLabel>
                         {question.type === 'TEXT' && (
-                          <Input outline={'16px'} type="text" id={question.id} name={question.id} />
+                          <Box>
+                            <Input 
+                              {...register(question.id)} 
+                              outline={'16px'} 
+                              type="text" 
+                              id={question.id} 
+                              name={question.id} 
+                            />
+                          </Box>
+                        
                         )}
                         {question.type === 'CHECKBOX' && (
                           <Stack spacing={2}>
                             <Text textColor={'gray.500'} fontStyle={'italic'} fontSize={'12'}>Pilih opsi berikut</Text>
                             {question.option?.map((option) => (
-                              <Checkbox key={option.id} name={question.id} value={option.label}>
+                              <Checkbox {...register(question.id)} key={option.id} name={question.id} value={option.label}>
                                 {option.label}
                               </Checkbox>
                             ))}
@@ -136,15 +145,16 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
                           <Stack spacing={2}>
                             <Text textColor={'gray.500'} fontStyle={'italic'} fontSize={'12'}>Pilih salah satu</Text>
                             {question.option?.map((option) => (
-                              <Radio
-                                key={option.id}
-                                name={question.id}
-                                value={option.label}
-                                isChecked={selectedOptions[question.id] === option.label}
-                                onChange={() => handleRadioChange(question.id, option.label)}
-                              >
-                                {option.label}
-                              </Radio>
+                              <Box key={option.id}>
+                                <Radio
+                                  key={option.id}
+                                  value={option.label}
+                                  isChecked={selectedOptions[question.id] === option.label}
+                                  onChange={() => handleRadioChange(question.id, option.label)}
+                                >
+                                  {option.label}
+                                </Radio>
+                              </Box>
                             ))}
                           </Stack>
                         )}
@@ -165,11 +175,14 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
                               <SliderFilledTrack />
                             </SliderTrack>
                             <SliderThumb />
-                            {Array.from({ length: question.rangeTo as number - (question.rangeFrom as number) + 1 }, (_, index) => (
-                              <SliderMark key={index} value={question.rangeFrom as number + index} mt={2}>
-                                {question.rangeFrom as number + index}
-                              </SliderMark>
-                            ))}
+                            {Array.from({ length: (question.rangeTo as number) - (question.rangeFrom as number) + 1 }, (_, index) => {
+                              const value = (question.rangeFrom as number) + index;
+                              return (
+                                <SliderMark key={index} value={value} mt={2}>
+                                  {value}
+                                </SliderMark>
+                              );
+                            })}
                           </Slider>
                         </Box>
                       )}
