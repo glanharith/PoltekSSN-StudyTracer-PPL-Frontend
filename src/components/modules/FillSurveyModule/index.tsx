@@ -16,6 +16,7 @@ import {
   SliderMark,
   Flex,
   useToast,
+  Text,
 } from '@chakra-ui/react';
 import { Survey } from './interface';
 import { axios } from '@/utils';
@@ -26,6 +27,7 @@ interface Props {
 
 const SurveyForm: React.FC<Props> = ({ surveyId }) => {
   const [survey, setSurvey] = useState<Survey | undefined>();
+  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
   const toast = useToast();
 
   useEffect(() => {
@@ -47,9 +49,14 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
     fetchSurvey();
   }, [surveyId, toast]);
 
+  const handleRadioChange = (questionId: string, optionLabel: string) => {
+    setSelectedOptions({ ...selectedOptions, [questionId]: optionLabel });
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Add your form submission logic here
+    console.log(selectedOptions);
   };
 
   return (
@@ -58,18 +65,21 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
         <Box p={4} w={'50%'}>
           {survey && (
             <Flex flexDirection={'column'} gap={'16px'}>
-              <Box rounded={'md'} bgColor={'gray.100'} padding={'20px'}>
+              <Box rounded={'md'} bgColor={'white'} padding={'20px'}>
                 <Heading textColor={'black'} mb={4}> {survey.title}</Heading>
                 <Box textColor={'black'} mb={4}>{survey.description}</Box>
               </Box>
-              <Box rounded={'md'} bgColor={'gray.100'} padding={'16px'}>
+              <Box rounded={'md'} bgColor={'white'} padding={'16px'}>
+                <Text textColor={'gray.500'} fontStyle={'italic'}>
+                  Silahkan isi pertanyaan-pertanyaan berikut ini dengan jawaban yang sesuai.
+                </Text>
                 <form onSubmit={handleSubmit}>
                   <Stack spacing={4}>
                     {survey.questions.map((question) => (
                       <FormControl key={question.id}>
                         <FormLabel htmlFor={question.id}>{question.order+1}. {question.question}</FormLabel>
                         {question.type === 'TEXT' && (
-                          <Input type="text" id={question.id} name={question.id} />
+                          <Input outline={'16px'} type="text" id={question.id} name={question.id} />
                         )}
                         {question.type === 'CHECKBOX' && (
                           <Stack spacing={2}>
@@ -83,7 +93,13 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
                         {question.type === 'RADIO' && (
                           <Stack spacing={2}>
                             {question.option?.map((option) => (
-                              <Radio key={option.id} name={question.id} value={option.label}>
+                              <Radio
+                                key={option.id}
+                                name={question.id}
+                                value={option.label}
+                                isChecked={selectedOptions[question.id] === option.label}
+                                onChange={() => handleRadioChange(question.id, option.label)}
+                              >
                                 {option.label}
                               </Radio>
                             ))}
