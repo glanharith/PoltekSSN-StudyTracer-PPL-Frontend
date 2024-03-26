@@ -33,7 +33,7 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
   const toast = useToast();
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     const formData: { [key: string]: number | string } = {};
 
     survey?.questions.forEach((question) => {
@@ -71,7 +71,7 @@ const SurveyForm: React.FC<Props> = ({ surveyId }) => {
     });
 
     if(!toastShown){
-      // send ke backend
+      const res = await axios.post('/survey/fill-survey', submission);
     }
   };
 
