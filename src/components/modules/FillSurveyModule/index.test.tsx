@@ -194,7 +194,9 @@ describe('Fill Survey Module', () => {
                 title: 'Gagal',
                 description: 'Gagal memuat daftar kepala program studi',
                 status: 'error',
-            });
+                duration: 3000,
+                isClosable: true,
+              });
         })
       })
 
