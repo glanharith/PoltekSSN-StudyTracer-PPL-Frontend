@@ -21,12 +21,14 @@ import {
 import { Survey, SurveyFormProps } from './interface';
 import { axios } from '@/utils';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 
 
 const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
   const [survey, setSurvey] = useState<Survey | undefined>();
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
   const toast = useToast();
+  const router = useRouter();
   const { register, handleSubmit} = useForm();
 
   const onSubmit = async (data: any) => {
@@ -54,7 +56,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
 
     Object.entries(submission).forEach(([key, value]) => {
       if (!toastShown && (value === false || value === "" || value === undefined || (Array.isArray(value) && value.length === 0))) {
-        toastShown = true; // Set the flag to true to indicate that toast has been shown
+        toastShown = true;
         toast({
           title: 'Warning',
           description: 'Harap isi semua pertanyaan yang ada',
@@ -62,12 +64,18 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
           duration: 3000,
           isClosable: true,
         });
-        return; 
       }
     });
 
     if(!toastShown){
       const res = await axios.post('/survey/fill-survey', submission);
+      toast({
+        title: 'Sukses',
+        description: 'Sukses mengisi survey',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
     }
   };
 
@@ -79,11 +87,12 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
       } catch (error) {
         toast({
           title: 'Gagal',
-          description: 'Gagal memuat daftar kepala program studi',
+          description: 'Gagal memuat data survey',
           status: 'error',
           duration: 3000,
           isClosable: true,
         });
+        router.replace("/")
       }
     };
 
