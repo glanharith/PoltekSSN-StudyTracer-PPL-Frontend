@@ -18,7 +18,7 @@ import {
   useToast,
   Text,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import navStyles from './navbar.module.css';
 import { parseUser } from '@/utils';
@@ -28,12 +28,12 @@ import { ParsedUser } from '@/utils/parseUser/interface';
 const defaultUserMenu = [
   {
     name: 'Survey Kurikulum',
-    path: '/survey-kurikulum',
+    path: '/survey/kurikulum',
     role: 'ALUMNI',
   },
   {
     name: 'Survey Karir',
-    path: '/survey-karir',
+    path: '/survey/karir',
     role: 'ALUMNI',
   },
   {
@@ -179,8 +179,7 @@ export const Navbar: React.FC = () => {
                 </Button>
               </>
             ) : (
-              <>
-                <Flex alignItems={'center'} gap={4}>
+              <Flex alignItems={'center'} gap={4}>
                   <Text>
                     Hi, {user?.name}, You are{' '}
                     {user?.role == 'ADMIN'
@@ -212,7 +211,6 @@ export const Navbar: React.FC = () => {
                     </MenuList>
                   </Menu>
                 </Flex>
-              </>
             )}
           </Flex>
         </Flex>
