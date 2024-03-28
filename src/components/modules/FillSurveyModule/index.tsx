@@ -139,7 +139,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
                         {question.type === 'CHECKBOX' && (
                           <Stack spacing={2}>
                             <Text textColor={'gray.500'} fontStyle={'italic'} fontSize={'12'}>Pilih opsi berikut</Text>
-                            {question.option?.map((option) => (
+                            {question.options?.map((option) => (
                               <Checkbox {...register(question.id)} key={option.id} name={question.id} value={option.label}>
                                 {option.label}
                               </Checkbox>
@@ -149,7 +149,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
                         {question.type === 'RADIO' && (
                           <Stack spacing={2}>
                             <Text textColor={'gray.500'} fontStyle={'italic'} fontSize={'12'}>Pilih salah satu</Text>
-                            {question.option?.map((option) => (
+                            {question.options?.map((option) => (
                               <Box key={option.id}>
                                 <Radio
                                   key={option.id}

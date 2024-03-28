@@ -54,7 +54,7 @@ describe('Fill Survey Module', () => {
               "rangeTo": 3,
               "order": 0,
               "formId": "7b44a640-4f8c-4bd8-8137-42723f8c90d6",
-              "option": []
+              "options": []
           },
           {
               "id": "23b70fed-cc7c-4368-a2c9-385c8091d94c",
@@ -64,7 +64,7 @@ describe('Fill Survey Module', () => {
               "rangeTo": 3,
               "order": 2,
               "formId": "7b44a640-4f8c-4bd8-8137-42723f8c90d6",
-              "option": [
+              "options": [
                   {
                       "id": "4d12a37e-c44f-48e0-8df2-f23d929e4a11",
                       "label": "1",
@@ -87,7 +87,7 @@ describe('Fill Survey Module', () => {
               "rangeTo": 3,
               "order": 4,
               "formId": "7b44a640-4f8c-4bd8-8137-42723f8c90d6",
-              "option": [
+              "options": [
                   {
                       "id": "b7e66f7b-28ef-44ba-8aee-92c80148b718",
                       "label": "ini jawaban radio",
@@ -110,7 +110,7 @@ describe('Fill Survey Module', () => {
               "rangeTo": 4,
               "order": 6,
               "formId": "7b44a640-4f8c-4bd8-8137-42723f8c90d6",
-              "option": []
+              "options": []
           },
       ]
     }
@@ -207,7 +207,7 @@ describe('Fill Survey Module', () => {
                     "rangeTo": 3,
                     "order": 0,
                     "formId": "7b44a640-4f8c-4bd8-8137-42723f8c90d6",
-                    "option": [
+                    "options": [
                         {
                             "id": "b7e66f7b-28ef-44ba-8aee-92c80148b718",
                             "label": "ini jawaban radio",

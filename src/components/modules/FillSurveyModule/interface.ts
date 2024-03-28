@@ -11,7 +11,7 @@ export interface Question {
     question: string;
     rangeFrom?: number;
     rangeTo?: number;
-    option?: Option[];
+    options?: Option[];
     order: number;
     formId: string;
 }
