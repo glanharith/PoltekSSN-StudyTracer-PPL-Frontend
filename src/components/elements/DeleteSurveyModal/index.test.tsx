@@ -1,20 +1,20 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import DeleteHeadOfStudyProgramModal from '@/components/elements/DeleteHeadOfStudyProgramModal';
+import DeleteSurveyModal from '@/components/elements/DeleteSurveyModal'
 import { axios } from '@/utils';
 import MockAdapter from 'axios-mock-adapter';
 import { useToast } from '@chakra-ui/react';
+import DeleteHeadOfStudyProgramModal from '@/components/elements/DeleteHeadOfStudyProgramModal';
 
 const mockAxios = new MockAdapter(axios);
-
 
 jest.mock('@chakra-ui/react', () => ({
   ...jest.requireActual('@chakra-ui/react'),
   useToast: jest.fn(),
 }));
 
-describe('DeleteHeadOfStudyProgramModal', () => {
+describe('DeleteSurveyModal', () => {
   const mockOnClose = jest.fn();
   const mockRefetchData = jest.fn();
 
@@ -28,29 +28,29 @@ describe('DeleteHeadOfStudyProgramModal', () => {
 
   it('renders correctly', async () => {
     render(
-      <DeleteHeadOfStudyProgramModal
+      <DeleteSurveyModal
         isOpen = {true}
         onClose = {mockOnClose}
-        dataToBeDeleted = { ['1', '2', '3'] }
+        dataToBeDeleted = { '84e8ebba-c134-4a48-a3c9-0a6025e1aad8' }
         refetchData = {mockRefetchData}
       />,
     );
-    expect(screen.getByText('Hapus Kepala Program Studi')).toBeInTheDocument();
-    expect(screen.getByText('Apakah Anda yakin akan menghapus kaprodi yang dipilih?')).toBeInTheDocument();
+    expect(screen.getByText('Hapus Survey')).toBeInTheDocument();
+    expect(screen.getByText('Apakah Anda yakin akan menghapus survey yang dipilih?')).toBeInTheDocument();
     expect(screen.getByText('Batal')).toBeInTheDocument();
     expect(screen.getByText('Hapus')).toBeInTheDocument();
   });
 
-  it('calls handleDeleteKaprodi when "Hapus" button is clicked', async () => {
+  it('calls handleDeleteSurvey when "Hapus" button is clicked', async () => {
     render(
-      <DeleteHeadOfStudyProgramModal
+      <DeleteSurveyModal
         isOpen = {true}
         onClose = {mockOnClose}
-        dataToBeDeleted = { ['1', '2', '3'] }
+        dataToBeDeleted = { '84e8ebba-c134-4a48-a3c9-0a6025e1aad8' }
         refetchData = {mockRefetchData}
       />,
     );
-    mockAxios.onDelete('/kaprodi').reply(200);
+    mockAxios.onDelete('/survey/84e8ebba-c134-4a48-a3c9-0a6025e1aad8').reply(200);
     fireEvent.click(screen.getByText('Hapus'));
 
     await waitFor(() => {
@@ -65,10 +65,10 @@ describe('DeleteHeadOfStudyProgramModal', () => {
 
   it('calls onClose when "Batal" button is clicked', async () => {
     render(
-      <DeleteHeadOfStudyProgramModal
+      <DeleteSurveyModal
         isOpen = {true}
         onClose = {mockOnClose}
-        dataToBeDeleted = { ['1', '2', '3'] }
+        dataToBeDeleted = {'84e8ebba-c134-4a48-a3c9-0a6025e1aad8'}
         refetchData = {mockRefetchData}
       />,
     );
@@ -81,44 +81,44 @@ describe('DeleteHeadOfStudyProgramModal', () => {
     (useToast as jest.Mock).mockReturnValue(mockToast);
 
     render(
-      <DeleteHeadOfStudyProgramModal
+      <DeleteSurveyModal
         isOpen = {true}
         onClose = {mockOnClose}
-        dataToBeDeleted = { ['1', '2', '3'] }
+        dataToBeDeleted = {'84e8ebba-c134-4a48-a3c9-0a6025e1aad8'}
         refetchData = {mockRefetchData}
       />,
     );
 
-    mockAxios.onDelete('/kaprodi').reply(500);
+    mockAxios.onDelete('/survey/84e8ebba-c134-4a48-a3c9-0a6025e1aad8').reply(500);
     fireEvent.click(screen.getByText('Hapus'));
 
     await waitFor(() => {
       expect(mockAxios.history.delete.length).toBe(1);
-      expect(mockOnClose).toHaveBeenCalledTimes(0);
-      expect(mockToast).toHaveBeenCalledWith({
+      xpect(mockOnClose).toHaveBeenCalledTimes(0);
+      xpect(mockToast).toHaveBeenCalledWith({
         title: 'Gagal',
-        description: 'Gagal menghapus kaprodi!',
+        description: 'Gagal menghapus survey!',
         status: 'error',
         duration: 3000,
         isClosable: true,
       });
-    });
-    setTimeout(() => {
-      expect(mockRefetchData).toHaveBeenCalled();
-    }, 1000);
-  });
+      setTimeout(() => {
+        expect(mockRefetchData).toHaveBeenCalled();
+      }, 1000);
+    })
+  })
 
   it('calls refetchData after a delay', async () => {
     jest.useFakeTimers();
     render(
-      <DeleteHeadOfStudyProgramModal
+      <DeleteSurveyModal
         isOpen = {true}
         onClose = {mockOnClose}
-        dataToBeDeleted = { ['1', '2', '3'] }
+        dataToBeDeleted = {'84e8ebba-c134-4a48-a3c9-0a6025e1aad8'}
         refetchData = {mockRefetchData}
       />,
     );
-    mockAxios.onDelete('/kaprodi').reply(200);
+    mockAxios.onDelete('/survey/84e8ebba-c134-4a48-a3c9-0a6025e1aad8').reply(200);
     fireEvent.click(screen.getByText('Hapus'));
 
     await waitFor(() => expect(mockAxios.history.delete.length).toBe(1));
@@ -127,4 +127,4 @@ describe('DeleteHeadOfStudyProgramModal', () => {
 
     jest.useRealTimers();
   });
-});
+})
