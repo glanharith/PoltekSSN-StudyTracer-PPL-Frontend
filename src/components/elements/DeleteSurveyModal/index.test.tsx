@@ -5,7 +5,6 @@ import DeleteSurveyModal from '@/components/elements/DeleteSurveyModal'
 import { axios } from '@/utils';
 import MockAdapter from 'axios-mock-adapter';
 import { useToast } from '@chakra-ui/react';
-import DeleteHeadOfStudyProgramModal from '@/components/elements/DeleteHeadOfStudyProgramModal';
 
 const mockAxios = new MockAdapter(axios);
 
@@ -94,8 +93,8 @@ describe('DeleteSurveyModal', () => {
 
     await waitFor(() => {
       expect(mockAxios.history.delete.length).toBe(1);
-      xpect(mockOnClose).toHaveBeenCalledTimes(0);
-      xpect(mockToast).toHaveBeenCalledWith({
+      expect(mockOnClose).toHaveBeenCalledTimes(0);
+      expect(mockToast).toHaveBeenCalledWith({
         title: 'Gagal',
         description: 'Gagal menghapus survey!',
         status: 'error',
