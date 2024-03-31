@@ -114,9 +114,11 @@ export const ProfileModule = () => {
             name: user?.name,
             alumni: {
               npm: user?.alumni.npm as string,
+              id: user?.alumni.id as string,
               phoneNo: user?.alumni.phoneNo,
               address: user?.alumni.address,
               enrollmentYear: user?.alumni.enrollmentYear,
+              graduateYear: user?.alumni.graduateYear,
             },
           }}
         />
