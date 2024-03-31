@@ -73,11 +73,7 @@ const AlumniSurveyModule: React.FC<AlumniSurveyModuleProps> = ({ surveyType }) =
               <GridItem key={survey.id}>
                 <SurveyCard
                   survey={survey}
-                  fillButton={
-                    !survey.responses?.some(
-                      (response) => response.alumni.id === user?.alumni.id,
-                    )
-                  }
+                  fillButton={true}
                   deleteButton={false}
                   editButton={false}
                   downloadButton={false}
