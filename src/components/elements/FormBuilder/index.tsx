@@ -44,6 +44,17 @@ export const FormBuilder = () => {
     if (data.graduateYearFrom === -1) delete data.graduateYearFrom;
     if (data.graduateYearTo === -1) delete data.graduateYearTo;
 
+    data.questions.forEach((q) => {
+      if (q.type !== 'RADIO' && q.type !== 'CHECKBOX') {
+        delete q.options;
+      }
+
+      if (q.type !== 'RANGE') {
+        delete q.rangeFrom;
+        delete q.rangeTo;
+      }
+    });
+
     const dataWithOrder = {
       ...data,
       questions: data.questions.map((q, questionIdx) => {
@@ -56,6 +67,7 @@ export const FormBuilder = () => {
         };
       }),
     };
+
     try {
       await axios.post(`/survey`, {
         ...dataWithOrder,
