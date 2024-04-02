@@ -35,7 +35,8 @@ import { Survey } from '@/components/elements/SurveyNotification/interface';
   
     useEffect(() => {
         fetchNotification();
-    }, []);
+        console.log(filledSurvey)
+    },[]);
   
     const toast = useToast();
   
@@ -53,6 +54,7 @@ import { Survey } from '@/components/elements/SurveyNotification/interface';
                 <Tbody> 
                 {(filledSurvey.map((data) => (                    
                     <Tr key={data.id}>
+
                     <Td bg="green.100">
                         <FaCheckCircle style={{ fontSize: '1rem', verticalAlign: 'middle' }} />
                     </Td>
@@ -62,11 +64,11 @@ import { Survey } from '@/components/elements/SurveyNotification/interface';
                     </Tr>
                 )))}
                 {(unfilledSurvey.map((data) => (
-                    <Tr>
+                    <Tr key={data.id}>
                     <Td bg="yellow.100">
                         <FaExclamationTriangle/>
                     </Td>
-                    <Td colSpan={6} fontSize="sm">
+                    <Td colSpan={5} fontSize="sm">
                         Jangan lupa untuk mengisi survey <strong>{data.title}</strong>, survey expire di tanggal <strong>{data.endTime.slice(8, 10) + '/' + data.endTime.slice(5, 7) + '/' + data.endTime.slice(0, 4)}</strong> pukul <strong>{data.endTime.slice(11,16)}</strong>
                     </Td>
                     </Tr>

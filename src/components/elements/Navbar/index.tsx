@@ -82,6 +82,7 @@ export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [user, setUser] = useState<ParsedUser>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const bgColorHover = useColorModeValue('gray.200', 'gray.700');
 
   const fetchUser = async () => {
     const user = await parseUser();
@@ -194,7 +195,7 @@ const handleCloseEditModal = () => {
                 rounded={'md'}
                 _hover={{
                   textDecoration: 'none',
-                  bg: useColorModeValue('gray.200', 'gray.700'),
+                  bg: bgColorHover,
                 }}
               >
                 <BellIcon boxSize={6} onClick={handleOpenEditModal} /> 
