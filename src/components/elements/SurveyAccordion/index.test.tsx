@@ -36,7 +36,7 @@ describe('SurveyAccordion component', () => {
         <SurveyAccordion
           title="My Surveys"
           surveys={mockSurveys}
-          admin={true}
+          isAdmin={true}
         />
       </Accordion>,
     );
@@ -53,7 +53,7 @@ describe('SurveyAccordion component', () => {
   it('renders "Belum ada survey" message when surveys array is empty', () => {
     render(
       <Accordion>
-        <SurveyAccordion title="My Surveys" surveys={[]} admin={true} />
+        <SurveyAccordion title="My Surveys" surveys={[]} isAdmin={true} />
       </Accordion>,
     );
 
