@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b419b20f-d329-425f-89a0-ec6d54525dfe" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/elements/DeleteSurveyModal/index.test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/elements/DeleteSurveyModal/index.test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/elements/DeleteSurveyModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/elements/DeleteSurveyModal/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.test.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.test.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/modules/FillSurveyModule/interface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/modules/FillSurveyModule/interface.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/survey/[surveyId].tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/survey/[surveyId].tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,11 +46,18 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Jest.Fill Survey Module.Preview Option.executor": "Run",
+    "Jest.Fill Survey Module.Preview Option.no survey with the ID.executor": "Run",
+    "Jest.Fill Survey Module.Preview Option.renders correctly.executor": "Run",
+    "Jest.Fill Survey Module.Preview Option.try to submit while on preview mode.executor": "Run",
+    "Jest.Fill Survey Module.executor": "Run",
+    "Jest.Preview Survey Module.executor": "Run",
+    "Jest.index.test.tsx (1).executor": "Run",
     "Jest.index.test.tsx.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feat/delete-preview-survey",
-    "last_opened_file_path": "C:/Users/ahmad hanif/OneDrive/Documents/tracer-study-fe",
+    "last_opened_file_path": "C:/Users/ahmad hanif/OneDrive/Documents/tracer-study-be",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -68,19 +77,81 @@
       </map>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="index.test.tsx" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Jest.Fill Survey Module.Preview Option.renders correctly">
+    <configuration name="Fill Survey Module" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
-      <scope-kind value="TEST_FILE" />
-      <test-file value="$PROJECT_DIR$/src/components/elements/DeleteSurveyModal/index.test.tsx" />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.test.tsx" />
+      <test-names>
+        <test-name value="Fill Survey Module" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Fill Survey Module.Preview Option" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.test.tsx" />
+      <test-names>
+        <test-name value="Fill Survey Module" />
+        <test-name value="Preview Option" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Fill Survey Module.Preview Option.no survey with the ID" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.test.tsx" />
+      <test-names>
+        <test-name value="Fill Survey Module" />
+        <test-name value="Preview Option" />
+        <test-name value="no survey with the ID" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Fill Survey Module.Preview Option.renders correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.test.tsx" />
+      <test-names>
+        <test-name value="Fill Survey Module" />
+        <test-name value="Preview Option" />
+        <test-name value="renders correctly" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Fill Survey Module.Preview Option.try to submit while on preview mode" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.test.tsx" />
+      <test-names>
+        <test-name value="Fill Survey Module" />
+        <test-name value="Preview Option" />
+        <test-name value="try to submit while on preview mode" />
+      </test-names>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.index.test.tsx" />
+        <item itemvalue="Jest.Fill Survey Module.Preview Option.renders correctly" />
+        <item itemvalue="Jest.Fill Survey Module.Preview Option" />
+        <item itemvalue="Jest.Fill Survey Module.Preview Option.try to submit while on preview mode" />
+        <item itemvalue="Jest.Fill Survey Module.Preview Option.no survey with the ID" />
+        <item itemvalue="Jest.Fill Survey Module" />
       </list>
     </recent_temporary>
   </component>
@@ -93,7 +164,8 @@
       <option name="presentableId" value="Default" />
       <updated>1711262532416</updated>
       <workItem from="1711262533663" duration="761000" />
-      <workItem from="1711565002850" duration="3471000" />
+      <workItem from="1711565002850" duration="6386000" />
+      <workItem from="1712007587692" duration="6322000" />
     </task>
     <servers />
   </component>

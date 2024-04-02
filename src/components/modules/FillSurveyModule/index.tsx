@@ -24,7 +24,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 
 
-const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
+const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId, type }) => {
   const [survey, setSurvey] = useState<Survey | undefined>();
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
   const toast = useToast();
@@ -32,47 +32,58 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
   const { register, handleSubmit} = useForm();
 
   const onSubmit = async (data: any) => {
-    const formData: { [key: string]: number | string } = {};
+    if (type == 'FILL') {
+      const formData: { [key: string]: number | string } = {};
 
-    survey?.questions.forEach((question) => {
-      const questionId = question.id;
+      survey?.questions.forEach((question) => {
+        const questionId = question.id;
 
-      if (question.type == 'RANGE'){
-        const sliderElement = document.getElementById("slider-thumb-" + questionId) as HTMLInputElement;
-          if (sliderElement) {
-            const sliderSelectedValue = parseFloat(sliderElement.ariaValueNow as string);
-            formData[questionId] = sliderSelectedValue;
-          } 
-      }
-      else if (question.type == 'RADIO'){
-        const radioSelectedValue = selectedOptions[questionId];
-        formData[questionId] = radioSelectedValue;
-      }
-    });
-    
-    const submission = {...data, ...formData}
-    
-    let toastShown = false;
+        if (question.type == 'RANGE'){
+          const sliderElement = document.getElementById("slider-thumb-" + questionId) as HTMLInputElement;
+            if (sliderElement) {
+              const sliderSelectedValue = parseFloat(sliderElement.ariaValueNow as string);
+              formData[questionId] = sliderSelectedValue;
+            }
+        }
+        else if (question.type == 'RADIO'){
+          const radioSelectedValue = selectedOptions[questionId];
+          formData[questionId] = radioSelectedValue;
+        }
+      });
 
-    Object.entries(submission).forEach(([key, value]) => {
-      if (!toastShown && (value === false || value === "" || value === undefined || (Array.isArray(value) && value.length === 0))) {
-        toastShown = true;
+      const submission = {...data, ...formData}
+
+      let toastShown = false;
+
+      Object.entries(submission).forEach(([key, value]) => {
+        if (!toastShown && (value === false || value === "" || value === undefined || (Array.isArray(value) && value.length === 0))) {
+          toastShown = true;
+          toast({
+            title: 'Warning',
+            description: 'Harap isi semua pertanyaan yang ada',
+            status: 'warning',
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      });
+
+      if(!toastShown){
+        const res = await axios.post('/survey/fill-survey', submission);
         toast({
-          title: 'Warning',
-          description: 'Harap isi semua pertanyaan yang ada',
-          status: 'warning',
+          title: 'Sukses',
+          description: 'Sukses mengisi survey',
+          status: 'success',
           duration: 3000,
           isClosable: true,
-        });
+        })
       }
-    });
-
-    if(!toastShown){
-      const res = await axios.post('/survey/fill-survey', submission);
+    }
+    else {
       toast({
-        title: 'Sukses',
-        description: 'Sukses mengisi survey',
-        status: 'success',
+        title: 'Gagal',
+        description: 'Preview tidak bisa melakukan penyimpanan survey',
+        status: 'error',
         duration: 3000,
         isClosable: true,
       })
@@ -108,6 +119,18 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
   return (
     <Box>
       <Flex justify={'center'}>
+        {type === 'PREVIEW' && (
+          <Flex justify="center" align="center" flex="1">
+            <Text
+              color={'blue.900'}
+              fontSize={{ base: 28, md: 30 }}
+              fontWeight="bold"
+              ml={"40%"}
+            >
+              Pratinjau Survei
+            </Text>
+          </Flex>
+        )}
         <Box p={4} w={'50%'}>
           {survey && (
             <Flex flexDirection={'column'} gap={'16px'}>
@@ -119,7 +142,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
                 <Text textColor={'gray.500'} fontStyle={'italic'}>
                   Silahkan isi pertanyaan-pertanyaan berikut ini dengan jawaban yang sesuai.
                 </Text>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} role={'form'}>
                   <Stack spacing={4}>
                     {survey.questions.map((question) => (
                       <FormControl key={question.id}>
@@ -194,9 +217,11 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
 
                       </FormControl>
                     ))}
-                    <Button type="submit" colorScheme="blue">
-                      Submit
-                    </Button>
+                    {type === 'FILL' && (
+                      <Button type="submit" colorScheme="blue">
+                        Submit
+                      </Button>
+                    )}
                   </Stack>
                 </form>
               </Box>
