@@ -14,7 +14,7 @@ import SurveyCard from '../SurveyCard';
 export default function SurveyAccordion({
   title,
   surveys,
-  admin
+  isAdmin
 }: AccordionProps) {
   return (
     <AccordionItem>
@@ -34,10 +34,10 @@ export default function SurveyAccordion({
                 <SurveyCard
                   survey={survey}
                   fillButton={false}
-                  deleteButton={admin}
-                  editButton={admin}
+                  deleteButton={isAdmin}
+                  editButton={isAdmin}
                   downloadButton={true}
-                  previewButton={admin}
+                  previewButton={isAdmin}
                   isDisabled={false}
                 />
               </GridItem>
