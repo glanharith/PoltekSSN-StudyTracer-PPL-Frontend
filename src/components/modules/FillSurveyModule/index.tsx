@@ -77,7 +77,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
             duration: 3000,
             isClosable: true,
         });
-    } catch (error: any) {
+      } catch (error: any) {
         toast({
             title: 'Error',
             description: error.response.data.message,
@@ -85,10 +85,9 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
             duration: 3000,
             isClosable: true,
         });
-    } finally {
-      router.replace("/")
-    }
-    
+      } finally {
+        router.replace("/")
+      }
     }
   };
 
