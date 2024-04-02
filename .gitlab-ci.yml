@@ -14,7 +14,6 @@ test:
     - yarn global add vercel
     - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN_STAGE
     - vercel build --token=$VERCEL_TOKEN_STAGE
-    - yarn test
     - yarn jest --ci --coverage --runInBand
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
 
