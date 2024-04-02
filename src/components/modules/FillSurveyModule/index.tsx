@@ -80,23 +80,25 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
   };
 
   useEffect(() => {
-    const fetchSurvey = async () => {
-      try {
-        const response = await axios.get('/survey/get/' + surveyId);
-        setSurvey(response.data);
-      } catch (error) {
-        toast({
-          title: 'Gagal',
-          description: 'Gagal memuat data survey',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
-        router.replace("/")
-      }
-    };
-
-    fetchSurvey();
+    if (surveyId){
+      const fetchSurvey = async () => {
+        try {
+          const response = await axios.get('/survey/get/' + surveyId);
+          setSurvey(response.data);
+        } catch (error) {
+          toast({
+            title: 'Gagal',
+            description: 'Gagal memuat data survey',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          });
+          router.replace("/")
+        }
+      };
+    
+      fetchSurvey();
+    }
   }, [surveyId, toast]);
 
   const handleRadioChange = (questionId: string, optionLabel: string) => {
