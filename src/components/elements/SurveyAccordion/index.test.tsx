@@ -59,6 +59,4 @@ describe('SurveyAccordion component', () => {
 
     expect(screen.getByText('Belum ada survey')).toBeInTheDocument();
   });
-
-  // You can add more test cases to cover different scenarios and edge cases.
 });

@@ -68,8 +68,6 @@ describe('AlumniSurveyModule', () => {
     render(<AlumniSurveyModule surveyType="CAREER" />);
 
     await waitFor(() => {
-      //   expect(screen.getByText(mockSurveys[0].title)).toBeInTheDocument();
-      //   expect(screen.getByText(mockSurveys[1].title)).toBeInTheDocument();
       expect(screen.getByText('Survey Karir')).toBeInTheDocument();
     });
   });

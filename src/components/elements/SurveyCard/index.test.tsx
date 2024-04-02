@@ -65,6 +65,4 @@ describe('SurveyCard', () => {
     fireEvent.click(screen.getByText('Pratinjau'));
     expect(mockRouterPush).toHaveBeenCalledWith(`/survey-management/preview/${mockSurvey.id}`);
   });
-
-  
 });

@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { parseUser } from '@/utils';
-import { ParsedUser } from '@/utils/parseUser/interface';
 import AdminSurveyModule from '@/components/modules/AdminSurveyModule';
 import KaprodiSurveyModule from '@/components/modules/KaprodiSurveyModule';
 
