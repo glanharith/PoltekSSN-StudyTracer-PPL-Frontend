@@ -68,14 +68,27 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
     });
 
     if(!toastShown){
-      const res = await axios.post('/survey/fill-survey', submission);
-      toast({
-        title: 'Sukses',
-        description: 'Sukses mengisi survey',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      })
+      try {
+        await axios.post('/survey/fill-survey', submission);
+        toast({
+            title: 'Sukses',
+            description: 'Sukses mengisi survey',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
+    } catch (error: any) {
+        toast({
+            title: 'Error',
+            description: error.response.data.message,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+        });
+    } finally {
+      router.replace("/")
+    }
+    
     }
   };
 
@@ -85,10 +98,10 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
         try {
           const response = await axios.get('/survey/get/' + surveyId);
           setSurvey(response.data);
-        } catch (error) {
+        } catch (error: any) {
           toast({
             title: 'Gagal',
-            description: 'Gagal memuat data survey',
+            description: error.response.data.message,
             status: 'error',
             duration: 3000,
             isClosable: true,
