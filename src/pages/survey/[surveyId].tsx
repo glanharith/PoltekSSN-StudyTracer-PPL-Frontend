@@ -10,7 +10,7 @@ const FillSurvey =  () => {
     const router = useRouter();
     const { surveyId } = router.query;
 
-    return <SurveyForm surveyId={surveyId as string} />;
+    return <SurveyForm surveyId={surveyId as string} type={'FILL'} />;
 };
 
 export default AlumniHoc(FillSurvey)
