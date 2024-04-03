@@ -14,7 +14,6 @@ import {
     Td,} from '@chakra-ui/react';
 import { axios } from '@/utils';
 import React, { useState, useEffect } from 'react';
-
 import { FaCheckCircle,FaExclamationTriangle } from 'react-icons/fa';
 import { NotificationModalProps } from './interface';
 import { Survey } from '@/components/elements/SurveyNotification/interface';
@@ -26,6 +25,8 @@ import { Survey } from '@/components/elements/SurveyNotification/interface';
   }: Readonly<NotificationModalProps>) {
     const [filledSurvey, setFilledSurvey] = useState<Survey[]>([]);
     const [unfilledSurvey, setUnfilledSurvey] = useState<Survey[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     const fetchNotification = async () => {
         const result = await axios.get('/notification');
@@ -34,12 +35,14 @@ import { Survey } from '@/components/elements/SurveyNotification/interface';
     };  
   
     useEffect(() => {
-        fetchNotification();
-        console.log(filledSurvey)
-    },[]);
-  
-    const toast = useToast();
-  
+        if (isOpen) {
+          setIsModalOpen(true);
+          fetchNotification();
+        } else {
+          setIsModalOpen(false); 
+        }
+      }, [isOpen]);
+
     return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
