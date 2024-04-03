@@ -68,17 +68,17 @@ export default function AllSurveys({ role }: AllSurveysProps) {
           <SurveyAccordion
             title={'Akan datang'}
             surveys={filterSurveys('CURRICULUM', isUpcoming)}
-            admin={role === 'ADMIN'}
+            isAdmin={role === 'ADMIN'}
           />
           <SurveyAccordion
             title={'Sedang berlangsung'}
             surveys={filterSurveys('CURRICULUM', isOngoing)}
-            admin={role === 'ADMIN'}
+            isAdmin={role === 'ADMIN'}
           />
           <SurveyAccordion
             title={'Sudah berakhir'}
             surveys={filterSurveys('CURRICULUM', isArchived)}
-            admin={role === 'ADMIN'}
+            isAdmin={role === 'ADMIN'}
           />
         </Accordion>
       </div>
@@ -96,17 +96,17 @@ export default function AllSurveys({ role }: AllSurveysProps) {
           <SurveyAccordion
             title={'Akan datang'}
             surveys={filterSurveys('CAREER', isUpcoming)}
-            admin={role === 'ADMIN'}
+            isAdmin={role === 'ADMIN'}
           />
           <SurveyAccordion
             title={'Sedang berlangsung'}
             surveys={filterSurveys('CAREER', isOngoing)}
-            admin={role === 'ADMIN'}
+            isAdmin={role === 'ADMIN'}
           />
           <SurveyAccordion
             title={'Sudah berakhir'}
             surveys={filterSurveys('CAREER', isArchived)}
-            admin={role === 'ADMIN'}
+            isAdmin={role === 'ADMIN'}
           />
         </Accordion>
       </div>
