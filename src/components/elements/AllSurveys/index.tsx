@@ -4,11 +4,16 @@ import { AllSurveysProps } from './interface';
 import { Accordion, Text, useToast } from '@chakra-ui/react';
 import SurveyAccordion from '../SurveyAccordion';
 import { Survey } from '../SurveyCard/interface';
+import {
+  filterSurveys,
+  isArchived,
+  isOngoing,
+  isUpcoming,
+} from '@/utils/surveyUtils';
 
 export default function AllSurveys({ role }: AllSurveysProps) {
   const [surveys, setSurveys] = useState<Survey[]>([]);
   const toast = useToast();
-  const today = new Date();
 
   useEffect(() => {
     fetchSurvey();
@@ -30,29 +35,6 @@ export default function AllSurveys({ role }: AllSurveysProps) {
     }
   };
 
-  const filterSurveys = (type: string, filterFn: any) => {
-    if (!Array.isArray(surveys)) {
-      return [];
-    }
-    return surveys.filter(
-      (survey) =>
-        survey.type === type &&
-        filterFn(new Date(survey.startTime), new Date(survey.endTime))
-    );
-  };
-
-  const isUpcoming = (startTime: Date) => {
-    return startTime > today;
-  };
-
-  const isOngoing = (startTime: Date, endTime: Date) => {
-    return startTime <= today && endTime > today;
-  };
-
-  const isArchived = (endTime: Date) => {
-    return endTime <= today;
-  };
-
   return (
     <div>
       <div style={{ margin: 5 }}>
@@ -67,17 +49,17 @@ export default function AllSurveys({ role }: AllSurveysProps) {
         <Accordion allowMultiple m={5}>
           <SurveyAccordion
             title={'Akan datang'}
-            surveys={filterSurveys('CURRICULUM', isUpcoming)}
+            surveys={filterSurveys(surveys, 'CURRICULUM', isUpcoming)}
             isAdmin={role === 'ADMIN'}
           />
           <SurveyAccordion
             title={'Sedang berlangsung'}
-            surveys={filterSurveys('CURRICULUM', isOngoing)}
+            surveys={filterSurveys(surveys, 'CURRICULUM', isOngoing)}
             isAdmin={role === 'ADMIN'}
           />
           <SurveyAccordion
             title={'Sudah berakhir'}
-            surveys={filterSurveys('CURRICULUM', isArchived)}
+            surveys={filterSurveys(surveys, 'CURRICULUM', isArchived)}
             isAdmin={role === 'ADMIN'}
           />
         </Accordion>
@@ -95,17 +77,17 @@ export default function AllSurveys({ role }: AllSurveysProps) {
         <Accordion allowMultiple m={5}>
           <SurveyAccordion
             title={'Akan datang'}
-            surveys={filterSurveys('CAREER', isUpcoming)}
+            surveys={filterSurveys(surveys, 'CAREER', isUpcoming)}
             isAdmin={role === 'ADMIN'}
           />
           <SurveyAccordion
             title={'Sedang berlangsung'}
-            surveys={filterSurveys('CAREER', isOngoing)}
+            surveys={filterSurveys(surveys, 'CAREER', isOngoing)}
             isAdmin={role === 'ADMIN'}
           />
           <SurveyAccordion
             title={'Sudah berakhir'}
-            surveys={filterSurveys('CAREER', isArchived)}
+            surveys={filterSurveys(surveys, 'CAREER', isArchived)}
             isAdmin={role === 'ADMIN'}
           />
         </Accordion>

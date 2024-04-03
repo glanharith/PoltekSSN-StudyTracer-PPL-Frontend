@@ -13,6 +13,7 @@ import { CardProps } from './interface';
 import { useRouter } from 'next/router';
 import { FiEdit } from 'react-icons/fi';
 import { BsTrash } from 'react-icons/bs';
+import { formatDate } from '@/utils/surveyUtils';
 
 export default function SurveyCard({
   survey,
@@ -37,33 +38,8 @@ export default function SurveyCard({
 
   const handleOpenEditModal = () => {};
 
-  const formatDate = (date: Date) => {
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-
-    return `${day} ${month} ${year}, ${hours}:${minutes}`;
-  }
-
   return (
-    <Card maxW="sm" margin={5} minH={250} id='survey-card'>
+    <Card maxW="sm" margin={5} minH={250} id="survey-card">
       <CardBody>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: 5 }}>
           <Heading size="md" style={{ marginRight: 'auto' }}>
