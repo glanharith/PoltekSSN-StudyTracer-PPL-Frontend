@@ -251,7 +251,7 @@ describe('Fill Survey Module', () => {
 
     describe('Preview Option', () => {
         it("renders correctly", async () => {
-            mockAxios.onGet('/survey/get/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(200, tempSurvey);
+            mockAxios.onGet('/survey/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(200, tempSurvey);
             await act(async () => {
                 render (
                   <SurveyForm surveyId='7b44a640-4f8c-4bd8-8137-42723f8c90d6' type='PREVIEW'/>
@@ -267,7 +267,7 @@ describe('Fill Survey Module', () => {
         })
 
         it('no survey with the ID', async () => {
-            mockAxios.onGet('/survey/get/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(400);
+            mockAxios.onGet('/survey/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(400);
             await act(async () => {
                 render (
                   <SurveyForm surveyId='7b44a640-4f8c-4bd8-8137-42723f8c90d6' type='PREVIEW'/>
@@ -279,7 +279,7 @@ describe('Fill Survey Module', () => {
         })
 
         it('try to submit while on preview mode', async () => {
-            mockAxios.onGet('/survey/get/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(200, tempSurvey);
+            mockAxios.onGet('/survey/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(200, tempSurvey);
             await act(async () => {
                 render (
                   <SurveyForm surveyId='7b44a640-4f8c-4bd8-8137-42723f8c90d6' type='PREVIEW'/>

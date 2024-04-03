@@ -93,7 +93,13 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId, type }) => {
   useEffect(() => {
     const fetchSurvey = async () => {
       try {
-        const response = await axios.get('/survey/get/' + surveyId);
+        let response;
+        if (type == 'FILL') {
+          response = await axios.get('/survey/get/' + surveyId);
+        }
+        else {
+          response = await axios.get('/survey/' + surveyId);
+        }
         setSurvey(response.data);
       } catch (error) {
         toast({

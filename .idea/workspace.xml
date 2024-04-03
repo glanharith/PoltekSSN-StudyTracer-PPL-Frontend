@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b419b20f-d329-425f-89a0-ec6d54525dfe" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/modules/FillSurveyModule/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +55,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "feat/delete-preview-survey",
-    "last_opened_file_path": "C:/Users/ahmad hanif/OneDrive/Documents/tracer-study-be",
+    "last_opened_file_path": "C:/Users/ahmad hanif/OneDrive/Documents/tracer-study-fe",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -64,6 +66,9 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="ReactBuddySettings">
+    <option name="extensionsIgnore" value="true" />
+  </component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -161,7 +166,8 @@
       <updated>1711262532416</updated>
       <workItem from="1711262533663" duration="761000" />
       <workItem from="1711565002850" duration="6386000" />
-      <workItem from="1712007587692" duration="7605000" />
+      <workItem from="1712007587692" duration="9206000" />
+      <workItem from="1712132670969" duration="329000" />
     </task>
     <servers />
   </component>
