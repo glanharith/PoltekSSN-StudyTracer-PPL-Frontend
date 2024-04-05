@@ -27,7 +27,7 @@ describe('ProfileModule', () => {
 
   test('renders profile information correctly', async () => {
     // Mock user data
-    const mockUserData = {
+     const mockUserData = {
       name: 'John Doe',
       alumni: {
         phoneNo: '1234567890',

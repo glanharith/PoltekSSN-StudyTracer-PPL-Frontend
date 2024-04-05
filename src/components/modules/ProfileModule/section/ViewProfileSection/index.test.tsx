@@ -1,5 +1,4 @@
 import { render, waitFor, screen, fireEvent, act } from '@testing-library/react';
-import { ViewProfile } from '.';
 import { axios } from '@/utils';
 import MockAdapter from 'axios-mock-adapter';
 import { ProfileModule } from '../..';
@@ -73,7 +72,7 @@ describe('ViewProfile', () => {
   test('give error when no data is passed', async () => {
     mockAxios.onPatch('/profile').reply(200, { data: secMockUserData });
 
-    render(<ViewProfile user={mockUserData} />);
+    render(<ProfileModule />);
     fireEvent.click(screen.getByText('Simpan'));
     await waitFor(() => {
       expect(useToast()).toHaveBeenCalledWith({
