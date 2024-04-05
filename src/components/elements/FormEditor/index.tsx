@@ -116,7 +116,7 @@ export const FormEditor = ({ existingData, id }: FormEditorProps) => {
         status: 'success',
       });
 
-      router.push('/');
+      router.push('/survey-management');
     } catch (e: any) {
       console.log(e);
       toast({

@@ -38,7 +38,7 @@ const defaultUserMenu = [
   },
   {
     name: 'Survey Management',
-    path: '/survey',
+    path: '/survey-management',
     role: 'ADMIN',
   },
   {
@@ -180,37 +180,37 @@ export const Navbar: React.FC = () => {
               </>
             ) : (
               <Flex alignItems={'center'} gap={4}>
-                  <Text>
-                    Hi, {user?.name}, You are{' '}
-                    {user?.role == 'ADMIN'
-                      ? 'Admin'
-                      : user?.role == 'ALUMNI'
+                <Text>
+                  Hi, {user?.name}, You are{' '}
+                  {user?.role == 'ADMIN'
+                    ? 'Admin'
+                    : user?.role == 'ALUMNI'
                       ? 'Alumni'
                       : 'Kaprodi'}
-                  </Text>
-                  <Menu>
-                    <MenuButton
-                      as={Button}
-                      rounded={'full'}
-                      variant={'link'}
-                      cursor={'pointer'}
-                    >
-                      <Avatar
-                        size={'sm'}
-                        src={
-                          'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                        }
-                      />
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem onClick={navigateToProfile}>
-                        Edit Profile
-                      </MenuItem>
-                      <MenuDivider />
-                      <MenuItem onClick={logout}>Logout</MenuItem>
-                    </MenuList>
-                  </Menu>
-                </Flex>
+                </Text>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                  >
+                    <Avatar
+                      size={'sm'}
+                      src={
+                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                      }
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem onClick={navigateToProfile}>
+                      Edit Profile
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem onClick={logout}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              </Flex>
             )}
           </Flex>
         </Flex>

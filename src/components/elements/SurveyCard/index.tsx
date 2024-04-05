@@ -34,9 +34,11 @@ export default function SurveyCard({
     router.push('/survey-management/preview/' + survey.id);
   };
 
-  const handleOpenDeleteModal = () => {};
+  const navigateToEdit = () => {
+    router.push('/survey-management/edit/' + survey.id);
+  };
 
-  const handleOpenEditModal = () => {};
+  const handleOpenDeleteModal = () => {};
 
   return (
     <Card maxW="sm" margin={5} minH={250} id="survey-card">
@@ -53,7 +55,7 @@ export default function SurveyCard({
                 background={'transparent'}
                 icon={<FiEdit />}
                 aria-label={'Edit Survey'}
-                onClick={() => handleOpenEditModal()}
+                onClick={() => navigateToEdit()}
                 ml={8}
               />
             )}
