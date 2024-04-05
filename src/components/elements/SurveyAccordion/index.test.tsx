@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import SurveyAccordion from '.';
 import { FormType } from '../SurveyCard/interface';
-import { Accordion } from '@chakra-ui/react';
+import { Accordion, useToast } from '@chakra-ui/react';
 
 jest.mock('next/router', () => ({
   useRouter: () => ({
@@ -11,6 +11,11 @@ jest.mock('next/router', () => ({
 }));
 
 describe('SurveyAccordion component', () => {
+  const mockRefetchData = jest.fn();
+  beforeEach(() => {
+    mockRefetchData.mockClear();
+  });
+
   const mockSurveys = [
     {
       id: '1',
@@ -37,6 +42,7 @@ describe('SurveyAccordion component', () => {
           title="My Surveys"
           surveys={mockSurveys}
           isAdmin={true}
+          refetchData={mockRefetchData}
         />
       </Accordion>,
     );
@@ -53,7 +59,7 @@ describe('SurveyAccordion component', () => {
   it('renders "Belum ada survey" message when surveys array is empty', () => {
     render(
       <Accordion>
-        <SurveyAccordion title="My Surveys" surveys={[]} isAdmin={true} />
+        <SurveyAccordion title="My Surveys" surveys={[]} isAdmin={true}  refetchData={mockRefetchData}/>
       </Accordion>,
     );
 
