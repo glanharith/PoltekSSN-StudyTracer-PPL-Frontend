@@ -51,16 +51,19 @@ export default function AllSurveys({ role }: AllSurveysProps) {
             title={'Akan datang'}
             surveys={filterSurveys(surveys, 'CURRICULUM', isUpcoming)}
             isAdmin={role === 'ADMIN'}
+            refetchData={fetchSurvey}
           />
           <SurveyAccordion
             title={'Sedang berlangsung'}
             surveys={filterSurveys(surveys, 'CURRICULUM', isOngoing)}
             isAdmin={role === 'ADMIN'}
+            refetchData={fetchSurvey}
           />
           <SurveyAccordion
             title={'Sudah berakhir'}
             surveys={filterSurveys(surveys, 'CURRICULUM', isArchived)}
             isAdmin={role === 'ADMIN'}
+            refetchData={fetchSurvey}
           />
         </Accordion>
       </div>
@@ -79,16 +82,19 @@ export default function AllSurveys({ role }: AllSurveysProps) {
             title={'Akan datang'}
             surveys={filterSurveys(surveys, 'CAREER', isUpcoming)}
             isAdmin={role === 'ADMIN'}
+            refetchData={fetchSurvey}
           />
           <SurveyAccordion
             title={'Sedang berlangsung'}
             surveys={filterSurveys(surveys, 'CAREER', isOngoing)}
             isAdmin={role === 'ADMIN'}
+            refetchData={fetchSurvey}
           />
           <SurveyAccordion
             title={'Sudah berakhir'}
             surveys={filterSurveys(surveys, 'CAREER', isArchived)}
             isAdmin={role === 'ADMIN'}
+            refetchData={fetchSurvey}
           />
         </Accordion>
       </div>

@@ -124,19 +124,19 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId, type }) => {
 
   return (
     <Box>
+      {type === 'PREVIEW' && (
+        <Text
+          color={'blue.900'}
+          fontSize={{ base: 28, md: 30 }}
+          fontWeight="bold"
+          ml={"40%"}
+          paddingTop={5}
+          paddingBottom={5}
+        >
+          Pratinjau Survei
+        </Text>
+      )}
       <Flex justify={'center'}>
-        {type === 'PREVIEW' && (
-          <Flex justify="center" align="center" flex="1">
-            <Text
-              color={'blue.900'}
-              fontSize={{ base: 28, md: 30 }}
-              fontWeight="bold"
-              ml={"40%"}
-            >
-              Pratinjau Survei
-            </Text>
-          </Flex>
-        )}
         <Box p={4} w={'50%'}>
           {survey && (
             <Flex flexDirection={'column'} gap={'16px'}>
