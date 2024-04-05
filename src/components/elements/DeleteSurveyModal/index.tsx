@@ -43,7 +43,6 @@ export default function DeleteSurveyModal({
       onClose();
     }
     catch(error) {
-      console.log(error)
       toast({
         title: 'Gagal',
         description: 'Gagal menghapus survey!',
