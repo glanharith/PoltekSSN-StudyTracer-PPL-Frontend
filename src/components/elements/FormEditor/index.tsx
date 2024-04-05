@@ -19,6 +19,7 @@ import { QuestionInput } from './QuestionInput';
 import { FiPlusCircle } from 'react-icons/fi';
 import { axios } from '@/utils';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export const FormEditor = ({ existingData, id }: FormEditorProps) => {
   const router = useRouter();
@@ -60,6 +61,8 @@ export const FormEditor = ({ existingData, id }: FormEditorProps) => {
   });
 
   const toast = useToast();
+
+  const [accordionIndex, setAccordionIndex] = useState(-1);
 
   const onSubmit = async (data: FormEditorInput) => {
     if (data.admissionYearFrom === -1) delete data.admissionYearFrom;
@@ -207,7 +210,11 @@ export const FormEditor = ({ existingData, id }: FormEditorProps) => {
             />
           </Flex>
 
-          <Accordion allowToggle>
+          <Accordion
+            allowToggle
+            index={accordionIndex}
+            onChange={(idx: number) => setAccordionIndex(idx)}
+          >
             <AccordionItem>
               <AccordionButton>
                 <Box as="span" flex="1" textAlign="left">
@@ -277,12 +284,14 @@ export const FormEditor = ({ existingData, id }: FormEditorProps) => {
                               year === -1 ||
                               admissionYearFrom === undefined ||
                               year === -1
-                            )
+                            ) {
                               return true;
-                            return (
-                              year >= admissionYearFrom ||
-                              'Batasan tahun masuk tidak valid'
-                            );
+                            }
+                            if (year >= admissionYearFrom) {
+                              return true;
+                            }
+                            setAccordionIndex(0);
+                            return 'Batasan tahun masuk tidak valid';
                           },
                         }),
                       }}
@@ -366,12 +375,14 @@ export const FormEditor = ({ existingData, id }: FormEditorProps) => {
                               year === -1 ||
                               graduateYearFrom === undefined ||
                               year === -1
-                            )
+                            ) {
                               return true;
-                            return (
-                              year >= graduateYearFrom ||
-                              'Batasan tahun masuk tidak valid'
-                            );
+                            }
+                            if (year >= graduateYearFrom) {
+                              return true;
+                            }
+                            setAccordionIndex(0);
+                            return 'Batasan tahun lulus tidak valid';
                           },
                         }),
                       }}
