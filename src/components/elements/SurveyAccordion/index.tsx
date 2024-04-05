@@ -14,7 +14,8 @@ import SurveyCard from '../SurveyCard';
 export default function SurveyAccordion({
   title,
   surveys,
-  isAdmin
+  isAdmin,
+  refetchData,
 }: AccordionProps) {
   return (
     <AccordionItem>
@@ -39,6 +40,7 @@ export default function SurveyAccordion({
                   downloadButton={true}
                   previewButton={isAdmin}
                   isDisabled={false}
+                  refetchData={refetchData}
                 />
               </GridItem>
             ))}

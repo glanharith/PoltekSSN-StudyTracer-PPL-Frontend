@@ -7,13 +7,15 @@ import {
   Text,
   Heading,
   IconButton,
+  Tooltip,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { CardProps } from './interface';
 import { useRouter } from 'next/router';
 import { FiEdit } from 'react-icons/fi';
 import { BsTrash } from 'react-icons/bs';
 import { formatDate } from '@/utils/surveyUtils';
+import DeleteSurveyModal from '@/components/elements/DeleteSurveyModal';
 
 export default function SurveyCard({
   survey,
@@ -23,8 +25,13 @@ export default function SurveyCard({
   downloadButton,
   previewButton,
   isDisabled,
+  refetchData,
 }: CardProps) {
   const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const isSurveyActive =
+    new Date() >= new Date(survey.startTime) &&
+    new Date() <= new Date(survey.endTime);
 
   const navigateToFill = () => {
     router.push('/survey/' + survey.id);
@@ -38,7 +45,13 @@ export default function SurveyCard({
     router.push('/survey-management/edit/' + survey.id);
   };
 
-  const handleOpenDeleteModal = () => {};
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   return (
     <Card maxW="sm" margin={5} minH={250} id="survey-card">
@@ -60,14 +73,19 @@ export default function SurveyCard({
               />
             )}
             {deleteButton && (
-              <IconButton
-                size={'lg'}
-                color={'red'}
-                background={'transparent'}
-                icon={<BsTrash />}
-                aria-label={'Delete Survey'}
-                onClick={() => handleOpenDeleteModal()}
-              />
+              <Tooltip
+                label={isSurveyActive ? 'Survey sedang berlangsung' : ''}
+              >
+                <IconButton
+                  size={'lg'}
+                  color={isSurveyActive ? 'gray' : 'red'}
+                  background={'transparent'}
+                  icon={<BsTrash />}
+                  aria-label={'Delete Survey'}
+                  onClick={() => handleOpenDeleteModal()}
+                  isDisabled={isSurveyActive}
+                />
+              </Tooltip>
             )}
           </div>
         </div>
@@ -106,6 +124,12 @@ export default function SurveyCard({
           )}
         </ButtonGroup>
       </CardFooter>
+      <DeleteSurveyModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        dataToBeDeleted={survey.id}
+        refetchData={refetchData}
+      />
     </Card>
   );
 }
