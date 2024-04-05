@@ -78,6 +78,7 @@ const AlumniSurveyModule: React.FC<AlumniSurveyModuleProps> = ({ surveyType }) =
                   editButton={false}
                   downloadButton={false}
                   previewButton={false}
+                  refetchData={() => {}}
                   isDisabled={survey.responses?.some(
                     (response) => response.alumni.id === user?.alumni.id,
                   )}

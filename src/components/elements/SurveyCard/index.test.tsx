@@ -9,11 +9,13 @@ jest.mock('next/router', () => ({
 }));
 
 const mockRouterPush = jest.fn();
+const mockRefetchData = jest.fn();
 
 beforeEach(() => {
   (useRouter as jest.Mock).mockReturnValue({
     push: mockRouterPush,
   });
+  mockRefetchData.mockClear();
 });
 
 
@@ -39,6 +41,7 @@ const mockCardProps: CardProps = {
   downloadButton: true,
   previewButton: true,
   isDisabled: false,
+  refetchData: mockRefetchData,
 };
 
 describe('SurveyCard', () => {

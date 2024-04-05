@@ -33,4 +33,5 @@ export interface Survey {
 
 export interface SurveyFormProps {
   surveyId: string;
+  type: 'FILL' | 'PREVIEW'
 }
