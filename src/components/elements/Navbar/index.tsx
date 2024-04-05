@@ -141,9 +141,11 @@ export const Navbar: React.FC = () => {
           <HStack spacing={8} alignItems={'center'}>
             <Box>
               <Image
-                src="assets/images/poltek-ssn-logo.png"
+                src="/assets/images/poltek-ssn-logo.png"
                 boxSize="40px"
                 alt="logo"
+                cursor="pointer"
+                onClick={() => router.push('/')}
               />
             </Box>
             <HStack
