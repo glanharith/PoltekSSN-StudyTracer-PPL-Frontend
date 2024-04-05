@@ -130,7 +130,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId }) => {
   return (
     <Box>
       <Flex justify={'center'}>
-        <Box p={4} w={'50%'}>
+        <Box p={4} w={{ base: '90%', lg: '50%' }}>
           {survey && (
             <Flex flexDirection={'column'} gap={'16px'}>
               <Box rounded={'md'} bgColor={'white'} padding={'20px'}>
