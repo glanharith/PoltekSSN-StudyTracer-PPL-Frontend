@@ -18,12 +18,13 @@ import {
   useToast,
   Text,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, BellIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import navStyles from './navbar.module.css';
 import { parseUser } from '@/utils';
 import { useRouter, usePathname } from 'next/navigation';
 import { ParsedUser } from '@/utils/parseUser/interface';
+import SurveyNotificationModal from '../SurveyNotification';
 
 const defaultUserMenu = [
   {
@@ -80,6 +81,8 @@ export const Navbar: React.FC = () => {
   const toast = useToast();
   const pathname = usePathname();
   const [user, setUser] = useState<ParsedUser>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const bgColorHover = useColorModeValue('gray.200', 'gray.700');
 
   const fetchUser = async () => {
     const user = await parseUser();
@@ -111,6 +114,13 @@ export const Navbar: React.FC = () => {
   const navigateToProfile = () => {
     router.push('/profile');
   };
+
+  const handleOpenEditModal = () => {
+    setIsModalOpen(true);
+};
+const handleCloseEditModal = () => {
+    setIsModalOpen(false);
+};
 
   return (
     <div className={navStyles.mobileNav} style={{ zIndex: 999 }}>
@@ -180,6 +190,16 @@ export const Navbar: React.FC = () => {
               </>
             ) : (
               <Flex alignItems={'center'} gap={4}>
+              <Box
+                p={2}
+                rounded={'md'}
+                _hover={{
+                  textDecoration: 'none',
+                  bg: bgColorHover,
+                }}
+              >
+                <BellIcon boxSize={6} onClick={handleOpenEditModal} /> 
+              </Box>
                   <Text>
                     Hi, {user?.name}, You are{' '}
                     {user?.role == 'ADMIN'
@@ -202,6 +222,7 @@ export const Navbar: React.FC = () => {
                         }
                       />
                     </MenuButton>
+
                     <MenuList>
                       <MenuItem onClick={navigateToProfile}>
                         Edit Profile
@@ -229,6 +250,9 @@ export const Navbar: React.FC = () => {
           </Box>
         ) : null}
       </Box>
+      <SurveyNotificationModal
+          isOpen={isModalOpen}
+          onClose={handleCloseEditModal}/>
     </div>
   );
 };
