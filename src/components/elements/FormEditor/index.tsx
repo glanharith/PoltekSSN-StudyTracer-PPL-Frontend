@@ -106,7 +106,8 @@ export const FormEditor = ({ existingData, id }: FormEditorProps) => {
     try {
       const updatedData: FormEditorInput = dataWithOrder;
 
-      console.log('saving...\n', updatedData);
+      // console.log('saving...\n', updatedData);
+
       await axios.patch(`/survey/${id}`, {
         ...updatedData,
       });
@@ -116,7 +117,7 @@ export const FormEditor = ({ existingData, id }: FormEditorProps) => {
         status: 'success',
       });
 
-      router.push('/');
+      router.push('/survey-management');
     } catch (e: any) {
       console.log(e);
       toast({

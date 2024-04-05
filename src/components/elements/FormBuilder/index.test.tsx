@@ -8,6 +8,10 @@ const actTimeout = async (f: () => void) =>
     setTimeout(f, 1000);
   });
 
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
+
 describe('GenericFormTextInput', () => {
   const data: FormBuilderInput = {
     title: 'Title',

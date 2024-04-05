@@ -18,8 +18,10 @@ import { GenericFormTextInput } from './GenericFormTextInput';
 import { QuestionInput } from './QuestionInput';
 import { FiPlusCircle } from 'react-icons/fi';
 import { axios } from '@/utils';
+import { useRouter } from 'next/router';
 
 export const FormBuilder = () => {
+  const router = useRouter();
   const methods = useForm<FormBuilderInput>({
     defaultValues: {
       questions: [{ type: 'TEXT', question: '', rangeFrom: 1, rangeTo: 3 }],
@@ -72,10 +74,13 @@ export const FormBuilder = () => {
       await axios.post(`/survey`, {
         ...dataWithOrder,
       });
+
       toast({
         title: 'Berhasil menyimpan survey!',
         status: 'success',
       });
+
+      router.push('/survey-management');
     } catch (e: any) {
       console.log(e);
       toast({

@@ -7,7 +7,7 @@ import {
   Text,
   Heading,
   IconButton,
-  Tooltip
+  Tooltip,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { CardProps } from './interface';
@@ -25,11 +25,13 @@ export default function SurveyCard({
   downloadButton,
   previewButton,
   isDisabled,
-  refetchData
+  refetchData,
 }: CardProps) {
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const isSurveyActive = new Date() >= new Date(survey.startTime) && new Date() <= new Date(survey.endTime)
+  const isSurveyActive =
+    new Date() >= new Date(survey.startTime) &&
+    new Date() <= new Date(survey.endTime);
 
   const navigateToFill = () => {
     router.push('/survey/' + survey.id);
@@ -39,6 +41,10 @@ export default function SurveyCard({
     router.push('/survey-management/preview/' + survey.id);
   };
 
+  const navigateToEdit = () => {
+    router.push('/survey-management/edit/' + survey.id);
+  };
+
   const handleOpenDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };
@@ -46,8 +52,6 @@ export default function SurveyCard({
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
-
-  const handleOpenEditModal = () => {};
 
   return (
     <Card maxW="sm" margin={5} minH={250} id="survey-card">
@@ -64,12 +68,14 @@ export default function SurveyCard({
                 background={'transparent'}
                 icon={<FiEdit />}
                 aria-label={'Edit Survey'}
-                onClick={() => handleOpenEditModal()}
+                onClick={() => navigateToEdit()}
                 ml={8}
               />
             )}
             {deleteButton && (
-              <Tooltip label={isSurveyActive ? 'Survey sedang berlangsung' : ''}>
+              <Tooltip
+                label={isSurveyActive ? 'Survey sedang berlangsung' : ''}
+              >
                 <IconButton
                   size={'lg'}
                   color={isSurveyActive ? 'gray' : 'red'}
