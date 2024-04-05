@@ -106,7 +106,8 @@ export const FormEditor = ({ existingData, id }: FormEditorProps) => {
     try {
       const updatedData: FormEditorInput = dataWithOrder;
 
-      console.log('saving...\n', updatedData);
+      // console.log('saving...\n', updatedData);
+
       await axios.patch(`/survey/${id}`, {
         ...updatedData,
       });
