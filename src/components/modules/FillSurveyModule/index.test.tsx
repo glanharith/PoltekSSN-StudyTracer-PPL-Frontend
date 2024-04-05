@@ -128,7 +128,9 @@ describe('Fill Survey Module', () => {
     })
 
     it("no survey with the id", async () => {
-        mockAxios.onGet('/survey/get/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(400);
+        mockAxios.onGet('/survey/get/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(400, {
+            message: 'Survey not found',
+        });
         await act(async () => {
             render (
             <SurveyForm surveyId='7b44a640-4f8c-4bd8-8137-42723f8c90d6'/>
@@ -141,7 +143,9 @@ describe('Fill Survey Module', () => {
 
 
     it("it show toast when id is not valid ", async () => {
-        mockAxios.onGet('/survey/get/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(400);
+        mockAxios.onGet('/survey/get/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(400, {
+            message: 'Gagal memuat data survey',
+        });
         await act(async () => {
             render (
             <SurveyForm surveyId='7b44a640-4f8c-4bd8-8137-42723f8c90d6'/>
@@ -243,6 +247,73 @@ describe('Fill Survey Module', () => {
                 title: 'Sukses',
                 description: 'Sukses mengisi survey',
                 status: 'success',
+                duration: 3000,
+                isClosable: true,
+            });
+        })
+        
+    })
+
+    it("click submit and post failed", async () => {
+        
+        const tempSurvey = {
+            "id": "7b44a640-4f8c-4bd8-8137-42723f8c90d6",
+            "type": "CURRICULUM",
+            "title": "test banyak",
+            "description": "testt",
+            "startTime": "2024-03-26T12:00:00.000Z",
+            "endTime": "2024-04-06T12:00:00.000Z",
+            "admissionYearFrom": 1961,
+            "admissionYearTo": 1962,
+            "graduateYearFrom": 1969,
+            "graduateYearTo": 1971,
+            "questions": [
+                {
+                    "id": "c47b8a6a-10f5-41bd-9c09-f86fe5dbad56",
+                    "type": "RADIO",
+                    "question": "INI RADIO",
+                    "rangeFrom": 1,
+                    "rangeTo": 3,
+                    "order": 0,
+                    "formId": "7b44a640-4f8c-4bd8-8137-42723f8c90d6",
+                    "options": [
+                        {
+                            "id": "b7e66f7b-28ef-44ba-8aee-92c80148b718",
+                            "label": "ini jawaban radio",
+                            "questionId": "c47b8a6a-10f5-41bd-9c09-f86fe5dbad56",
+                            "order": 0
+                        },
+                        {
+                            "id": "e0d2b907-61ff-42a0-8690-9a48c401705c",
+                            "label": "2",
+                            "questionId": "c47b8a6a-10f5-41bd-9c09-f86fe5dbad56",
+                            "order": 1
+                        }
+                    ]
+                }
+            ]
+        }
+
+        mockAxios.onGet('/survey/get/7b44a640-4f8c-4bd8-8137-42723f8c90d6').reply(200, tempSurvey);
+        await act(async () => {
+            render (
+            <SurveyForm surveyId='7b44a640-4f8c-4bd8-8137-42723f8c90d6'/>
+            )
+        });
+        mockAxios.onPost('/survey/fill-survey').reply(400 , {
+            message: "Survey gagal diisi"
+        })
+
+        await waitFor(() => expect(screen.getByText("ini jawaban radio")).toBeInTheDocument());
+
+        fireEvent.click(screen.getByText("ini jawaban radio"))
+        fireEvent.click(screen.getByText("Submit"))
+
+        await waitFor(() => {
+            expect(useToast()).toHaveBeenCalledWith({
+                title: 'Error',
+                description: 'Survey gagal diisi',
+                status: 'error',
                 duration: 3000,
                 isClosable: true,
             });
