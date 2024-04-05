@@ -6,6 +6,11 @@ import {
   FormControl,
   Icon,
   Radio,
+  Slider,
+  SliderFilledTrack,
+  SliderMark,
+  SliderThumb,
+  SliderTrack,
 } from '@chakra-ui/react';
 import { GenericFormTextInput } from '../GenericFormTextInput';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -255,31 +260,30 @@ export const QuestionInput: React.FC<QuestionInputProps> = ({
             )}
 
             {type === 'RANGE' && (
-              <Flex direction="column" gap={4}>
-                <Flex
-                  direction={{ base: 'column', sm: 'row' }}
-                  justifyContent={{ sm: 'space-around' }}
-                  w="100%"
-                  gap={4}
-                  px={{ base: 4, sm: 16 }}
+              <Flex direction="column" gap={8}>
+                <Slider
+                  min={rangeFrom}
+                  max={rangeTo}
+                  value={Math.floor((rangeFrom + rangeTo) / 2)}
+                  mt={4}
+                  isDisabled
                 >
-                  {Array(rangeTo - rangeFrom + 1)
-                    .fill(0)
-                    .map((_, idx) => (
-                      <Flex
-                        key={idx}
-                        direction={{ base: 'row', sm: 'column' }}
-                        alignItems="center"
-                        gap={2}
-                      >
-                        <span className="w-5 sm:w-auto">{rangeFrom + idx}</span>
-                        <Radio
-                          isDisabled
-                          _hover={{ cursor: 'default' }}
-                        ></Radio>
-                      </Flex>
-                    ))}
-                </Flex>
+                  <SliderTrack>
+                    <SliderFilledTrack />
+                  </SliderTrack>
+                  <SliderThumb />
+                  {Array.from(
+                    { length: (rangeTo as number) - (rangeFrom as number) + 1 },
+                    (_, index) => {
+                      const value = (rangeFrom as number) + index;
+                      return (
+                        <SliderMark key={index} value={value} mt={2}>
+                          {value}
+                        </SliderMark>
+                      );
+                    },
+                  )}
+                </Slider>
                 <Flex
                   px={{ base: 0, sm: 20, md: 24, lg: 36, xl: 52 }}
                   gap={4}
