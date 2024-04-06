@@ -8,6 +8,7 @@ interface CardProps {
   downloadButton?: boolean;
   previewButton?: boolean;
   isDisabled?: boolean;
+  isUpcoming?: boolean;
   refetchData: () => void;
 }
 

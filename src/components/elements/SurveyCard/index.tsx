@@ -25,6 +25,7 @@ export default function SurveyCard({
   downloadButton,
   previewButton,
   isDisabled,
+  isUpcoming,
   refetchData,
 }: CardProps) {
   const router = useRouter();
@@ -94,6 +95,11 @@ export default function SurveyCard({
           {formatDate(new Date(survey.startTime))} -{' '}
           {formatDate(new Date(survey.endTime))}
         </Text>
+        {isUpcoming && (
+          <Text color="red.400" fontWeight="bold" mb={2}>
+            Masa pengisian belum dimulai
+          </Text>
+        )}
         <Text>{survey.description}</Text>
       </CardBody>
       <CardFooter>
@@ -103,7 +109,7 @@ export default function SurveyCard({
               onClick={navigateToFill}
               variant="solid"
               colorScheme="blue"
-              isDisabled={isDisabled}
+              isDisabled={isDisabled || isUpcoming}
             >
               Isi Survey
             </Button>

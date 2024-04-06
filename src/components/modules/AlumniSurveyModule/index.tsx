@@ -5,6 +5,7 @@ import { Text, useToast, Grid, GridItem } from '@chakra-ui/react';
 import SurveyCard from '@/components/elements/SurveyCard';
 import { Survey } from '@/components/elements/SurveyCard/interface';
 import { AlumniSurveyModuleProps } from './interface';
+import { isUpcoming } from '@/utils/surveyUtils';
 
 const AlumniSurveyModule: React.FC<AlumniSurveyModuleProps> = ({
   surveyType,
@@ -84,6 +85,7 @@ const AlumniSurveyModule: React.FC<AlumniSurveyModuleProps> = ({
                     isDisabled={survey.responses?.some(
                       (response) => response.alumniId === user?.alumni.id,
                     )}
+                    isUpcoming={isUpcoming(new Date(survey.startTime), new Date(survey.endTime))}
                   />
                 </GridItem>
               ),
