@@ -6,8 +6,9 @@ import SurveyCard from '@/components/elements/SurveyCard';
 import { Survey } from '@/components/elements/SurveyCard/interface';
 import { AlumniSurveyModuleProps } from './interface';
 
-
-const AlumniSurveyModule: React.FC<AlumniSurveyModuleProps> = ({ surveyType }) => {
+const AlumniSurveyModule: React.FC<AlumniSurveyModuleProps> = ({
+  surveyType,
+}) => {
   const [user, setUser] = useState<Profile>();
   const [surveys, setSurveys] = useState<Survey[]>([]);
   const toast = useToast();
@@ -55,7 +56,7 @@ const AlumniSurveyModule: React.FC<AlumniSurveyModuleProps> = ({ surveyType }) =
   };
 
   return (
-    <div>
+    <div style={{ minHeight: '100vh' }}>
       <div style={{ textAlign: 'center' }}>
         <Text
           color={'blue.900'}
@@ -67,24 +68,30 @@ const AlumniSurveyModule: React.FC<AlumniSurveyModuleProps> = ({ surveyType }) =
         </Text>
       </div>
       <Grid templateColumns="repeat(3, 1fr)" gap={2} margin={5}>
-        {surveys.map(
-          (survey) =>
-            survey.type === surveyType && (
-              <GridItem key={survey.id}>
-                <SurveyCard
-                  survey={survey}
-                  fillButton={true}
-                  deleteButton={false}
-                  editButton={false}
-                  downloadButton={false}
-                  previewButton={false}
-                  refetchData={() => {}}
-                  isDisabled={survey.responses?.some(
-                    (response) => response.alumni.id === user?.alumni.id,
-                  )}
-                />
-              </GridItem>
-            ),
+        {surveys.length > 0 ? (
+          surveys.map(
+            (survey) =>
+              survey.type === surveyType && (
+                <GridItem key={survey.id}>
+                  <SurveyCard
+                    survey={survey}
+                    fillButton={true}
+                    deleteButton={false}
+                    editButton={false}
+                    downloadButton={false}
+                    previewButton={false}
+                    refetchData={() => {}}
+                    isDisabled={survey.responses?.some(
+                      (response) => response.alumniId === user?.alumni.id,
+                    )}
+                  />
+                </GridItem>
+              ),
+          )
+        ) : (
+          <Text textAlign="center" fontSize="lg" color="gray.500" mt={5}>
+            Belum ada survey
+          </Text>
         )}
       </Grid>
     </div>
