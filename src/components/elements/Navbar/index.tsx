@@ -40,7 +40,7 @@ const defaultUserMenu = [
   {
     name: 'Survey Management',
     path: '/survey-management',
-    role: 'ADMIN',
+    role: ['ADMIN', 'HEAD_STUDY_PROGRAM'],
   },
   {
     name: 'Prodi Management',
@@ -51,11 +51,6 @@ const defaultUserMenu = [
     name: 'Kaprodi Management',
     path: '/kepala-program-studi',
     role: 'ADMIN',
-  },
-  {
-    name: 'Survey Management',
-    path: '/prodi-survey',
-    role: 'HEAD_STUDY_PROGRAM',
   },
 ];
 
@@ -92,7 +87,7 @@ export const Navbar: React.FC = () => {
     } else {
       setUserRole(user.role);
       // Filter user menu based on user role
-      setUserMenu(defaultUserMenu.filter((item) => item.role == user.role));
+      setUserMenu(defaultUserMenu.filter((item) => item.role.includes(user.role)));
       setUser(user);
     }
   };
