@@ -1,5 +1,6 @@
 import React from 'react';
 import AlumniSurveyModule from '@/components/modules/AlumniSurveyModule';
+import AlumniHoc from '@/components/hoc/alumniHoc';
 
 const AlumniSurveyKarir = () => {
   return (
@@ -7,4 +8,4 @@ const AlumniSurveyKarir = () => {
   );
 };
 
-export default AlumniSurveyKarir;
+export default AlumniHoc(AlumniSurveyKarir);

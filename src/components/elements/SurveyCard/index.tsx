@@ -14,7 +14,7 @@ import { CardProps } from './interface';
 import { useRouter } from 'next/router';
 import { FiEdit } from 'react-icons/fi';
 import { BsTrash } from 'react-icons/bs';
-import { formatDate } from '@/utils/surveyUtils';
+import { formatDate, isArchived, isOngoing } from '@/utils/surveyUtils';
 import DeleteSurveyModal from '@/components/elements/DeleteSurveyModal';
 
 export default function SurveyCard({
@@ -25,13 +25,19 @@ export default function SurveyCard({
   downloadButton,
   previewButton,
   isDisabled,
+  isUpcoming,
   refetchData,
 }: CardProps) {
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const isSurveyActive =
-    new Date() >= new Date(survey.startTime) &&
-    new Date() <= new Date(survey.endTime);
+  const isSurveyActive = isOngoing(
+    new Date(survey.startTime),
+    new Date(survey.endTime),
+  );
+  const isSurveyArchived = isArchived(
+    new Date(survey.startTime),
+    new Date(survey.endTime),
+  );
 
   const navigateToFill = () => {
     router.push('/survey/' + survey.id);
@@ -62,15 +68,26 @@ export default function SurveyCard({
           </Heading>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             {editButton && (
-              <IconButton
-                size={'lg'}
-                color={'black'}
-                background={'transparent'}
-                icon={<FiEdit />}
-                aria-label={'Edit Survey'}
-                onClick={() => navigateToEdit()}
-                ml={8}
-              />
+              <Tooltip
+                label={
+                  !isUpcoming && (isSurveyActive || isSurveyArchived)
+                    ? 'Survey sudah dimulai'
+                    : ''
+                }
+              >
+                <IconButton
+                  size={'lg'}
+                  color={'black'}
+                  background={'transparent'}
+                  icon={<FiEdit />}
+                  aria-label={'Edit Survey'}
+                  onClick={() => navigateToEdit()}
+                  ml={8}
+                  isDisabled={
+                    !isUpcoming && (isSurveyActive || isSurveyArchived)
+                  }
+                />
+              </Tooltip>
             )}
             {deleteButton && (
               <Tooltip
@@ -94,6 +111,11 @@ export default function SurveyCard({
           {formatDate(new Date(survey.startTime))} -{' '}
           {formatDate(new Date(survey.endTime))}
         </Text>
+        {isUpcoming && (
+          <Text color="red.400" fontWeight="bold" mb={2}>
+            Masa pengisian belum dimulai
+          </Text>
+        )}
         <Text>{survey.description}</Text>
       </CardBody>
       <CardFooter>
@@ -103,7 +125,7 @@ export default function SurveyCard({
               onClick={navigateToFill}
               variant="solid"
               colorScheme="blue"
-              isDisabled={isDisabled}
+              isDisabled={isDisabled || isUpcoming}
             >
               Isi Survey
             </Button>

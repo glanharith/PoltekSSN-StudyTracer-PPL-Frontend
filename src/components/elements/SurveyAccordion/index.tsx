@@ -40,6 +40,7 @@ export default function SurveyAccordion({
                   downloadButton={true}
                   previewButton={isAdmin}
                   isDisabled={false}
+                  isUpcoming={false}
                   refetchData={refetchData}
                 />
               </GridItem>
