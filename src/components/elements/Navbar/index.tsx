@@ -141,9 +141,11 @@ export const Navbar: React.FC = () => {
           <HStack spacing={8} alignItems={'center'}>
             <Box>
               <Image
-                src="assets/images/poltek-ssn-logo.png"
+                src="/assets/images/poltek-ssn-logo.png"
                 boxSize="40px"
                 alt="logo"
+                cursor="pointer"
+                onClick={() => router.push('/')}
               />
             </Box>
             <HStack
@@ -190,16 +192,18 @@ export const Navbar: React.FC = () => {
               </>
             ) : (
               <Flex alignItems={'center'} gap={4}>
-                <Box
-                  p={2}
-                  rounded={'md'}
-                  _hover={{
-                    textDecoration: 'none',
-                    bg: bgColorHover,
-                  }}
-                >
-                  <BellIcon boxSize={6} onClick={handleOpenEditModal} />
-                </Box>
+                {user?.role === 'ALUMNI' && (
+                  <Box
+                    p={2}
+                    rounded={'md'}
+                    _hover={{
+                      textDecoration: 'none',
+                      bg: bgColorHover,
+                    }}
+                  >
+                    <BellIcon boxSize={6} onClick={handleOpenEditModal} />
+                  </Box>
+                )}
                 <Text>
                   Hi, {user?.name}, You are{' '}
                   {user?.role == 'ADMIN'
