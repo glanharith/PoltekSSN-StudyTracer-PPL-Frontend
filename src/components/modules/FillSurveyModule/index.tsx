@@ -52,9 +52,11 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId, type }) => {
           }
         } else if (question.type == 'RADIO') {
           const radioSelectedValue = selectedOptions[questionId];
-          formData[questionId] = radioSelectedValue;
+          const realValue = radioSelectedValue.split("--")[0]
+          formData[questionId] = realValue;
         }
       });
+      
       const submission = { ...data, ...formData };
 
       let toastShown = false;
@@ -230,10 +232,10 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ surveyId, type }) => {
                                   value={option.label}
                                   isChecked={
                                     selectedOptions[question.id] ===
-                                    option.label
+                                    `${option.label} -- ${option.id}`
                                   }
                                   onChange={() =>
-                                    handleRadioChange(question.id, option.label)
+                                    handleRadioChange(question.id, `${option.label} -- ${option.id}`)
                                   }
                                 >
                                   {option.label}
