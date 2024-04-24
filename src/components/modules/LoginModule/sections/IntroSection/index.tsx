@@ -7,9 +7,10 @@ export const IntroSection = () => {
         Tracer Study
       </Text>
       <Text>
-        Tracer Study PoltekSSN merupakan lorem ipsum dolor sit amet, consectetur
-        adipiscing elit. Sed eros eros, imp erdiet vitae volutpat a, consectetur
-        sed elit. Vivamus dolor arcu, cursus in arcu nec, faucibus gravida dui.
+        <span className="font-semibold text-[#1a365d]">Tracer Study</span>{' '}
+        adalah situs web pengisian form/survey milik{' '}
+        <span className="font-semibold text-[#1a365d]">PoltekSSN</span> untuk
+        berbagai keperluan.
       </Text>
     </section>
   );

@@ -87,7 +87,9 @@ export const Navbar: React.FC = () => {
     } else {
       setUserRole(user.role);
       // Filter user menu based on user role
-      setUserMenu(defaultUserMenu.filter((item) => item.role.includes(user.role)));
+      setUserMenu(
+        defaultUserMenu.filter((item) => item.role.includes(user.role)),
+      );
       setUser(user);
     }
   };
@@ -170,7 +172,7 @@ export const Navbar: React.FC = () => {
                     router.replace('/register');
                   }}
                 >
-                  Register
+                  Daftar
                 </Button>
                 <Button
                   variant={'solid'}
@@ -182,7 +184,7 @@ export const Navbar: React.FC = () => {
                     router.replace('/login');
                   }}
                 >
-                  Login
+                  Masuk
                 </Button>
               </>
             ) : (
@@ -204,8 +206,8 @@ export const Navbar: React.FC = () => {
                   {user?.role == 'ADMIN'
                     ? 'Admin'
                     : user?.role == 'ALUMNI'
-                      ? 'Alumni'
-                      : 'Kaprodi'}
+                    ? 'Alumni'
+                    : 'Kaprodi'}
                 </Text>
                 <Menu>
                   <MenuButton
