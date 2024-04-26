@@ -8,6 +8,7 @@ import {
   Heading,
   IconButton,
   Tooltip,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { CardProps } from './interface';
@@ -15,6 +16,8 @@ import { useRouter } from 'next/router';
 import { FiEdit } from 'react-icons/fi';
 import { BsTrash } from 'react-icons/bs';
 import { formatDate, isArchived, isOngoing } from '@/utils/surveyUtils';
+import axios from '@/utils/axios';
+import { saveAs } from 'file-saver';
 import DeleteSurveyModal from '@/components/elements/DeleteSurveyModal';
 
 export default function SurveyCard({
@@ -28,7 +31,9 @@ export default function SurveyCard({
   isUpcoming,
   refetchData,
 }: CardProps) {
+  const toast = useToast();
   const router = useRouter();
+  const [isDownloading, setDownloading] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const isSurveyActive = isOngoing(
     new Date(survey.startTime),
@@ -57,6 +62,28 @@ export default function SurveyCard({
 
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
+  };
+
+  const handleDownloadResponses = async () => {
+    setDownloading(true);
+    try {
+      await axios.get(`/survey/${survey.id}/responses`).then((response) => {
+        var blob = new Blob([response.data], {
+          type: response.headers['content-type'],
+        });
+        saveAs(blob, `${survey.title}_Responses.csv`);
+      });
+    } catch (error) {
+      toast({
+        title: 'Gagal',
+        description: 'Gagal mengunduh tanggapan survey!',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    } finally {
+      setDownloading(false);
+    }
   };
 
   return (
@@ -131,7 +158,12 @@ export default function SurveyCard({
             </Button>
           )}
           {downloadButton && (
-            <Button variant="solid" colorScheme="blue">
+            <Button
+              isLoading={isDownloading}
+              variant="solid"
+              colorScheme="blue"
+              onClick={handleDownloadResponses}
+            >
               Unduh Tanggapan
             </Button>
           )}
