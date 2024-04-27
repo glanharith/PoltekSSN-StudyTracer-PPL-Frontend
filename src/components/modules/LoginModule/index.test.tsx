@@ -55,7 +55,7 @@ describe('LoginModule', () => {
     expect(screen.getByPlaceholderText('password')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Masuk' })).toBeInTheDocument();
     expect(screen.getByText('Daftar')).toBeInTheDocument();
-    expect(screen.getByText('Tracer Study')).toBeInTheDocument();
+    expect(screen.getAllByText('Tracer Study')).toHaveLength(2);
   });
 
   it('should login successfully', async () => {
