@@ -18,28 +18,29 @@ import {
   useToast,
   Text,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon, BellIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import navStyles from './navbar.module.css';
 import { parseUser } from '@/utils';
 import { useRouter, usePathname } from 'next/navigation';
 import { ParsedUser } from '@/utils/parseUser/interface';
+import SurveyNotificationModal from '../SurveyNotification';
 
 const defaultUserMenu = [
   {
     name: 'Survey Kurikulum',
-    path: '/survey-kurikulum',
+    path: '/survey/kurikulum',
     role: 'ALUMNI',
   },
   {
     name: 'Survey Karir',
-    path: '/survey-karir',
+    path: '/survey/karir',
     role: 'ALUMNI',
   },
   {
     name: 'Survey Management',
-    path: '/survey',
-    role: 'ADMIN',
+    path: '/survey-management',
+    role: ['ADMIN', 'HEAD_STUDY_PROGRAM'],
   },
   {
     name: 'Prodi Management',
@@ -50,11 +51,6 @@ const defaultUserMenu = [
     name: 'Kaprodi Management',
     path: '/kepala-program-studi',
     role: 'ADMIN',
-  },
-  {
-    name: 'Survey Management',
-    path: '/prodi-survey',
-    role: 'HEAD_STUDY_PROGRAM',
   },
 ];
 
@@ -80,6 +76,8 @@ export const Navbar: React.FC = () => {
   const toast = useToast();
   const pathname = usePathname();
   const [user, setUser] = useState<ParsedUser>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const bgColorHover = useColorModeValue('gray.200', 'gray.700');
 
   const fetchUser = async () => {
     const user = await parseUser();
@@ -89,7 +87,9 @@ export const Navbar: React.FC = () => {
     } else {
       setUserRole(user.role);
       // Filter user menu based on user role
-      setUserMenu(defaultUserMenu.filter((item) => item.role == user.role));
+      setUserMenu(
+        defaultUserMenu.filter((item) => item.role.includes(user.role)),
+      );
       setUser(user);
     }
   };
@@ -112,6 +112,13 @@ export const Navbar: React.FC = () => {
     router.push('/profile');
   };
 
+  const handleOpenEditModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseEditModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className={navStyles.mobileNav} style={{ zIndex: 999 }}>
       <Box
@@ -131,9 +138,11 @@ export const Navbar: React.FC = () => {
           <HStack spacing={8} alignItems={'center'}>
             <Box>
               <Image
-                src="assets/images/poltek-ssn-logo.png"
+                src="/assets/images/poltek-ssn-logo.png"
                 boxSize="40px"
                 alt="logo"
+                cursor="pointer"
+                onClick={() => router.push('/')}
               />
             </Box>
             <HStack
@@ -163,7 +172,7 @@ export const Navbar: React.FC = () => {
                     router.replace('/register');
                   }}
                 >
-                  Register
+                  Daftar
                 </Button>
                 <Button
                   variant={'solid'}
@@ -175,44 +184,55 @@ export const Navbar: React.FC = () => {
                     router.replace('/login');
                   }}
                 >
-                  Login
+                  Masuk
                 </Button>
               </>
             ) : (
-              <>
-                <Flex alignItems={'center'} gap={4}>
-                  <Text>
-                    Hi, {user?.name}, You are{' '}
-                    {user?.role == 'ADMIN'
-                      ? 'Admin'
-                      : user?.role == 'ALUMNI'
-                      ? 'Alumni'
-                      : 'Kaprodi'}
-                  </Text>
-                  <Menu>
-                    <MenuButton
-                      as={Button}
-                      rounded={'full'}
-                      variant={'link'}
-                      cursor={'pointer'}
-                    >
-                      <Avatar
-                        size={'sm'}
-                        src={
-                          'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                        }
-                      />
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem onClick={navigateToProfile}>
-                        Edit Profile
-                      </MenuItem>
-                      <MenuDivider />
-                      <MenuItem onClick={logout}>Logout</MenuItem>
-                    </MenuList>
-                  </Menu>
-                </Flex>
-              </>
+              <Flex alignItems={'center'} gap={4}>
+                {user?.role === 'ALUMNI' && (
+                  <Box
+                    p={2}
+                    rounded={'md'}
+                    _hover={{
+                      textDecoration: 'none',
+                      bg: bgColorHover,
+                    }}
+                  >
+                    <BellIcon boxSize={6} onClick={handleOpenEditModal} />
+                  </Box>
+                )}
+                <Text>
+                  Hi, {user?.name}, You are{' '}
+                  {user?.role == 'ADMIN'
+                    ? 'Admin'
+                    : user?.role == 'ALUMNI'
+                    ? 'Alumni'
+                    : 'Kaprodi'}
+                </Text>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                  >
+                    <Avatar
+                      size={'sm'}
+                      src={
+                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                      }
+                    />
+                  </MenuButton>
+
+                  <MenuList>
+                    <MenuItem onClick={navigateToProfile}>
+                      Edit Profile
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem onClick={logout}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              </Flex>
             )}
           </Flex>
         </Flex>
@@ -231,6 +251,10 @@ export const Navbar: React.FC = () => {
           </Box>
         ) : null}
       </Box>
+      <SurveyNotificationModal
+        isOpen={isModalOpen}
+        onClose={handleCloseEditModal}
+      />
     </div>
   );
 };

@@ -26,7 +26,7 @@ describe('DeleteHeadOfStudyProgramModal', () => {
     (useToast as jest.Mock).mockReturnValue(jest.fn());
   });
 
-  it('renders correctly', () => {
+  it('renders correctly', async () => {
     render(
       <DeleteHeadOfStudyProgramModal
         isOpen = {true}

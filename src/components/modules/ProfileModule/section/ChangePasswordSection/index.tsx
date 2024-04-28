@@ -12,6 +12,8 @@ import { CustomInput } from '@/components/elements';
 import { MdPassword } from 'react-icons/md';
 import { useForm } from 'react-hook-form';
 import { axios } from '@/utils';
+import { useState } from 'react';
+import { CustomPasswordInput } from '@/components/elements/CustomPasswordInput';
 export const ChangePassword = () => {
   const {
     handleSubmit,
@@ -21,6 +23,7 @@ export const ChangePassword = () => {
   } = useForm<PasswordInput>();
   const toast = useToast();
   const password = watch('password');
+  const [passwordScore, setPasswordScore] = useState(0);
   const handleChangePassword = async (data: PasswordInput) => {
     try {
       const updatedData: any = {
@@ -76,19 +79,33 @@ export const ChangePassword = () => {
             }}
           />
 
-          <CustomInput
-            name="newPassword"
-            label="Password Baru"
-            placeholder="Password Baru"
-            type="password"
-            icon={MdPassword}
-            error={errors.password?.message}
-            register={{
-              ...register('password', {
-                required: 'Masukkan Password Baru Anda',
-              }),
-            }}
-          />
+            <CustomPasswordInput
+              label="Password Baru"
+              placeholder="Password Baru"
+              error={errors.password?.message}
+              icon={MdPassword}
+              register={{
+                ...register('password', {
+                  required: 'Masukkan password baru Anda',
+                  minLength: {
+                    value: 12,
+                    message: 'Password harus minimal 12 karakter',
+                  },
+                  maxLength: {
+                    value: 128,
+                    message: 'Password harus maksimal 128 karakter',
+                  },
+                  validate: () =>
+                    passwordScore >= 3 ||
+                    'Harap gunakan password yang lebih kuat',
+                }),
+              }}
+              withValidation
+              password={password}
+              scoreCallback={(score) => {
+                setPasswordScore(score);
+              }}
+            />
 
           <CustomInput
             name="confirmPassword"
