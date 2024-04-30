@@ -18,11 +18,9 @@ export const AlumniListModule: React.FC = () => {
     const fetchAlumnis = async () => {
         const result = await axios.get('/alumni');
         setAlumniList(result.data.data)
-        console.log(alumniList)
     };  
     useEffect(() => {
         fetchAlumnis();
-        console.log(alumniList)
       }, []); 
 
     return (
@@ -52,7 +50,7 @@ export const AlumniListModule: React.FC = () => {
                     >
                         <Td>{data.name}</Td>
                         <Td>{data.email}</Td>
-                        <Td>{data.alumni.studyProgramId}</Td>
+                        <Td>{data.alumni.studyProgram.name}</Td>
 
                     </Tr>
                 )))}

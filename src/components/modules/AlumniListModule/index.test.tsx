@@ -33,7 +33,7 @@ describe('AlumniListModule', () => {
   });
   
   test('opens modal with alumni detail when alumni clicked', async () => {
-    const alumniData = { id: 1, name: 'Alumni 1', email: 'alumni1@example.com', alumni: { npm: '123456', phoneNo: '08123456789', address: 'Depok', gender: 'MALE', enrollmentYear: 2020, graduateYear: 2024, studyProgramId: 'IT' } };
+    const alumniData = { id: 1, name: 'Alumni 1', email: 'alumni1@example.com', alumni: { npm: '123456', phoneNo: '08123456789', address: 'Depok', gender: 'MALE', enrollmentYear: 2020, graduateYear: 2024, studyProgram: {name:'IT'}} };
   
     mockAxios.onGet('/alumni').reply(200, { data: [alumniData] });
   
