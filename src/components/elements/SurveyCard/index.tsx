@@ -9,6 +9,7 @@ import {
   IconButton,
   Tooltip,
   useToast,
+  Box,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { CardProps } from './interface';
@@ -29,6 +30,7 @@ export default function SurveyCard({
   previewButton,
   isDisabled,
   isUpcoming,
+  surveyCount,
   refetchData,
 }: CardProps) {
   const toast = useToast();
@@ -144,6 +146,11 @@ export default function SurveyCard({
           </Text>
         )}
         <Text>{survey.description}</Text>
+        <Box>
+          <Text fontSize={"large"} fontWeight={"bold"}>
+            Total responden : {surveyCount}
+          </Text>
+        </Box>
       </CardBody>
       <CardFooter>
         <ButtonGroup spacing="2">
