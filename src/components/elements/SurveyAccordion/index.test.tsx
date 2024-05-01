@@ -24,6 +24,9 @@ describe('SurveyAccordion component', () => {
       description: 'Description for Survey 1',
       startTime: new Date('2024-04-01T09:00:00Z'),
       endTime: new Date('2024-04-07T17:00:00Z'),
+      _count : {
+        responses: 1
+      },
     },
     {
       id: '2',
@@ -32,6 +35,9 @@ describe('SurveyAccordion component', () => {
       description: 'Description for Survey 2',
       startTime: new Date('2024-04-08T09:00:00Z'),
       endTime: new Date('2024-04-14T17:00:00Z'),
+      _count : {
+        responses: 0
+      },
     },
   ];
 
