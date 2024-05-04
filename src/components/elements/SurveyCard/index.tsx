@@ -10,6 +10,7 @@ import {
   Tooltip,
   useToast,
   Box,
+  Flex,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { CardProps } from './interface';
@@ -48,6 +49,10 @@ export default function SurveyCard({
 
   const navigateToFill = () => {
     router.push('/survey/' + survey.id);
+  };
+
+  const navigateToResponse = () => {
+    router.push('/survey-management/preview/' + survey.id + '/response');
   };
 
   const navigateToPreview = () => {
@@ -147,13 +152,13 @@ export default function SurveyCard({
         )}
         <Text>{survey.description}</Text>
         <Box>
-          <Text fontSize={"large"} fontWeight={"bold"}>
+          <Text fontSize={'large'} fontWeight={'bold'}>
             Total responden : {surveyCount}
           </Text>
         </Box>
       </CardBody>
       <CardFooter>
-        <ButtonGroup spacing="2">
+        <ButtonGroup spacing="2" size={'sm'}>
           {fillButton && (
             <Button
               onClick={navigateToFill}
@@ -164,25 +169,41 @@ export default function SurveyCard({
               Isi Survey
             </Button>
           )}
-          {downloadButton && (
-            <Button
-              isLoading={isDownloading}
-              variant="solid"
-              colorScheme="blue"
-              onClick={handleDownloadResponses}
-            >
-              Unduh Tanggapan
-            </Button>
-          )}
-          {previewButton && (
-            <Button
-              onClick={navigateToPreview}
-              variant="outline"
-              colorScheme="blue"
-            >
-              Pratinjau
-            </Button>
-          )}
+          <Flex direction={'column'}>
+            {previewButton && (
+              <Button
+                marginBottom={2}
+                onClick={navigateToPreview}
+                variant="outline"
+                colorScheme="blue"
+              >
+                Pratinjau
+              </Button>
+            )}
+            <Flex>
+              {downloadButton && (
+                <Button
+                  marginRight={2}
+                  variant="solid"
+                  colorScheme="blue"
+                  onClick={navigateToResponse}
+                  isDisabled={!isSurveyActive}
+                >
+                  Lihat Tanggapan
+                </Button>
+              )}
+              {downloadButton && (
+                <Button
+                  isLoading={isDownloading}
+                  variant="solid"
+                  colorScheme="blue"
+                  onClick={handleDownloadResponses}
+                >
+                  Unduh Tanggapan
+                </Button>
+              )}
+            </Flex>
+          </Flex>
         </ButtonGroup>
       </CardFooter>
       <DeleteSurveyModal
