@@ -9,6 +9,7 @@ interface CardProps {
   previewButton?: boolean;
   isDisabled?: boolean;
   isUpcoming?: boolean;
+  surveyCount?: number;
   refetchData: () => void;
 }
 
@@ -29,6 +30,9 @@ interface Survey {
   graduateYearFrom?: number | null;
   graduateYearTo?: number | null;
   responses?: Response[];
+  _count: {
+    responses: number
+  }
 }
 
 interface Response {
