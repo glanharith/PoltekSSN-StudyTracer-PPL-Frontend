@@ -50,7 +50,7 @@ export default function SurveyCard({
   const navigateToFill = () => {
     router.push('/survey/' + survey.id);
   };
-
+  
   const navigateToResponse = () => {
     router.push('/survey-management/preview/' + survey.id + '/response');
   };
@@ -151,11 +151,13 @@ export default function SurveyCard({
           </Text>
         )}
         <Text>{survey.description}</Text>
-        <Box>
-          <Text fontSize={'large'} fontWeight={'bold'}>
-            Total responden : {surveyCount}
-          </Text>
-        </Box>
+        {downloadButton && (
+          <Box>
+            <Text fontSize={'large'} fontWeight={'bold'}>
+              Total responden : {surveyCount}
+            </Text>
+          </Box>
+        )}
       </CardBody>
       <CardFooter>
         <ButtonGroup spacing="2" size={'sm'}>
