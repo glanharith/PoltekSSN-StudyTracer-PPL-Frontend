@@ -30,7 +30,7 @@ export default function SurveyCard({
   previewButton,
   isDisabled,
   isUpcoming,
-  surveyCount,
+  responseCount,
   refetchData,
 }: CardProps) {
   const toast = useToast();
@@ -147,8 +147,8 @@ export default function SurveyCard({
         )}
         <Text>{survey.description}</Text>
         <Box>
-          <Text fontSize={"large"} fontWeight={"bold"}>
-            Total responden : {surveyCount}
+          <Text fontSize={'large'} fontWeight={'bold'}>
+            Total responden : {responseCount}
           </Text>
         </Box>
       </CardBody>
@@ -165,14 +165,17 @@ export default function SurveyCard({
             </Button>
           )}
           {downloadButton && (
-            <Button
-              isLoading={isDownloading}
-              variant="solid"
-              colorScheme="blue"
-              onClick={handleDownloadResponses}
-            >
-              Unduh Tanggapan
-            </Button>
+            <Tooltip label={!responseCount ? 'Survey tidak ada tanggapan' : ''}>
+              <Button
+                isLoading={isDownloading}
+                variant="solid"
+                colorScheme="blue"
+                onClick={handleDownloadResponses}
+                isDisabled={!responseCount}
+              >
+                Unduh Tanggapan
+              </Button>
+            </Tooltip>
           )}
           {previewButton && (
             <Button

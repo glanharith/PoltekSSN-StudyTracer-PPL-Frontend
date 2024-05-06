@@ -40,7 +40,7 @@ export default function SurveyAccordion({
                   downloadButton={true}
                   previewButton={isAdmin}
                   isDisabled={false}
-                  surveyCount={survey._count.responses}
+                  responseCount={survey._count.responses}
                   isUpcoming={false}
                   refetchData={refetchData}
                 />

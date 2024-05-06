@@ -42,6 +42,7 @@ const mockSurvey: Survey = {
   graduateYearFrom: 2024,
   graduateYearTo: 2027,
   responses: [],
+  _count: { responses: 1 },
 };
 
 const mockCardProps: CardProps = {
@@ -53,6 +54,7 @@ const mockCardProps: CardProps = {
   previewButton: true,
   isDisabled: false,
   refetchData: mockRefetchData,
+  responseCount: 1,
 };
 
 describe('SurveyCard', () => {
@@ -90,34 +92,7 @@ describe('SurveyCard', () => {
       expect(mockAxios.history.get.length).toBe(1);
     });
   });
-  //
-  // it('shows error modal if downloading survey responses fail', async () => {
-  //   mockAxios.onGet(`/survey/${mockSurvey.id}/responses`).reply(500);
-  //
-  //   render(<SurveyCard {...mockCardProps} />);
-  //
-  //   await act(async () => {
-  //     await waitFor(
-  //       () => {
-  //         fireEvent.click(screen.getByText('Unduh Tanggapan'));
-  //       },
-  //       { timeout: 3000 },
-  //     );
-  //   });
-  //
-  //   await waitFor(
-  //     () => {
-  //       expect(mockAxios.history.get.length).toBe(1);
-  //       expect(useToast()).toHaveBeenCalledWith({
-  //         title: 'Gagal',
-  //         description: 'Gagal mengunduh tanggapan survey!',
-  //         status: 'error',
-  //       });
-  //     },
-  //     { timeout: 3000 },
-  //   );
-  // });
-  //
+
   it('shows error modal if downloading survey responses fail', async () => {
     mockAxios.onGet(`/survey/${mockSurvey.id}/responses`).networkError();
 
