@@ -189,7 +189,7 @@ export default function SurveyCard({
                   variant="solid"
                   colorScheme="blue"
                   onClick={navigateToResponse}
-                  isDisabled={!isSurveyActive}
+                  isDisabled={surveyCount === 0}
                 >
                   Lihat Tanggapan
                 </Button>
