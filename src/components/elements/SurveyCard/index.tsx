@@ -146,11 +146,13 @@ export default function SurveyCard({
           </Text>
         )}
         <Text>{survey.description}</Text>
-        <Box>
-          <Text fontSize={"large"} fontWeight={"bold"}>
-            Total responden : {surveyCount}
-          </Text>
-        </Box>
+        {downloadButton && (
+            <Box>
+              <Text fontSize={"large"} fontWeight={"bold"}>
+                Total responden : {surveyCount}
+              </Text>
+            </Box>
+          )}
       </CardBody>
       <CardFooter>
         <ButtonGroup spacing="2">
