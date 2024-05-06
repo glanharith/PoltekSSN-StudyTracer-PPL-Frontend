@@ -165,7 +165,9 @@ export default function SurveyCard({
             </Button>
           )}
           {downloadButton && (
-            <Tooltip label={!responseCount ? 'Survey tidak ada tanggapan' : ''}>
+            <Tooltip
+              label={!responseCount ? 'Survey tidak memiliki tanggapan' : ''}
+            >
               <Button
                 isLoading={isDownloading}
                 variant="solid"
