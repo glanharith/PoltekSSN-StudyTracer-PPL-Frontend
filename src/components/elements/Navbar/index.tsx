@@ -52,6 +52,11 @@ const defaultUserMenu = [
     path: '/kepala-program-studi',
     role: 'ADMIN',
   },
+  {
+    name: 'Alumni List',
+    path: '/alumni',
+    role: ['ADMIN', 'HEAD_STUDY_PROGRAM'],
+  },
 ];
 
 const NavLink = ({ children, path }: { children: ReactNode; path: string }) => (
