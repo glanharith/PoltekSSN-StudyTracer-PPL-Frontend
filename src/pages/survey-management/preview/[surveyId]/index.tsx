@@ -1,3 +1,4 @@
+// survey-management/preview/:id
 import { useRouter } from 'next/router';
 import SurveyForm from '@/components/modules/FillSurveyModule';
 import AdminHoc from '@/components/hoc/adminHoc';
