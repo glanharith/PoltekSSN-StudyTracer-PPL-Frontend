@@ -199,7 +199,11 @@ describe('SurveyResponseByAlumni', () => {
 
     const alumniCount = mockApiResponse.data.alumniResponse.length;
     const alumniCountText = `1 dari ${alumniCount}`;
-    expect(screen.findAllByText(alumniCountText)).toBeInTheDocument();
+    const elements = await screen.findAllByText(alumniCountText);
+
+    elements.forEach((element) => {
+      expect(element).toBeInTheDocument();
+    });
   });
 
   it('navigates to the next alumni', async () => {
