@@ -9,7 +9,7 @@ interface CardProps {
   previewButton?: boolean;
   isDisabled?: boolean;
   isUpcoming?: boolean;
-  surveyCount?: number;
+  responseCount?: number;
   refetchData: () => void;
 }
 
@@ -31,8 +31,8 @@ interface Survey {
   graduateYearTo?: number | null;
   responses?: Response[];
   _count: {
-    responses: number
-  }
+    responses: number;
+  };
 }
 
 interface Response {
@@ -49,11 +49,4 @@ enum FormType {
 }
 
 export { FormType };
-export type {
-  CardProps,
-  Alumni,
-  StudyProgram,
-  Response,
-  Survey,
-};
-
+export type { CardProps, Alumni, StudyProgram, Response, Survey };
