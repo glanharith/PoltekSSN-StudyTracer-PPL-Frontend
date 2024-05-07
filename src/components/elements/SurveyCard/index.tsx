@@ -184,25 +184,38 @@ export default function SurveyCard({
             )}
             <Flex>
               {downloadButton && (
-                <Button
-                  marginRight={2}
-                  variant="solid"
-                  colorScheme="blue"
-                  onClick={navigateToResponse}
-                  isDisabled={responseCount === 0}
+                <Tooltip
+                  label={
+                    !responseCount ? 'Survey tidak memiliki tanggapan' : ''
+                  }
                 >
-                  Lihat Tanggapan
-                </Button>
+                  <Button
+                    marginRight={2}
+                    variant="solid"
+                    colorScheme="blue"
+                    onClick={navigateToResponse}
+                    isDisabled={responseCount === 0}
+                  >
+                    Lihat Tanggapan
+                  </Button>
+                </Tooltip>
               )}
               {downloadButton && (
-                <Button
-                  isLoading={isDownloading}
-                  variant="solid"
-                  colorScheme="blue"
-                  onClick={handleDownloadResponses}
+                <Tooltip
+                  label={
+                    !responseCount ? 'Survey tidak memiliki tanggapan' : ''
+                  }
                 >
-                  Unduh Tanggapan
-                </Button>
+                  <Button
+                    isLoading={isDownloading}
+                    variant="solid"
+                    colorScheme="blue"
+                    onClick={handleDownloadResponses}
+                    isDisabled={responseCount === 0}
+                  >
+                    Unduh Tanggapan
+                  </Button>
+                </Tooltip>
               )}
             </Flex>
           </Flex>
