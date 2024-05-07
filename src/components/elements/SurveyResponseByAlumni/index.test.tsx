@@ -23,7 +23,7 @@ const mockRefetchData = jest.fn();
 beforeEach(() => {
   mockAxios.reset();
   (useRouter as jest.Mock).mockReturnValue({
-    push: mockRouterPush,
+    replace: jest.fn()
   });
   (useToast as jest.Mock).mockClear();
   (useToast as jest.Mock).mockReturnValue(jest.fn());
