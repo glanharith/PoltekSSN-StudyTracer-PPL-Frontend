@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SurveyResponseProps } from './interface';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react';
+import SurveyResponseByAlumni from '@/components/elements/SurveyResponseByAlumni';
 
 const ResponseModule: React.FC<SurveyResponseProps> = ({ surveyId, role }) => {
   return (
@@ -13,7 +14,9 @@ const ResponseModule: React.FC<SurveyResponseProps> = ({ surveyId, role }) => {
 
         <TabPanels>
           <TabPanel>{/* Survey Response by Question Component */}</TabPanel>
-          <TabPanel>{/* Survey Response by Alumni Component */}</TabPanel>
+          <TabPanel>
+            <SurveyResponseByAlumni surveyId={surveyId} role={role} />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </div>
