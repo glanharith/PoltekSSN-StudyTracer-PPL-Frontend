@@ -31,7 +31,7 @@ export default function SurveyCard({
   previewButton,
   isDisabled,
   isUpcoming,
-  surveyCount,
+  responseCount,
   refetchData,
 }: CardProps) {
   const toast = useToast();
@@ -50,7 +50,7 @@ export default function SurveyCard({
   const navigateToFill = () => {
     router.push('/survey/' + survey.id);
   };
-  
+
   const navigateToResponse = () => {
     router.push('/survey-management/preview/' + survey.id + '/response');
   };
@@ -154,7 +154,7 @@ export default function SurveyCard({
         {downloadButton && (
           <Box>
             <Text fontSize={'large'} fontWeight={'bold'}>
-              Total responden : {surveyCount}
+              Total responden : {responseCount}
             </Text>
           </Box>
         )}
@@ -189,7 +189,7 @@ export default function SurveyCard({
                   variant="solid"
                   colorScheme="blue"
                   onClick={navigateToResponse}
-                  isDisabled={surveyCount === 0}
+                  isDisabled={responseCount === 0}
                 >
                   Lihat Tanggapan
                 </Button>
