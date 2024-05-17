@@ -11,3 +11,10 @@ export interface Kaprodi {
     }
     email: string
 }
+export type KaprodiPagination= {
+    page: number;
+    totalHead: number;
+    totalPage: number;
+    from: number;
+    to: number;
+}

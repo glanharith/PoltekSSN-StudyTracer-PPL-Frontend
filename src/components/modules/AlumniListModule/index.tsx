@@ -15,12 +15,15 @@ import {
   ModalFooter,
   ModalBody,
   Button,
+  useToast
 } from '@chakra-ui/react';
 import { axios } from '@/utils';
 import { AlumniPagination } from './interface';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 
 export const AlumniListModule: React.FC = () => {
+  const toast = useToast();
+
   const [alumniList, setAlumniList] = useState<any[]>([]);
   const [pagination, setPagination] = useState<AlumniPagination>({
     page: 1,
@@ -36,9 +39,11 @@ export const AlumniListModule: React.FC = () => {
     setSelectedAlumni(null);
   };
   const fetchAlumnis = async () => {
-    const result = await axios.get(`/alumni?page=${pagination.page}`);
-    setAlumniList(result.data.data.users);
-    setPagination(result.data.data.pagination);
+
+      const result = await axios.get(`/alumni?page=${pagination.page}`);
+      setAlumniList(result.data.data.users);
+      setPagination(result.data.data.pagination);
+
   };
   useEffect(() => {
     fetchAlumnis();
@@ -170,3 +175,5 @@ export const AlumniListModule: React.FC = () => {
     </Flex>
   );
 };
+
+

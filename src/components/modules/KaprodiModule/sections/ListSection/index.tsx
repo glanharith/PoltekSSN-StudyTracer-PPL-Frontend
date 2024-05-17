@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { ListKaprodi } from "./interface";
 import { Kaprodi } from '../../interface';
 import EditHeadOfStudyProgramModal from "@/components/elements/EditHeadOfStudyProgramModal";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 
-export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, selectedKaprodi, setSelectedKaprodi}) => {
+export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, selectedKaprodi, setSelectedKaprodi, pagination, nextPage, prevPage}) => {
     const [allSelected, setAllSelected] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [kaprodiId, setKaprodiId] = useState<string>('');
@@ -143,6 +144,30 @@ export const ListSection: React.FC<ListKaprodi> = ({refetchData, kaprodi, select
                     isActive = {isActive}
                 />  
             </Flex>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' , marginLeft:'40px'}}>
+            <Flex justifyContent={'space-between'} w={'70%'} fontSize={13}>
+                <span>
+                    Menampilkan {pagination.from} - {pagination.to} dari{' '}
+                    {pagination.totalHead}
+                </span>
+                <Flex alignItems={'center'} gap={1}>
+                    <GrFormPrevious
+                        data-testid="prev-page"
+                        className="cursor-pointer"
+                        onClick={prevPage}
+                    />
+                    <span>
+                        {pagination.page} / {pagination.totalPage}
+                    </span>
+                    <GrFormNext
+                        data-testid="next-page"
+                        className="cursor-pointer"
+                        onClick={nextPage}
+                    />
+                </Flex>
+            </Flex>
+        </div>
+           
         </section>
     )
 }
