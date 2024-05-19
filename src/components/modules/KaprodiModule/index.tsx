@@ -1,4 +1,4 @@
-import { Flex, useToast } from '@chakra-ui/react';
+import { Flex, useToast, Spinner, Center } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { ListSection, HeaderSection } from './sections';
 import { axios } from '@/utils';
@@ -7,13 +7,14 @@ import {KaprodiPagination } from '../KaprodiModule/interface';
 
 export const KaprodiModule = () => {
   const toast = useToast();
-
+  const [loading, setLoading] = useState<boolean>(false);
   const [headOfStudyProgram, setHeadOfStudyProgram] = useState<Kaprodi[]>([]);
   const [selectedKaprodi, setSelectedKaprodi] = useState<string[]>([]);
   const [pagination, setPagination] = useState<KaprodiPagination>({
     page: 1,
   } as KaprodiPagination);
   const fetchHeadofStudyProgram = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`/kaprodi?page=${pagination.page}`);
       setHeadOfStudyProgram(response.data.data);
@@ -27,6 +28,8 @@ export const KaprodiModule = () => {
         duration: 3000,
         isClosable: true,
       });
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -56,19 +59,26 @@ export const KaprodiModule = () => {
       justifyItems="center"
       padding={4}
     >
-      <HeaderSection
-        refetchData={refetchData}
-        selectedKaprodi={selectedKaprodi}
-      />
-      <ListSection
-        refetchData={refetchData}
-        kaprodi={headOfStudyProgram}
-        selectedKaprodi={selectedKaprodi}
-        setSelectedKaprodi={setSelectedKaprodi}
-        pagination= {pagination}
-        nextPage={nextPage}
-        prevPage={prevPage}
-      />
+      {loading ? (
+        <Center>
+          <Spinner data-testid="spinner" />
+        </Center>      ) : (
+        <>
+        <HeaderSection
+          refetchData={refetchData}
+          selectedKaprodi={selectedKaprodi}
+        />
+        <ListSection
+          refetchData={refetchData}
+          kaprodi={headOfStudyProgram}
+          selectedKaprodi={selectedKaprodi}
+          setSelectedKaprodi={setSelectedKaprodi}
+          pagination= {pagination}
+          nextPage={nextPage}
+          prevPage={prevPage}
+        />
+        </>
+    )}
     </Flex>
   );
 };

@@ -227,19 +227,15 @@ describe('Kaprodi Module', () => {
       message: "Successfully created a new head of study program"
     }
 
-    mockAxios.onGet('/prodi').reply(200, mockData);
+    mockAxios.onGet('/prodi').reply(200, prodi);
     mockAxios.onPost('/kaprodi').replyOnce(200, result);
     mockAxios.onGet('/kaprodi?page=1').reply(200, {data:kaprodi, pagination: { page: 1, from: 1, to: 2, totalHead: 2, totalPage: 1 }});    
-    act(() => {
+    await act(() => {
       render (
         <KaprodiModule/>
       )
     });
-
-    act(() => {
-      userEvent.click(screen.getByText("Tambah Kaprodi"))
-    })
-
+    fireEvent.click(screen.getByText("Tambah Kaprodi"))
     await waitFor(() => {
       expect(screen.getByText('Ilmu Sandi')).toBeInTheDocument();
     });
