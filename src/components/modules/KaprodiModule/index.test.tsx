@@ -74,7 +74,8 @@ describe('Kaprodi Module', () => {
 
   it('able to select kaprodi for deletion', async () => {
     mockAxios.onGet('/prodi').reply(200, prodi);
-    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+    mockAxios.onGet('/kaprodi?page=1').reply(200, {data:kaprodi, pagination:{ page: 1, from: 1, to: 2, totalHead: 2, totalPage: 1 }});    
+
 
     await act(async () => {
       render (
@@ -97,7 +98,7 @@ describe('Kaprodi Module', () => {
 
   it("renders list kaprodi", async () => {
     mockAxios.onGet('/prodi').reply(200, prodi);
-    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+    mockAxios.onGet('/kaprodi?page=1').reply(200, {data:kaprodi,pagination: { page: 1, from: 1, to: 2, totalHead: 2, totalPage: 1 }});    
 
     await act(async () => {
       render (
@@ -106,10 +107,65 @@ describe('Kaprodi Module', () => {
     });
     expect(mockAxios.history.get.length).toBeGreaterThanOrEqual(1)
   });
+  it('should change page correctly', async()=>{
+    const kaprodi1= [
+      {
+        id: "45bee50e-0f4b-426f-8b6f-65f9ab307040",
+        name: "yudiasdsai",
+        headStudyProgram: {
+            studyProgram: {
+                name: "yudiasdsaii"
+            },
+            isActive: true,
+        },
+        email: "yudi.putra@ui.asdasdsad2er22asda"
+    }
+    ]
+    const kaprodi2 = [
+      {
+        id: "62eedb5f-b2b2-448b-8979-954f29ad4b3d",
+        name: "hanifhanif",
+        headStudyProgram: {
+            studyProgram: {
+                name: "ilmu padi"
+            },
+            isActive: false,
+        },
+        email: "hanif.hanif@ui.asdasdsad2er22asda"
+    }
+    ]
+    mockAxios.onGet('/prodi').reply(200, prodi);
+    mockAxios.onGet('/prodi').reply(200, prodi);
+
+    mockAxios.onGet('/kaprodi?page=1').reply(200, {data:kaprodi1, pagination: { page: 1, from: 1, to: 1, totalHead: 2, totalPage: 2 }});   
+    mockAxios.onGet('/kaprodi?page=2').reply(200, {data:kaprodi2, pagination: { page: 2, from: 2, to: 2, totalHead: 2, totalPage: 2 }});    
+    act(()=>{
+      render(<KaprodiModule/>)
+    })
+
+   await waitFor(() => {
+      expect(screen.getByText('Menampilkan 1 - 1 dari 2')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByTestId('prev-page')); // nothing happens
+    fireEvent.click(screen.getByTestId('next-page'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Menampilkan 2 - 2 dari 2')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByTestId('next-page')); // nothing happens
+    fireEvent.click(screen.getByTestId('prev-page'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Menampilkan 1 - 1 dari 2')).toBeInTheDocument();
+    });
+
+  })
 
   it("delete kaprodi", async () => {
     mockAxios.onGet('/prodi').reply(200, prodi);
-    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+    mockAxios.onGet('/kaprodi?page=1').reply(200, {data:kaprodi, pagination: { page: 1, from: 1, to: 2, totalHead: 2, totalPage: 1 }});    
     mockAxios.onDelete('/kaprodi').reply(200)
 
     await act(async () => {
@@ -130,7 +186,7 @@ describe('Kaprodi Module', () => {
 
   it("edit kaprodi", async () => {
     mockAxios.onGet('/prodi').reply(200, prodi);
-    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+    mockAxios.onGet('/kaprodi?page=1').reply(200, {data:kaprodi, pagination: { page: 1, from: 1, to: 2, totalHead: 2, totalPage: 1 }});    
     mockAxios.onPatch(`/kaprodi/${kaprodi[0].id}`).reply(200);
 
     await act(async () => {
@@ -173,7 +229,7 @@ describe('Kaprodi Module', () => {
 
     mockAxios.onGet('/prodi').reply(200, mockData);
     mockAxios.onPost('/kaprodi').replyOnce(200, result);
-    mockAxios.onGet('/kaprodi').reply(200, kaprodi);
+    mockAxios.onGet('/kaprodi?page=1').reply(200, {data:kaprodi, pagination: { page: 1, from: 1, to: 2, totalHead: 2, totalPage: 1 }});    
     act(() => {
       render (
         <KaprodiModule/>
@@ -224,4 +280,6 @@ describe('Kaprodi Module', () => {
       }, 1000)
     },)
   });
+  
+  
 });

@@ -22,7 +22,6 @@ import { AlumniPagination } from './interface';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 
 export const AlumniListModule: React.FC = () => {
-  const toast = useToast();
 
   const [alumniList, setAlumniList] = useState<any[]>([]);
   const [pagination, setPagination] = useState<AlumniPagination>({

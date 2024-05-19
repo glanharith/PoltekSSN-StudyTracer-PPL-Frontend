@@ -18,7 +18,7 @@ export const KaprodiModule = () => {
       const response = await axios.get(`/kaprodi?page=${pagination.page}`);
       setHeadOfStudyProgram(response.data.data);
       setPagination(response.data.pagination)
-      console.log(response.data.data)
+
     } catch (error) {
       toast({
         title: 'Gagal',
